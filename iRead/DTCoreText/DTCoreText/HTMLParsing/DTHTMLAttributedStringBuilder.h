@@ -49,7 +49,6 @@ typedef void(^DTHTMLAttributedStringBuilderParseErrorCallback)(NSAttributedStrin
  - DTDefaultHeadIndent: The default indent for left margin except first line
  - DTDefaultListIndent: The amount by which lists are indented
  - DTDefaultStyleSheet: The default style sheet to use
- - DTUseiOS6Attributes: use iOS 6 attributes for building (UITextView compatible)
  - DTWillFlushBlockCallBack: a block to be executed whenever content is flushed to the output string
  - DTIgnoreInlineStylesOption: All inline style information is being ignored and only style blocks used
  

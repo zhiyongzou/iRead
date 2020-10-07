@@ -57,7 +57,6 @@ extern NSString * const DTDefaultLineHeightMultiplier;
 extern NSString * const DTDefaultFirstLineHeadIndent;
 extern NSString * const DTDefaultHeadIndent;
 extern NSString * const DTDefaultStyleSheet;
-extern NSString * const DTUseiOS6Attributes;
 extern NSString * const DTWillFlushBlockCallBack;
 extern NSString * const DTProcessCustomHTMLAttributes;
 extern NSString * const DTIgnoreInlineStylesOption;

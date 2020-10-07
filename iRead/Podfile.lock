@@ -1,0 +1,36 @@
+PODS:
+  - FLEX (2.4.0)
+  - leveldb-library (1.18.3)
+  - Masonry (1.1.0)
+  - Objective-LevelDB (2.1.5):
+    - leveldb-library (~> 1.18.2)
+  - SVProgressHUD (2.1.2)
+  - ZipArchive (1.4.0)
+
+DEPENDENCIES:
+  - FLEX (~> 2.0)
+  - Masonry (= 1.1.0)
+  - Objective-LevelDB (= 2.1.5)
+  - SVProgressHUD (= 2.1.2)
+  - ZipArchive (~> 1.4.0)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FLEX
+    - leveldb-library
+    - Masonry
+    - Objective-LevelDB
+    - SVProgressHUD
+    - ZipArchive
+
+SPEC CHECKSUMS:
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  Objective-LevelDB: fa075efd9d0be645aee51847cc3ee70cdadb80ce
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
+
+PODFILE CHECKSUM: ff94fb83bf6ad427ba053c5abecc27b952fa4533
+
+COCOAPODS: 1.9.3

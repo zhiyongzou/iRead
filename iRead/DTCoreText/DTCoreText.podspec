@@ -11,9 +11,37 @@ Pod::Spec.new do |spec|
   spec.dependency 'DTFoundation'
   spec.ios.deployment_target = '8.0'
   spec.requires_arc = true
-  
-  spec.subspec 'NSAttributedString' do |spec|
-    spec.source_files = "DTCoreText/NSAttributedString/*.{h,m}"
+  spec.resource_bundles = { 'Resources': 'DTCoreText/default.css' }
+
+  spec.subspec 'Accessibility' do |spec|
+    spec.source_files = "DTCoreText/Accessibility/*.{h,m}"
+  end
+
+  spec.subspec 'Debug' do |spec|
+    spec.source_files = "DTCoreText/Debug/*.{h,m}"
+  end
+
+  spec.subspec 'HTMLParsing' do |spec|
+    spec.source_files = "DTCoreText/HTMLParsing/*.{h,m}", 
+    spec.source_files = "DTCoreText/HTMLParsing/DTHTMLElement/*.{h,m}",
+    spec.source_files = "DTCoreText/HTMLParsing/DTTextAttachment/*.{h,m}",
+    spec.source_files = "DTCoreText/HTMLParsing/DualPlatform/*.{h,m}"
+  end
+
+  spec.subspec 'HTMLWriting' do |spec|
+    spec.source_files = "DTCoreText/HTMLWriting/*.*"
+  end
+
+  spec.subspec 'Layouting' do |spec|
+    spec.source_files = "DTCoreText/Layouting/*.{h,m}"
+  end
+
+  spec.subspec 'UI' do |spec|
+    spec.source_files = "DTCoreText/UI/*.{h,m}"
+  end
+
+  spec.subspec 'Utils' do |spec|
+    spec.source_files = "DTCoreText/Utils/*.{h,m}"
   end
   
 end

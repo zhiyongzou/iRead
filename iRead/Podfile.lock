@@ -1,9 +1,27 @@
 PODS:
   - AEXML (4.5.0)
   - DTCoreText (1.0.0):
-    - DTCoreText/NSAttributedString (= 1.0.0)
+    - DTCoreText/Accessibility (= 1.0.0)
+    - DTCoreText/Debug (= 1.0.0)
+    - DTCoreText/HTMLParsing (= 1.0.0)
+    - DTCoreText/HTMLWriting (= 1.0.0)
+    - DTCoreText/Layouting (= 1.0.0)
+    - DTCoreText/UI (= 1.0.0)
+    - DTCoreText/Utils (= 1.0.0)
     - DTFoundation
-  - DTCoreText/NSAttributedString (1.0.0):
+  - DTCoreText/Accessibility (1.0.0):
+    - DTFoundation
+  - DTCoreText/Debug (1.0.0):
+    - DTFoundation
+  - DTCoreText/HTMLParsing (1.0.0):
+    - DTFoundation
+  - DTCoreText/HTMLWriting (1.0.0):
+    - DTFoundation
+  - DTCoreText/Layouting (1.0.0):
+    - DTFoundation
+  - DTCoreText/UI (1.0.0):
+    - DTFoundation
+  - DTCoreText/Utils (1.0.0):
     - DTFoundation
   - DTFoundation (1.0.0):
     - DTFoundation/DTHTMLParser (= 1.0.0)
@@ -35,7 +53,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AEXML: 0e8f1d874fa033ca6b3909452a8bc362faad46e6
-  DTCoreText: b9dee026999e7745e4e6e7e658de4d3b3e6e5ecd
+  DTCoreText: beb0b55db47bbefa22926eff1181adf859d279e1
   DTFoundation: 2cd4cbe869518fc73b6d6a5d4a8e0daaa7392931
   FLEX: 81096107977a09836eb440173010ceeef01105d6
   IRHexColor: 259fc1291f253f026aec0505112e95623ac57e0e

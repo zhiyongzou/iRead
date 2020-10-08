@@ -26,6 +26,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupNavigationBar()
+        self.addNavigateTapGesture()
         pageLabel = DTAttributedLabel()
         self.view.addSubview(pageLabel)
         
@@ -35,13 +37,26 @@ class IRReaderCenterViewController: IRBaseViewcontroller {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override var prefersStatusBarHidden: Bool {
-        return shouldHideStatusBar
+        return self.shouldHideStatusBar
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
     }
     
     override func viewDidLayoutSubviews() {
@@ -50,4 +65,21 @@ class IRReaderCenterViewController: IRBaseViewcontroller {
     }
     
     //MARK: - Private
+    
+    func setupNavigationBar() {
+        self.setupLeftBackBarButton()
+    }
+    
+    //MARK: - Gesture
+    func addNavigateTapGesture() {
+        let tap = UITapGestureRecognizer()
+        tap.addTarget(self, action: #selector(didNavigateTapGestureClick(tapGesture:)))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
+        self.shouldHideStatusBar = !self.shouldHideStatusBar;
+        self.navigationController?.setNavigationBarHidden(self.shouldHideStatusBar, animated: true)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
 }

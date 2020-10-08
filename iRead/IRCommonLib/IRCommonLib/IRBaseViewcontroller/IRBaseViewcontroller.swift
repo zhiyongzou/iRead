@@ -24,4 +24,14 @@ open class IRBaseViewcontroller: UIViewController {
         IRDebugLog(self)
         return super.viewDidDisappear(animated)
     }
+    
+    open func setupLeftBackBarButton() {
+        let backImg = UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysOriginal)
+        let back = UIBarButtonItem.init(image: backImg, style: .plain, target: self, action: #selector(didClickedLeftBackItem(item:)))
+        self.navigationItem.leftBarButtonItem = back
+    }
+    
+    @objc private func didClickedLeftBackItem(item: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
+    }
 }

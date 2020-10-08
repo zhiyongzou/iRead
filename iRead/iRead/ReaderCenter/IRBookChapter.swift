@@ -29,19 +29,18 @@ class IRBookChapter: NSObject {
         guard let fullHref = refrence.resource?.fullHref else { return }
         let baseUrl = URL.init(fileURLWithPath: fullHref)
         guard let htmlData = try? Data.init(contentsOf: baseUrl) else { return }
-        let options: [String : Any] = [NSBaseURLDocumentOption: baseUrl,
-                       NSTextSizeMultiplierDocumentOption: IRReaderConfig.textSizeMultiplier,
-                       DTDefaultLinkColor: "purple",
-                       DTDefaultTextColor: IRReaderConfig.textColor,
-                       DTDefaultFontSize: IRReaderConfig.textSize]
+        
+        let options: [String : Any] = [
+            NSBaseURLDocumentOption: baseUrl,
+            DTDefaultParagraphSpacing: IRReaderConfig.paragraphSpacing,
+            NSTextSizeMultiplierDocumentOption: IRReaderConfig.textSizeMultiplier,
+            DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
+            DTDefaultLinkColor: "purple",
+            DTDefaultTextColor: IRReaderConfig.textColor,
+            DTDefaultFontSize: IRReaderConfig.textSize
+        ]
         // as 用法 https://developer.apple.com/swift/blog/?id=23
         let htmlString = NSAttributedString.init(htmlData: htmlData, options: options, documentAttributes: nil).mutableCopy() as! NSMutableAttributedString
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = IRReaderConfig.lineSpacing
-        paragraphStyle.paragraphSpacing = IRReaderConfig.paragraphSpacing
-        paragraphStyle.lineHeightMultiple = IRReaderConfig.lineHeightMultiple
-        htmlString.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle], range: NSRange.init(location: 0, length: htmlString.length))
         
         content = htmlString
     }

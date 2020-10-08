@@ -569,7 +569,7 @@
 {
 	if (_paragraphSpacing != paragraphSpacing)
 	{
-		_paragraphSpacing = paragraphSpacing;
+		_paragraphSpacing = MAX(0, paragraphSpacing);
 	}
 }
 

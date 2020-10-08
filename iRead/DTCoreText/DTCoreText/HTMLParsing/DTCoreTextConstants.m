@@ -32,6 +32,7 @@ NSString * const DTWillFlushBlockCallBack = @"DTWillFlushBlockCallBack";
 NSString * const DTProcessCustomHTMLAttributes = @"DTProcessCustomHTMLAttributes";
 NSString * const DTIgnoreInlineStylesOption = @"DTIgnoreInlineStyles";
 NSString * const DTDocumentPreserveTrailingSpaces = @"DTDocumentPreserveTrailingSpaces";
+NSString * const DTDefaultParagraphSpacing = @"DTDefaultParagraphSpacing";
 
 // attributed string attribute constants
 

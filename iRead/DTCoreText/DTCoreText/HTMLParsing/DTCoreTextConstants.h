@@ -53,7 +53,6 @@ extern NSString * const DTDefaultLinkDecoration;
 extern NSString * const DTDefaultLinkHighlightColor;
 extern NSString * const DTDefaultTextAlignment;
 extern NSString * const DTDefaultLineHeightMultiplier;
-extern NSString * const DTDefaultLineHeightMultiplier;
 extern NSString * const DTDefaultFirstLineHeadIndent;
 extern NSString * const DTDefaultHeadIndent;
 extern NSString * const DTDefaultStyleSheet;
@@ -61,6 +60,7 @@ extern NSString * const DTWillFlushBlockCallBack;
 extern NSString * const DTProcessCustomHTMLAttributes;
 extern NSString * const DTIgnoreInlineStylesOption;
 extern NSString * const DTDocumentPreserveTrailingSpaces;
+extern NSString * const DTDefaultParagraphSpacing;
 
 
 // attributed string attribute constants

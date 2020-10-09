@@ -21,15 +21,9 @@ class IRHomeViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLa
         self.setupCollectionView()
         
     #if DEBUG
-        let epubParser: FREpubParser = FREpubParser()
-        guard let bookPath = Bundle.main.path(forResource: "支付战争", ofType: "epub") else { return}
-        guard let book: FRBook = try? epubParser.readEpub(epubPath: bookPath) else { return }
-        bookList.append(book)
-        
-        let epubParser1: FREpubParser = FREpubParser()
-        guard let bookPath12 = Bundle.main.path(forResource: "细说明朝", ofType: "epub") else { return}
-        guard let book12: FRBook = try? epubParser1.readEpub(epubPath: bookPath12) else { return }
-        bookList.append(book12)
+        self.addTestBook(name: "支付战争")
+        self.addTestBook(name: "细说明朝")
+        self.addTestBook(name: "The Silver Chair")
     #endif
     }
     
@@ -39,6 +33,25 @@ class IRHomeViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLa
     }
     
     // MARK: - Private
+    
+    #if DEBUG
+    func addTestBook(name: String) {
+        let epubParser: FREpubParser = FREpubParser()
+        
+        let bundle = Bundle.init(for: IRHomeViewController.self)
+        var bookPath = bundle.path(forResource: name, ofType: "epub")
+        if bookPath == nil {
+            let budlePath = bundle.path(forResource: "EpubBooks", ofType: "bundle")
+            let resourcesBundle = Bundle.init(path: budlePath ?? "")
+            bookPath = resourcesBundle?.path(forResource: name, ofType: "epub")
+        }
+        
+        if let bookPath = bookPath {
+            guard let book: FRBook = try? epubParser.readEpub(epubPath: bookPath) else { return }
+            bookList.append(book)
+        }
+    }
+    #endif
     
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()

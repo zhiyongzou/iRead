@@ -26,6 +26,7 @@ PODS:
   - DTFoundation (1.0.0):
     - DTFoundation/DTHTMLParser (= 1.0.0)
   - DTFoundation/DTHTMLParser (1.0.0)
+  - EpubBooks (1.0.0)
   - FLEX (4.1.1)
   - IRHexColor (0.0.1)
   - SSZipArchive (2.2.3)
@@ -34,6 +35,7 @@ DEPENDENCIES:
   - AEXML (~> 4.5.0)
   - DTCoreText (from `./DTCoreText`)
   - DTFoundation (from `./DTFoundation`)
+  - EpubBooks (from `https://github.com/zhiyongzou/EpubBooks.git`, branch `main`)
   - FLEX
   - IRHexColor (~> 0.0.1)
   - SSZipArchive (~> 2.2.2)
@@ -50,15 +52,24 @@ EXTERNAL SOURCES:
     :path: "./DTCoreText"
   DTFoundation:
     :path: "./DTFoundation"
+  EpubBooks:
+    :branch: main
+    :git: https://github.com/zhiyongzou/EpubBooks.git
+
+CHECKOUT OPTIONS:
+  EpubBooks:
+    :commit: 69ce230638ffb28a72e079524ec077958f6c9936
+    :git: https://github.com/zhiyongzou/EpubBooks.git
 
 SPEC CHECKSUMS:
   AEXML: 0e8f1d874fa033ca6b3909452a8bc362faad46e6
   DTCoreText: beb0b55db47bbefa22926eff1181adf859d279e1
   DTFoundation: 2cd4cbe869518fc73b6d6a5d4a8e0daaa7392931
+  EpubBooks: 5f6071d471fb0d26ce1cfc770037cb9b76507aaa
   FLEX: 81096107977a09836eb440173010ceeef01105d6
   IRHexColor: 259fc1291f253f026aec0505112e95623ac57e0e
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: a9d90d028863e3787d3e41430d3f4ea41f544c5e
+PODFILE CHECKSUM: fc928587bb142ca777268f5a332ad44940cb02d2
 
 COCOAPODS: 1.9.3

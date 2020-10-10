@@ -47,20 +47,25 @@ class IRBookChapter: NSObject {
         var layoutFrame = textLayout?.layoutFrame(with: textRect, range: NSMakeRange(0, htmlString.length))
         var visibleRange: NSRange! = layoutFrame?.visibleStringRange()
         var pageOffset = visibleRange.location + visibleRange.length
-        var pageCount = 1 as Int
+        var pageCount: Int = 1
         var pageList = [IRBookPage]()
         while pageOffset <= htmlString.length && pageOffset != 0 {
+            
             let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: chapterIndex)
             pageModel.content = htmlString.attributedSubstring(from: visibleRange)
+            pageCount += 1;
+            pageList.append(pageModel)
+            
             layoutFrame = textLayout?.layoutFrame(with: textRect, range: NSMakeRange(pageOffset, htmlString.length - pageOffset))
+            if layoutFrame == nil {
+                break
+            }
             visibleRange = layoutFrame?.visibleStringRange()
             if (visibleRange.location == NSNotFound) {
                 pageOffset = 0;
             } else {
                 pageOffset = visibleRange.location + visibleRange.length;
             }
-            pageCount += 1;
-            pageList.append(pageModel)
         }
         
         self.pageList = pageList

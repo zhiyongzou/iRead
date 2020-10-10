@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812E49722531A1FB0082D902 /* IRPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E49712531A1FB0082D902 /* IRPageViewController.swift */; };
 		817A2BF1247E6914007C5EF7 /* FREpubParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A2BE5247E6914007C5EF7 /* FREpubParser.swift */; };
 		817A2BF2247E6914007C5EF7 /* FRParseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A2BE6247E6914007C5EF7 /* FRParseError.swift */; };
 		817A2BF3247E6914007C5EF7 /* FRTocReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A2BE7247E6914007C5EF7 /* FRTocReference.swift */; };
@@ -51,6 +52,7 @@
 		085E9E71A05200785597D42E /* Pods-IRCommonLib.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRCommonLib.debug.xcconfig"; path = "Target Support Files/Pods-IRCommonLib/Pods-IRCommonLib.debug.xcconfig"; sourceTree = "<group>"; };
 		240067E0CCD017E143F8701B /* Pods-iRead-IRCommonLib.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead-IRCommonLib.release.xcconfig"; path = "Target Support Files/Pods-iRead-IRCommonLib/Pods-iRead-IRCommonLib.release.xcconfig"; sourceTree = "<group>"; };
 		2FF6FE3CA91D503DD333DA37 /* Pods-iRead-IRCommonLib.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead-IRCommonLib.debug.xcconfig"; path = "Target Support Files/Pods-iRead-IRCommonLib/Pods-iRead-IRCommonLib.debug.xcconfig"; sourceTree = "<group>"; };
+		812E49712531A1FB0082D902 /* IRPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRPageViewController.swift; sourceTree = "<group>"; };
 		814171562461ADBE00694536 /* libIRCommonLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIRCommonLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		817A2BE5247E6914007C5EF7 /* FREpubParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FREpubParser.swift; sourceTree = "<group>"; };
 		817A2BE6247E6914007C5EF7 /* FRParseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRParseError.swift; sourceTree = "<group>"; };
@@ -103,6 +105,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		812E49702531A1CE0082D902 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				812E49712531A1FB0082D902 /* IRPageViewController.swift */,
+				81B7E1D7251CBD1900E84A37 /* IRBaseViewcontroller.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		8141714D2461ADBE00694536 = {
 			isa = PBXGroup;
 			children = (
@@ -124,9 +135,9 @@
 		814171582461ADBE00694536 /* IRCommonLib */ = {
 			isa = PBXGroup;
 			children = (
+				812E49702531A1CE0082D902 /* ViewControllers */,
 				81B7E1E7251DE97800E84A37 /* Extensions */,
 				81B7E1DB251CC18B00E84A37 /* IRUtilites */,
-				81B7E1D6251CBCF900E84A37 /* IRBaseViewcontroller */,
 				817A2BE4247E6914007C5EF7 /* FREpubCore */,
 			);
 			path = IRCommonLib;
@@ -149,14 +160,6 @@
 				817A2BF0247E6914007C5EF7 /* FRMetadata.swift */,
 			);
 			path = FREpubCore;
-			sourceTree = "<group>";
-		};
-		81B7E1D6251CBCF900E84A37 /* IRBaseViewcontroller */ = {
-			isa = PBXGroup;
-			children = (
-				81B7E1D7251CBD1900E84A37 /* IRBaseViewcontroller.swift */,
-			);
-			path = IRBaseViewcontroller;
 			sourceTree = "<group>";
 		};
 		81B7E1DB251CC18B00E84A37 /* IRUtilites */ = {
@@ -263,6 +266,7 @@
 			files = (
 				817A2BFC247E6914007C5EF7 /* FRMetadata.swift in Sources */,
 				817A2BFB247E6914007C5EF7 /* FRSmilElement.swift in Sources */,
+				812E49722531A1FB0082D902 /* IRPageViewController.swift in Sources */,
 				81B7E1EC251DF19B00E84A37 /* UIView+Extensions.swift in Sources */,
 				817A2BF2247E6914007C5EF7 /* FRParseError.swift in Sources */,
 				817A2BF1247E6914007C5EF7 /* FREpubParser.swift in Sources */,

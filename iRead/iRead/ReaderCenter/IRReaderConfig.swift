@@ -9,6 +9,11 @@
 import UIKit
 
 class IRReaderConfig: NSObject {
+    
+    /// 阅读页面尺寸
+    static var pageSzie: CGSize = CGSize.zero
+    /// 水平边距
+    static var horizontalSpacing: CGFloat = 26;
     /// 文字颜色，默认黑色
     static var textColor = UIColor.black
     /// 字体大小

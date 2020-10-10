@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E49732531A4050082D902 /* IRReadPageViewController.swift */; };
 		816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816DFBB02404D39B0030E55B /* AppDelegate.swift */; };
 		816DFBBA2404D3A00030E55B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBB92404D3A00030E55B /* Assets.xcassets */; };
 		816DFBBD2404D3A00030E55B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBBB2404D3A00030E55B /* LaunchScreen.storyboard */; };
@@ -46,6 +47,7 @@
 		00DD04FE011F463B67348768 /* Pods-iRead.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.release.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.release.xcconfig"; sourceTree = "<group>"; };
 		3DA102CBABD9ED364C525C64 /* libPods-iRead.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iRead.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B7166AED0711D73236BE22 /* Pods-iRead.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.debug.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.debug.xcconfig"; sourceTree = "<group>"; };
+		812E49732531A4050082D902 /* IRReadPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadPageViewController.swift; sourceTree = "<group>"; };
 		813C380B2464134E002578FD /* iRead-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iRead-Bridging-Header.h"; sourceTree = "<group>"; };
 		816DFBAD2404D39B0030E55B /* iRead.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRead.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816DFBB02404D39B0030E55B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				818040A42521967800F31442 /* IRBookChapter.swift */,
 				818040A62521969000F31442 /* IRBookPage.swift */,
 				818040A2252195CD00F31442 /* IRReaderCenterViewController.swift */,
+				812E49732531A4050082D902 /* IRReadPageViewController.swift */,
 			);
 			path = ReaderCenter;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */,
+				812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */,
 				818040A52521967800F31442 /* IRBookChapter.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,

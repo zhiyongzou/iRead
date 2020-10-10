@@ -9,5 +9,15 @@
 import UIKit
 
 class IRBookPage: NSObject {
-
+    
+    var content: NSAttributedString?
+    var pageIdx: Int = 0
+    var chapterIdx: Int = 0
+    
+    class func bookPage(withPageIdx pageIdx: Int, chapterIdx: Int) -> IRBookPage {
+        let page = IRBookPage()
+        page.pageIdx = pageIdx
+        page.chapterIdx = chapterIdx
+        return page
+    }
 }

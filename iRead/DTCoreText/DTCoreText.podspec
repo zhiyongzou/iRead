@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'DTFoundation'
   spec.ios.deployment_target = '8.0'
   spec.requires_arc = true
-  spec.resource_bundles = { 'Resources': 'DTCoreText/default.css' }
+  spec.resource_bundles = { 'DTCoreText': 'DTCoreText/default.css' }
 
   spec.subspec 'Accessibility' do |spec|
     spec.source_files = "DTCoreText/Accessibility/*.{h,m}"

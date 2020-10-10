@@ -48,7 +48,7 @@
             // Cocoapods uses a separate Resources bundle to include default.css
             if (!path)
             {
-                NSString *resourcesBundlePath = [bundle pathForResource:@"Resources" ofType:@"bundle"];
+                NSString *resourcesBundlePath = [bundle pathForResource:@"DTCoreText" ofType:@"bundle"];
                 NSBundle *resourcesBundle = [NSBundle bundleWithPath:resourcesBundlePath];
                 path = [resourcesBundle pathForResource:@"default" ofType:@"css"];
             }

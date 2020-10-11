@@ -20,7 +20,7 @@ class IRBookChapter: NSObject {
     var content: NSAttributedString?
     
     
-    public convenience init(withTocRefrence refrence: FRTocReference, chapterIndex: Int = 1) {
+    public convenience init(withTocRefrence refrence: FRTocReference, chapterIndex: Int) {
         
         self.init()
         self.title = refrence.title

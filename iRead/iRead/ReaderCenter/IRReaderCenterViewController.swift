@@ -13,6 +13,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     var shouldHideStatusBar = true
     var book: FRBook!
     private var pageViewController: IRPageViewController!
+    /// 当前阅读页VC
+    private var currentReadingVC: IRReadPageViewController!
+    /// 当前阅读章节
+    private var currentChapter: IRBookChapter!
     
     //MARK: - Init
     
@@ -68,7 +72,16 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-        return nil
+        self.currentReadingVC = viewController as? IRReadPageViewController
+        
+        guard let nextPage = self.nextPageModel(withReadVC: self.currentReadingVC) else {
+            return nil
+        }
+        
+        IRDebugLog("page:\(nextPage.pageIdx) chapter: \(nextPage.chapterIdx)")
+        let nextVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+        nextVc.bookPage = nextPage
+        return nextVc
     }
     
     
@@ -98,16 +111,62 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         pageViewController.didMove(toParent: self)
         self.view.addSubview(pageViewController.view)
         
-        let readVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+        currentReadingVC = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
         if let firstCahpter = book.tableOfContents.first {
-            let chapter = IRBookChapter.init(withTocRefrence: firstCahpter)
-            readVc.bookPage = chapter.pageList?.first
+            currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
+            currentReadingVC.bookPage = currentChapter.pageList?.first
         }
-        pageViewController.setViewControllers([readVc], direction: .forward, animated: false, completion: nil)
+        pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
     }
     
     func setupNavigationBar() {
         self.setupLeftBackBarButton()
+    }
+    
+    func previousPageModel(withReadVC readVc: IRReadPageViewController) -> IRBookPage? {
+        
+        var pageModel: IRBookPage? = nil
+        
+        guard var pageIndex = readVc.bookPage?.pageIdx else { return pageModel }
+        guard var chapterIndex = readVc.bookPage?.chapterIdx else { return pageModel }
+
+        if pageIndex > 0 {
+            pageIndex -= 1;
+            pageModel = self.currentChapter.pageList?[pageIndex]
+        } else {
+            if chapterIndex > 0 {
+                chapterIndex -= 1;
+                if let preChater = self.book.tableOfContents?[chapterIndex] {
+                    currentChapter = IRBookChapter.init(withTocRefrence: preChater, chapterIndex: chapterIndex)
+                }
+                pageModel = currentChapter.pageList?.last
+            }
+        }
+        
+        return pageModel
+    }
+    
+    func nextPageModel(withReadVC readVc: IRReadPageViewController) -> IRBookPage? {
+        
+        var pageModel: IRBookPage? = nil
+        
+        guard var pageIndex = readVc.bookPage?.pageIdx else { return pageModel }
+        guard var chapterIndex = readVc.bookPage?.chapterIdx else { return pageModel }
+
+        if pageIndex + 1 < self.currentChapter.pageList!.count {
+            pageIndex += 1;
+            pageModel = self.currentChapter.pageList?[pageIndex]
+        } else {
+            if chapterIndex + 1 < self.book.tableOfContents.count {
+                chapterIndex += 1;
+                if let nextChater = self.book.tableOfContents?[chapterIndex] {
+                    self.currentChapter = IRBookChapter.init(withTocRefrence: nextChater, chapterIndex: chapterIndex)
+                }
+                pageModel = self.currentChapter.pageList?.first
+            }
+        }
+        
+        return pageModel
     }
     
     //MARK: - Gesture

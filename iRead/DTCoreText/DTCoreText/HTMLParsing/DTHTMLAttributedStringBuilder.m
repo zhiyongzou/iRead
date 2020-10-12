@@ -680,8 +680,6 @@
 
 - (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)elementName attributes:(NSDictionary *)attributeDict
 {
-    DTLogDebug(@"%@, %@", elementName, attributeDict);
-    
 	DT_WEAK_VARIABLE typeof(self) weakSelf = self;
 	dispatch_group_async(_treeBuildingGroup, _treeBuildingQueue, ^{
 		DTHTMLAttributedStringBuilder *strongSelf = weakSelf;
@@ -793,7 +791,6 @@
 
 - (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)elementName
 {
-    DTLogDebug(@"%@", elementName);
 	DT_WEAK_VARIABLE typeof(self) weakSelf = self;
 	dispatch_group_async(_treeBuildingGroup, _treeBuildingQueue, ^{
 		@autoreleasepool {
@@ -884,7 +881,6 @@
 
 - (void)parser:(DTHTMLParser *)parser foundCharacters:(NSString *)string
 {
-    DTLogDebug(@"%@", string);
 	DT_WEAK_VARIABLE typeof(self) weakSelf = self;
 	dispatch_group_async(_treeBuildingGroup, _treeBuildingQueue, ^{
 		DTHTMLAttributedStringBuilder *strongSelf = weakSelf;

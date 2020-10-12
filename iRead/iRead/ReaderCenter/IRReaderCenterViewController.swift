@@ -67,12 +67,25 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     //MARK: - UIPageViewControllerDataSource
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
-        return nil
+        if viewController.isKind(of: IRReadPageViewController.self) {
+            self.currentReadingVC = viewController as? IRReadPageViewController
+        }
+        
+        guard let prePage = self.previousPageModel(withReadVC: self.currentReadingVC) else {
+            return nil
+        }
+        
+        IRDebugLog("page:\(prePage.pageIdx) chapter: \(prePage.chapterIdx)")
+        let preVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+        preVc.bookPage = prePage
+        return preVc
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-        self.currentReadingVC = viewController as? IRReadPageViewController
+        if viewController.isKind(of: IRReadPageViewController.self) {
+            self.currentReadingVC = viewController as? IRReadPageViewController
+        }
         
         guard let nextPage = self.nextPageModel(withReadVC: self.currentReadingVC) else {
             return nil

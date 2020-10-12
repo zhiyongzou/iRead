@@ -56,10 +56,34 @@ class IRBookChapter: NSObject {
             pageCount += 1;
             pageList.append(pageModel)
             
+            var nextPageNeedFirstLineHeadIndent = true
+            if let paragraphRanges = layoutFrame?.paragraphRanges {
+                for rangeValue in paragraphRanges {
+                    let range = (rangeValue as! NSValue).rangeValue
+                    if (pageOffset > range.location && pageOffset < (range.location + range.length)) {
+                        nextPageNeedFirstLineHeadIndent = false
+                        break
+                    }
+                }
+            }
+            
             layoutFrame = textLayout?.layoutFrame(with: textRect, range: NSMakeRange(pageOffset, htmlString.length - pageOffset))
             if layoutFrame == nil {
                 break
             }
+            
+            if !nextPageNeedFirstLineHeadIndent {
+                let firstLine: DTCoreTextLayoutLine = layoutFrame?.lines.first as! DTCoreTextLayoutLine
+                let firstLineRange = firstLine.stringRange()
+                let firstLineAtt = htmlString.attributedSubstring(from: firstLineRange)
+                let originalStyle = firstLineAtt.attribute(.paragraphStyle, at: 0, effectiveRange: nil)
+                if (originalStyle != nil) {
+                    let firstLineStyle: NSMutableParagraphStyle = (originalStyle as! NSParagraphStyle).mutableCopy() as! NSMutableParagraphStyle
+                    firstLineStyle.firstLineHeadIndent = 0;
+                    htmlString.addAttributes([.paragraphStyle: firstLineStyle], range: firstLineRange)
+                }
+            }
+            
             visibleRange = layoutFrame?.visibleStringRange()
             if (visibleRange.location == NSNotFound) {
                 pageOffset = 0;

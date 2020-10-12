@@ -19,7 +19,7 @@ class IRReaderConfig: NSObject {
     /// 字体大小
     static var textSize = NSNumber.init(value: 15)
     /// 字体大小倍数
-    static var textSizeMultiplier = NSNumber.init(value: 1)
+    static var textSizeMultiplier = NSNumber.init(value: 1.1)
     /// 行距
     static var lineSpacing: CGFloat = 5
     /// 行高倍数

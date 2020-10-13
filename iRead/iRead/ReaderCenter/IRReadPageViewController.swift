@@ -14,6 +14,7 @@ class IRReadPageViewController: UIViewController {
     
     private var pageLabel: DTAttributedLabel = {
         let pageLabel = DTAttributedLabel()
+        pageLabel.backgroundColor = UIColor.clear
         return pageLabel
     }()
 
@@ -30,7 +31,7 @@ class IRReadPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = IRReaderConfig.pageColor
         self.view.addSubview(pageLabel)
     }
     

@@ -8,6 +8,13 @@
 
 import UIKit
 
+public enum IRTransitionStyle : Int {
+    // 横向仿真翻页
+    case pageCurl = 0
+    // 竖向滚动翻页
+    case scroll = 1
+}
+
 class IRReaderConfig: NSObject {
     
     /// 阅读页面尺寸
@@ -15,7 +22,9 @@ class IRReaderConfig: NSObject {
     /// 水平边距
     static var horizontalSpacing: CGFloat = 26;
     /// 文字颜色，默认黑色
-    static var textColor = UIColor.black
+    static var textColor = UIColor.white
+    /// 页面颜色，默认白色
+    static var pageColor = UIColor.black
     /// 字体大小
     static var textSize = NSNumber.init(value: 15)
     /// 字体大小倍数
@@ -26,5 +35,6 @@ class IRReaderConfig: NSObject {
     static var lineHeightMultiple = NSNumber.init(value: 1.1)
     /// 段落间距
     static var paragraphSpacing = NSNumber.init(value: 10)
-    
+    /// 翻页模式，默认横向仿真翻页
+    static var transitionStyle = IRTransitionStyle.pageCurl
 }

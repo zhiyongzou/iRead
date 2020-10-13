@@ -15,6 +15,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     private var pageViewController: IRPageViewController!
     /// 当前阅读页VC
     private var currentReadingVC: IRReadPageViewController!
+    /// 上一页
+    private var previousPageView: UIView?
    
     //MARK: - Init
     
@@ -28,7 +30,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = IRReaderConfig.pageColor
         self.updateReadPageSzie()
         self.setupPageViewController()
         self.setupNavigationBar()
@@ -75,6 +77,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         if completed {
+            if pageViewController.transitionStyle == .pageCurl {
+                if let preVc = previousViewControllers.first {
+                    self.previousPageView = preVc.view
+                }
+            }
             return
         }
         guard let preVc = previousViewControllers.first else { return }
@@ -86,6 +93,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     //MARK: - UIPageViewControllerDataSource
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        
+        if pageViewController.transitionStyle == .pageCurl &&
+           viewController.isKind(of: IRReadPageViewController.self) {
+            return IRPageBackViewController.pageBackViewController(WithPageView: self.previousPageView)
+        }
         
         guard let prePage = self.previousPageModel(withReadVC: self.currentReadingVC) else {
             return nil
@@ -99,6 +111,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
+        if pageViewController.transitionStyle == .pageCurl &&
+           viewController.isKind(of: IRReadPageViewController.self) {
+            return IRPageBackViewController.pageBackViewController(WithPageView: viewController.view)
+        }
+        
         guard let nextPage = self.nextPageModel(withReadVC: self.currentReadingVC) else {
             return nil
         }
@@ -129,7 +146,18 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func setupPageViewController() {
         
-        pageViewController = IRPageViewController.init(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+        if pageViewController != nil && pageViewController.parent != nil {
+            pageViewController.willMove(toParent: nil)
+            pageViewController.removeFromParent()
+        }
+        
+        if IRReaderConfig.transitionStyle == .pageCurl {
+            pageViewController = IRPageViewController.init(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
+            pageViewController.isDoubleSided = true
+        } else {
+            pageViewController = IRPageViewController.init(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+        }
+        
         pageViewController.delegate = self
         pageViewController.dataSource = self
         self.addChild(pageViewController)

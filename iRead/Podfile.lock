@@ -29,6 +29,7 @@ PODS:
   - EpubBooks (1.0.0)
   - FLEX (4.1.1)
   - IRHexColor (0.0.1)
+  - SnapKit (5.0.1)
   - SSZipArchive (2.2.3)
 
 DEPENDENCIES:
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - EpubBooks (from `https://github.com/zhiyongzou/EpubBooks.git`, branch `main`)
   - FLEX
   - IRHexColor (~> 0.0.1)
+  - SnapKit (~> 5.0.1)
   - SSZipArchive (~> 2.2.2)
 
 SPEC REPOS:
@@ -45,6 +47,7 @@ SPEC REPOS:
     - AEXML
     - FLEX
     - IRHexColor
+    - SnapKit
     - SSZipArchive
 
 EXTERNAL SOURCES:
@@ -68,8 +71,9 @@ SPEC CHECKSUMS:
   EpubBooks: 5f6071d471fb0d26ce1cfc770037cb9b76507aaa
   FLEX: 81096107977a09836eb440173010ceeef01105d6
   IRHexColor: 259fc1291f253f026aec0505112e95623ac57e0e
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: fc928587bb142ca777268f5a332ad44940cb02d2
+PODFILE CHECKSUM: 55b681017e0272078e93b93aeda6faf9c9940973
 
 COCOAPODS: 1.9.3

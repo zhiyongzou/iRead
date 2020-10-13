@@ -39,6 +39,9 @@ target 'iRead' do
   # debug pods
   debug_pods
   local_pods
+  
+  # for iRead
+  pod 'SnapKit', '~> 5.0.1'
 
 end
 

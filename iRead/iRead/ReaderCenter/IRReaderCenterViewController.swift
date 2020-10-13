@@ -78,6 +78,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
     }
     
+    func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar) {
+        
+    }
+    
     //MARK: - UIPageViewControllerDelegate
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {

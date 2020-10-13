@@ -13,6 +13,7 @@ protocol IRReadNavigationBarDelegate: NSObjectProtocol {
     
     func readNavigationBar(didClickBack bar: IRReadNavigationBar)
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar)
+    func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar)
 }
 
 class IRReadNavigationBar: UIView {
@@ -20,6 +21,7 @@ class IRReadNavigationBar: UIView {
     let itemHeight: CGFloat = 44.0
     var backButton: UIButton!
     var chapterList: UIButton!
+    var readSetting: UIButton!
     var delegate: IRReadNavigationBarDelegate?
     
     //MARK: - Override
@@ -46,7 +48,7 @@ class IRReadNavigationBar: UIView {
             make.width.height.equalTo(itemHeight)
             make.bottom.equalTo(self)
             make.left.equalTo(self).offset(10)
-         }
+        }
         
         chapterList = UIButton.init(type: .custom)
         chapterList.setImage(UIImage.init(named: "bar_chapter_list"), for: .normal)
@@ -56,7 +58,17 @@ class IRReadNavigationBar: UIView {
             make.width.height.equalTo(itemHeight)
             make.bottom.equalTo(self)
             make.left.equalTo(backButton.snp.right)
-         }
+        }
+        
+        readSetting = UIButton.init(type: .custom)
+        readSetting.setImage(UIImage.init(named: "bar_read_setting"), for: .normal)
+        readSetting.addTarget(self, action: #selector(didClickReadSettingButton), for: .touchUpInside)
+        self.addSubview(readSetting)
+        readSetting.snp.makeConstraints { (make) -> Void in
+            make.width.height.equalTo(itemHeight)
+            make.bottom.equalTo(self)
+            make.right.equalTo(self).offset(-20)
+        }
     }
     
     //MARK: - Action
@@ -67,5 +79,9 @@ class IRReadNavigationBar: UIView {
     
     @objc func didClickChapterListButton() {
         self.delegate?.readNavigationBar(didClickChapterList: self)
+    }
+    
+    @objc func didClickReadSettingButton() {
+        self.delegate?.readNavigationBar(didClickReadSetting: self)
     }
 }

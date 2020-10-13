@@ -15,6 +15,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     private var pageViewController: IRPageViewController!
     /// 当前阅读页VC
     private var currentReadingVC: IRReadPageViewController!
+    /// 上一页
+    private var beforePageVC: IRReadPageViewController?
    
     //MARK: - Init
     
@@ -87,6 +89,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
+        if pageViewController.transitionStyle == .pageCurl &&
+           viewController.isKind(of: IRPageBackViewController.self) {
+            return beforePageVC
+        }
+        
         guard let prePage = self.previousPageModel(withReadVC: self.currentReadingVC) else {
             return nil
         }
@@ -94,9 +101,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         IRDebugLog("page:\(prePage.pageIdx) chapter: \(prePage.chapterIdx)")
         let preVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
         preVc.bookPage = prePage
-        
-        if pageViewController.transitionStyle == .pageCurl &&
-           viewController.isKind(of: IRReadPageViewController.self) {
+        if pageViewController.transitionStyle == .pageCurl {
+            beforePageVC = preVc
             return IRPageBackViewController.pageBackViewController(WithPageView: preVc.view)
         }
         

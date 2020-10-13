@@ -8,15 +8,18 @@
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate {
     
     var shouldHideStatusBar = true
     var book: FRBook!
-    private var pageViewController: IRPageViewController!
+    var pageViewController: IRPageViewController!
     /// 当前阅读页VC
-    private var currentReadingVC: IRReadPageViewController!
+    var currentReadingVC: IRReadPageViewController!
     /// 上一页
-    private var beforePageVC: IRReadPageViewController?
+    var beforePageVC: IRReadPageViewController?
+    /// 阅读导航栏
+    var readNavigationBar: IRReadNavigationBar?
+    var readNavigationContentView: UIView?
    
     //MARK: - Init
     
@@ -33,8 +36,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.updateReadPageSzie()
         self.setupPageViewController()
-        self.setupNavigationBar()
         self.addNavigateTapGesture()
+        self.setupSubviews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,6 +65,17 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         pageViewController.view.frame = self.view.bounds
+    }
+    
+    //MARK: - IRReadNavigationBarDelegate
+    
+    func readNavigationBar(didClickBack bar: IRReadNavigationBar) {
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func readNavigationBar(didClickChapterList bar: IRReadNavigationBar) {
+        
     }
     
     //MARK: - UIPageViewControllerDelegate
@@ -129,6 +143,31 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     //MARK: - Private
     
+    func setupSubviews() {
+        readNavigationBar = IRReadNavigationBar()
+    }
+    
+    func addNavigationContentViewIfNeeded() {
+        if readNavigationContentView != nil {
+            return
+        }
+        readNavigationContentView = UIView()
+        self.view.addSubview(readNavigationContentView!)
+        readNavigationContentView?.backgroundColor = UIColor.clear
+        readNavigationContentView?.frame = self.view.bounds
+        
+        readNavigationBar = IRReadNavigationBar()
+        readNavigationBar!.delegate = self
+        readNavigationBar!.backgroundColor = IRReaderConfig.pageColor
+        readNavigationContentView?.addSubview(readNavigationBar!)
+        var safe = UIEdgeInsets.zero
+        if #available(iOS 11.0, *) {
+            safe = self.view.safeAreaInsets
+        }
+        let barH = safe.top + readNavigationBar!.itemHeight
+        readNavigationBar!.frame = CGRect.init(x: 0, y: -barH, width: self.view.width, height: barH)
+    }
+    
     func updateReadPageSzie() {
         
         var safeInsets = UIEdgeInsets.zero
@@ -170,10 +209,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             currentReadingVC.bookPage = currentChapter.pageList?.first
         }
         pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
-    }
-    
-    func setupNavigationBar() {
-        self.setupLeftBackBarButton()
     }
     
     func previousPageModel(withReadVC readVc: IRReadPageViewController) -> IRBookPage? {
@@ -243,7 +278,14 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     }
     
     @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
+        
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
-        self.navigationController?.setNavigationBarHidden(self.shouldHideStatusBar, animated: true)
+        self.addNavigationContentViewIfNeeded()
+        self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
+        let endY: CGFloat = self.shouldHideStatusBar ? -readNavigationBar!.height : 0
+        UIView.animate(withDuration: 0.25) {
+            self.setNeedsStatusBarAppearanceUpdate()
+            self.readNavigationBar!.y = endY
+        }
     }
 }

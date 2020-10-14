@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate {
     
     var shouldHideStatusBar = true
     var book: FRBook!
@@ -20,6 +20,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     /// 阅读导航栏
     var readNavigationBar: IRReadNavigationBar?
     var readNavigationContentView: UIView?
+    /// 阅读设置
+    var readSettingView: CMPopTipView?
+    
    
     //MARK: - Init
     
@@ -79,6 +82,29 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     }
     
     func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar) {
+        
+        if let readSettingView = self.readSettingView {
+            readSettingView.presentPointing(at: bar.readSetting, in: self.view, animated: true)
+        } else {
+            let readSettingView = IRReadSettingView()
+            readSettingView.deleage = self
+            readSettingView.frame = CGRect.init(origin: CGPoint.zero, size: IRReadSettingView.viewSize)
+            let popTipView = CMPopTipView.init(customView: readSettingView)
+            popTipView?.has3DStyle = false
+            popTipView?.backgroundColor = IRReaderConfig.pageColor
+            popTipView?.borderColor = IRSeparatorColor
+            popTipView?.sidePadding = 20
+            popTipView?.bubblePaddingX = -10
+            popTipView?.bubblePaddingY = -10
+            popTipView?.disableTapToDismiss = true
+            popTipView?.dismissTapAnywhere = true
+            popTipView?.presentPointing(at: bar.readSetting, in: self.view, animated: true)
+            self.readSettingView = popTipView;
+        }
+    }
+    
+    //MARK: - IRReadSettingViewDelegate
+    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
         
     }
     
@@ -282,6 +308,13 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     }
     
     @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
+        
+        let tapPoint = tapGesture.location(in: self.view)
+        if let readSettingView = self.readSettingView {
+            if readSettingView.frame.contains(tapPoint) {
+                return
+            }
+        }
         
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.addNavigationContentViewIfNeeded()

@@ -314,10 +314,12 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
         
-        let tapPoint = tapGesture.location(in: self.view)
         if let readSettingView = self.readSettingView {
-            if readSettingView.frame.contains(tapPoint) {
-                return
+            if readSettingView.superview != nil {
+                let tapPoint = tapGesture.location(in: self.view)
+                if readSettingView.frame.contains(tapPoint) {
+                    return
+                }
             }
         }
         

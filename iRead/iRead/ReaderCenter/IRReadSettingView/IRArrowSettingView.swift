@@ -11,7 +11,7 @@ import IRHexColor
 
 class IRArrowSettingView: UIView {
 
-    static let viewHeight: CGFloat = 40
+    static let viewHeight: CGFloat = 50
 
     var titleLabel = UILabel()
     var arrowView = UIImageView()

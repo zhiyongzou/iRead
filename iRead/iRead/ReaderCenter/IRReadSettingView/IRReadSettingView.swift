@@ -20,6 +20,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte {
     lazy var scrollSettingView = IRSwitchSettingView()
     lazy var colorSettingView = IRReadColorSettingView()
     lazy var fontSettingView = IRFontSettingView()
+    lazy var brightnessSettingView = IRBrightnessSettingView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,12 +63,20 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte {
             make.bottom.equalTo(colorSettingView.snp.top).offset(-IRFontSettingView.bottomSapcing)
             make.height.equalTo(IRFontSettingView.viewHeight)
         }
+        
+        brightnessSettingView.backgroundColor = IRReaderConfig.pageColor
+        self.addSubview(brightnessSettingView)
+        brightnessSettingView.snp.makeConstraints { (make) in
+            make.right.left.equalTo(self)
+            make.bottom.equalTo(fontSettingView.snp.top).offset(-IRBrightnessSettingView.bottomSapcing)
+            make.height.equalTo(IRBrightnessSettingView.viewHeight)
+        }
     }
     
     //MARK: - Public
     class var viewSize: CGSize {
         get {
-            let height = IRSwitchSettingView.viewHeight + IRReadColorSettingView.totalHeight + IRFontSettingView.totalHeight
+            let height = IRSwitchSettingView.viewHeight + IRReadColorSettingView.totalHeight + IRFontSettingView.totalHeight + IRBrightnessSettingView.totalHeight
             return CGSize.init(width: 300, height: height)
         }
     }

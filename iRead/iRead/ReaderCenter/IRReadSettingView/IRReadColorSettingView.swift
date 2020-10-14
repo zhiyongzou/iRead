@@ -30,7 +30,7 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte {
     func setupSubviews() {
         
         systemFollowView.titleLabel.textColor = IRReaderConfig.textColor
-        systemFollowView.titleLabel.text = "自动启用深色模式"
+        systemFollowView.titleLabel.text = "跟随系统深色模式"
         systemFollowView.isOn = UserDefaults.standard.bool(forKey: kReadFollowSystemTheme)
         systemFollowView.delegate = self
         self.addSubview(systemFollowView)

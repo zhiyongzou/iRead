@@ -212,6 +212,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         if let pageViewController = self.pageViewController {
             pageViewController.willMove(toParent: nil)
             pageViewController.removeFromParent()
+            // pageViewController.view 必须从父视图中移除，否则会出现下面的崩溃
+            // "child view controller:<iRead.IRReadPageViewController: 0x10351a420> should have parent view controller:<iRead.IRReaderCenterViewController: 0x106e080e0> but requested parent is:<IRCommonLib.IRPageViewController: 0x108010600>"
+            pageViewController.view.removeFromSuperview()
         }
         
         if IRReaderConfig.transitionStyle == .pageCurl {
@@ -238,10 +241,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
                 let currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
                 currentReadingVC.bookPage = currentChapter.pageList?.first
             }
-        } else {
-            // currentReadingVC view 必须先从上一个 pageViewController 中移除，否则会出现下面的崩溃
-            // "child view controller:<iRead.IRReadPageViewController: 0x10351a420> should have parent view controller:<iRead.IRReaderCenterViewController: 0x106e080e0> but requested parent is:<IRCommonLib.IRPageViewController: 0x108010600>"
-            currentReadingVC.view.removeFromSuperview()
         }
         pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
     }

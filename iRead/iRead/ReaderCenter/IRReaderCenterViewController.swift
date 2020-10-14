@@ -90,6 +90,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             readSettingView.frame = CGRect.init(origin: CGPoint.zero, size: IRReadSettingView.viewSize)
             let popTipView = CMPopTipView.init(customView: readSettingView)
             popTipView?.has3DStyle = false
+            popTipView?.animation = .pop
             popTipView?.backgroundColor = IRReaderConfig.pageColor
             popTipView?.borderColor = IRSeparatorColor
             popTipView?.sidePadding = 20

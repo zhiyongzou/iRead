@@ -8,20 +8,20 @@
 
 import UIKit
 
-protocol IRPageScrollSettingViewDelegate {
-    func pageScrollSettingView(_ view: IRSwitchSettingView, scrollEnable: Bool)
+protocol IRSwitchSettingViewDeleagte {
+    func pageScrollSettingView(_ view: IRSwitchSettingView, isOn: Bool)
 }
 
 class IRSwitchSettingView: UIView {
 
     static let viewHeight: CGFloat = 40
     
-    var delegate: IRPageScrollSettingViewDelegate?
+    var delegate: IRSwitchSettingViewDeleagte?
     
     var title = UILabel()
     var scrollSwitch = UISwitch()
     
-    var scrollEnable: Bool = false {
+    var isOn: Bool = false {
         willSet {
             scrollSwitch.isOn = newValue
         }
@@ -48,7 +48,7 @@ class IRSwitchSettingView: UIView {
             make.centerY.equalTo(self)
         }
         
-        scrollSwitch.isOn = scrollEnable
+        scrollSwitch.isOn = isOn
         self.addSubview(scrollSwitch)
         scrollSwitch.addTarget(self, action: #selector(didSwitchValueChange(switchView:)), for: .valueChanged)
         scrollSwitch.snp.makeConstraints { (make) in
@@ -58,6 +58,6 @@ class IRSwitchSettingView: UIView {
     }
     
     @objc func didSwitchValueChange(switchView: UISwitch) {
-        self.delegate?.pageScrollSettingView(self, scrollEnable: switchView.isOn)
+        self.delegate?.pageScrollSettingView(self, isOn: switchView.isOn)
     }
 }

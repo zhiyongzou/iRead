@@ -42,4 +42,5 @@ class IRReaderConfig: NSObject {
 //MARK: - Keys
 
 let kReadTransitionStyle = "kReadTransitionStyle"
+let kReadFollowSystemTheme = "kReadFollowSystemTheme"
 

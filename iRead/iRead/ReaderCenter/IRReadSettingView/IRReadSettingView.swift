@@ -19,6 +19,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte {
     
     lazy var scrollSettingView = IRSwitchSettingView()
     lazy var colorSettingView = IRReadColorSettingView()
+    lazy var fontSettingView = IRFontSettingView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,8 +37,8 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte {
         self.backgroundColor = IRSeparatorColor
         
         scrollSettingView.backgroundColor = IRReaderConfig.pageColor
-        scrollSettingView.title.textColor = IRReaderConfig.textColor
-        scrollSettingView.title.text = "竖向翻页"
+        scrollSettingView.titleLabel.textColor = IRReaderConfig.textColor
+        scrollSettingView.titleLabel.text = "竖向翻页"
         scrollSettingView.isOn = IRReaderConfig.transitionStyle == .scroll
         scrollSettingView.delegate = self
         self.addSubview(scrollSettingView)
@@ -53,12 +54,20 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte {
             make.bottom.equalTo(scrollSettingView.snp.top).offset(-IRReadColorSettingView.bottomSapcing)
             make.height.equalTo(IRReadColorSettingView.viewHeight)
         }
+        
+        fontSettingView.backgroundColor = IRReaderConfig.pageColor
+        self.addSubview(fontSettingView)
+        fontSettingView.snp.makeConstraints { (make) in
+            make.right.left.equalTo(self)
+            make.bottom.equalTo(colorSettingView.snp.top).offset(-IRFontSettingView.bottomSapcing)
+            make.height.equalTo(IRFontSettingView.viewHeight)
+        }
     }
     
     //MARK: - Public
     class var viewSize: CGSize {
         get {
-            let height = IRSwitchSettingView.viewHeight + IRReadColorSettingView.viewHeight
+            let height = IRSwitchSettingView.viewHeight + IRReadColorSettingView.totalHeight + IRFontSettingView.totalHeight
             return CGSize.init(width: 300, height: height)
         }
     }

@@ -18,7 +18,7 @@ class IRSwitchSettingView: UIView {
     
     var delegate: IRSwitchSettingViewDeleagte?
     
-    var title = UILabel()
+    var titleLabel = UILabel()
     var scrollSwitch = UISwitch()
     
     var isOn: Bool = false {
@@ -41,9 +41,9 @@ class IRSwitchSettingView: UIView {
         
         let margin: CGFloat = 15
         
-        title.font = UIFont.systemFont(ofSize: 18)
-        self.addSubview(title)
-        title.snp.makeConstraints { (make) in
+        titleLabel.font = UIFont.systemFont(ofSize: 18)
+        self.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(margin)
             make.centerY.equalTo(self)
         }

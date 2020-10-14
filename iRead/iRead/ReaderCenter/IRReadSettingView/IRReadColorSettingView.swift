@@ -12,7 +12,8 @@ import IRCommonLib
 class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte {
 
     static let bottomSapcing: CGFloat = 5
-    static let viewHeight: CGFloat = 100 + bottomSapcing
+    static let viewHeight: CGFloat = 100
+    static let totalHeight = bottomSapcing + viewHeight
     lazy var bottomLine = UIView()
     lazy var systemFollowView = IRSwitchSettingView()
     
@@ -28,8 +29,8 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte {
     
     func setupSubviews() {
         
-        systemFollowView.title.textColor = IRReaderConfig.textColor
-        systemFollowView.title.text = "自动启用深色模式"
+        systemFollowView.titleLabel.textColor = IRReaderConfig.textColor
+        systemFollowView.titleLabel.text = "自动启用深色模式"
         systemFollowView.isOn = UserDefaults.standard.bool(forKey: kReadFollowSystemTheme)
         systemFollowView.delegate = self
         self.addSubview(systemFollowView)

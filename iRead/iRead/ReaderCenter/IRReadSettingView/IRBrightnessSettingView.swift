@@ -11,7 +11,7 @@ import UIKit
 class IRBrightnessSettingView: UIView {
 
     static let bottomSapcing: CGFloat = 5
-    static let viewHeight: CGFloat = 40
+    static let viewHeight: CGFloat = 45
     static let totalHeight = bottomSapcing + viewHeight
 
     var brightnessSlider = UISlider()

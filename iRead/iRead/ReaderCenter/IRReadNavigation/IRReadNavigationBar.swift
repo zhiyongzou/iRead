@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import IRCommonLib
 
 protocol IRReadNavigationBarDelegate: NSObjectProtocol {
     
@@ -22,6 +23,7 @@ class IRReadNavigationBar: UIView {
     var backButton: UIButton!
     var chapterList: UIButton!
     var readSetting: UIButton!
+    var bottomLine: UIView!
     var delegate: IRReadNavigationBarDelegate?
     
     //MARK: - Override
@@ -67,7 +69,16 @@ class IRReadNavigationBar: UIView {
         readSetting.snp.makeConstraints { (make) -> Void in
             make.width.height.equalTo(itemHeight)
             make.bottom.equalTo(self)
-            make.right.equalTo(self).offset(-20)
+            make.right.equalTo(self).offset(-50)
+        }
+        
+        bottomLine = UIView()
+        bottomLine.backgroundColor = IRSeparatorColor
+        self.addSubview(bottomLine)
+        bottomLine.snp.makeConstraints { (make) -> Void in
+            make.right.left.equalTo(self)
+            make.height.equalTo(1)
+            make.bottom.equalTo(self)
         }
     }
     

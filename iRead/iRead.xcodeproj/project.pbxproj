@@ -10,6 +10,11 @@
 		812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E49732531A4050082D902 /* IRReadPageViewController.swift */; };
 		8136A08E25355A2C005C1646 /* IRPageBackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A08D25355A2C005C1646 /* IRPageBackViewController.swift */; };
 		8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A0D5253589C0005C1646 /* IRReadNavigationBar.swift */; };
+		8136A28A25369C33005C1646 /* IRReadSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A28925369C33005C1646 /* IRReadSettingView.swift */; };
+		8136A2D42536D1BA005C1646 /* IRSwitchSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2D32536D1BA005C1646 /* IRSwitchSettingView.swift */; };
+		8136A2D92536D1D8005C1646 /* IRFontSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */; };
+		8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */; };
+		8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */; };
 		816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816DFBB02404D39B0030E55B /* AppDelegate.swift */; };
 		816DFBBA2404D3A00030E55B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBB92404D3A00030E55B /* Assets.xcassets */; };
 		816DFBBD2404D3A00030E55B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBBB2404D3A00030E55B /* LaunchScreen.storyboard */; };
@@ -52,6 +57,11 @@
 		812E49732531A4050082D902 /* IRReadPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadPageViewController.swift; sourceTree = "<group>"; };
 		8136A08D25355A2C005C1646 /* IRPageBackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRPageBackViewController.swift; sourceTree = "<group>"; };
 		8136A0D5253589C0005C1646 /* IRReadNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationBar.swift; sourceTree = "<group>"; };
+		8136A28925369C33005C1646 /* IRReadSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadSettingView.swift; sourceTree = "<group>"; };
+		8136A2D32536D1BA005C1646 /* IRSwitchSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSwitchSettingView.swift; sourceTree = "<group>"; };
+		8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontSettingView.swift; sourceTree = "<group>"; };
+		8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorSettingView.swift; sourceTree = "<group>"; };
+		8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBrightnessSettingView.swift; sourceTree = "<group>"; };
 		813C380B2464134E002578FD /* iRead-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iRead-Bridging-Header.h"; sourceTree = "<group>"; };
 		816DFBAD2404D39B0030E55B /* iRead.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRead.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816DFBB02404D39B0030E55B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +128,18 @@
 				8136A0D5253589C0005C1646 /* IRReadNavigationBar.swift */,
 			);
 			path = IRReadNavigation;
+			sourceTree = "<group>";
+		};
+		8136A28825369C0C005C1646 /* IRReadSettingView */ = {
+			isa = PBXGroup;
+			children = (
+				8136A28925369C33005C1646 /* IRReadSettingView.swift */,
+				8136A2D32536D1BA005C1646 /* IRSwitchSettingView.swift */,
+				8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */,
+				8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */,
+				8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */,
+			);
+			path = IRReadSettingView;
 			sourceTree = "<group>";
 		};
 		816DFBA42404D39B0030E55B = {
@@ -203,6 +225,7 @@
 		8180406325206A5C00F31442 /* ReaderCenter */ = {
 			isa = PBXGroup;
 			children = (
+				8136A28825369C0C005C1646 /* IRReadSettingView */,
 				8136A0D425358976005C1646 /* IRReadNavigation */,
 				818040A02521951400F31442 /* IRReaderConfig.swift */,
 				818040A42521967800F31442 /* IRBookChapter.swift */,
@@ -429,14 +452,19 @@
 				818040A52521967800F31442 /* IRBookChapter.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,
+				8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */,
 				81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */,
+				8136A28A25369C33005C1646 /* IRReadSettingView.swift in Sources */,
+				8136A2D42536D1BA005C1646 /* IRSwitchSettingView.swift in Sources */,
 				816DFBE52404D8010030E55B /* IRNavigationController.swift in Sources */,
 				81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */,
 				8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */,
 				818040A12521951400F31442 /* IRReaderConfig.swift in Sources */,
 				8136A08E25355A2C005C1646 /* IRPageBackViewController.swift in Sources */,
+				8136A2D92536D1D8005C1646 /* IRFontSettingView.swift in Sources */,
 				816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */,
 				818040A3252195CD00F31442 /* IRReaderCenterViewController.swift in Sources */,
+				8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

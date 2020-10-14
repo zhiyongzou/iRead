@@ -36,5 +36,10 @@ class IRReaderConfig: NSObject {
     /// 段落间距
     static var paragraphSpacing = NSNumber.init(value: 10)
     /// 翻页模式，默认横向仿真翻页
-    static var transitionStyle = IRTransitionStyle.scroll
+    static var transitionStyle = IRTransitionStyle(rawValue: UserDefaults.standard.integer(forKey: kReadTransitionStyle)) ?? .pageCurl
 }
+
+//MARK: - Keys
+
+let kReadTransitionStyle = "kReadTransitionStyle"
+

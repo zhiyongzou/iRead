@@ -42,6 +42,7 @@ target 'iRead' do
   
   # for iRead
   pod 'SnapKit', '~> 5.0.1'
+  pod 'CMPopTipView', '~> 2.3.2'
 
 end
 

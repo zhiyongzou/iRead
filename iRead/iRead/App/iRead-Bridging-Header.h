@@ -11,3 +11,4 @@
 #import "DTCoreTextConstants.h"
 #import "DTCoreTextLayouter.h"
 #import "NSAttributedString+HTML.h"
+#import "CMPopTipView.h"

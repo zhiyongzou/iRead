@@ -18,7 +18,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     /// 上一页
     var beforePageVC: IRReadPageViewController?
     /// 阅读导航栏
-    var readNavigationBar: IRReadNavigationBar?
+    lazy var readNavigationBar = IRReadNavigationBar()
     var readNavigationContentView: UIView?
     /// 阅读设置
     var readSettingView: CMPopTipView?
@@ -40,7 +40,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         self.updateReadPageSzie()
         self.setupPageViewController()
         self.addNavigateTapGesture()
-        self.setupSubviews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,7 +104,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     //MARK: - IRReadSettingViewDelegate
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
-        
+        self.setupPageViewController()
     }
     
     //MARK: - UIPageViewControllerDelegate
@@ -173,10 +172,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     //MARK: - Private
     
-    func setupSubviews() {
-        readNavigationBar = IRReadNavigationBar()
-    }
-    
     func addNavigationContentViewIfNeeded() {
         if readNavigationContentView != nil {
             return
@@ -186,16 +181,15 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         readNavigationContentView?.backgroundColor = UIColor.clear
         readNavigationContentView?.frame = self.view.bounds
         
-        readNavigationBar = IRReadNavigationBar()
-        readNavigationBar!.delegate = self
-        readNavigationBar!.backgroundColor = IRReaderConfig.pageColor
-        readNavigationContentView?.addSubview(readNavigationBar!)
+        readNavigationBar.delegate = self
+        readNavigationBar.backgroundColor = IRReaderConfig.pageColor
+        readNavigationContentView?.addSubview(readNavigationBar)
         var safe = UIEdgeInsets.zero
         if #available(iOS 11.0, *) {
             safe = self.view.safeAreaInsets
         }
-        let barH = safe.top + readNavigationBar!.itemHeight
-        readNavigationBar!.frame = CGRect.init(x: 0, y: -barH, width: self.view.width, height: barH)
+        let barH = safe.top + readNavigationBar.itemHeight
+        readNavigationBar.frame = CGRect.init(x: 0, y: -barH, width: self.view.width, height: barH)
     }
     
     func updateReadPageSzie() {
@@ -215,7 +209,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func setupPageViewController() {
         
-        if pageViewController != nil && pageViewController.parent != nil {
+        if let pageViewController = self.pageViewController {
             pageViewController.willMove(toParent: nil)
             pageViewController.removeFromParent()
         }
@@ -223,6 +217,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         if IRReaderConfig.transitionStyle == .pageCurl {
             pageViewController = IRPageViewController.init(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
             pageViewController.isDoubleSided = true
+            beforePageVC = nil
         } else {
             pageViewController = IRPageViewController.init(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         }
@@ -231,12 +226,22 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         pageViewController.dataSource = self
         self.addChild(pageViewController)
         pageViewController.didMove(toParent: self)
-        self.view.addSubview(pageViewController.view)
+        if readNavigationContentView != nil {
+            self.view.insertSubview(pageViewController.view, belowSubview: readNavigationContentView!)
+        } else {
+            self.view.addSubview(pageViewController.view)
+        }
         
-        currentReadingVC = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
-        if let firstCahpter = book.tableOfContents.first {
-            let currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
-            currentReadingVC.bookPage = currentChapter.pageList?.first
+        if currentReadingVC == nil {
+            currentReadingVC = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+            if let firstCahpter = book.tableOfContents.first {
+                let currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
+                currentReadingVC.bookPage = currentChapter.pageList?.first
+            }
+        } else {
+            // currentReadingVC view 必须先从上一个 pageViewController 中移除，否则会出现下面的崩溃
+            // "child view controller:<iRead.IRReadPageViewController: 0x10351a420> should have parent view controller:<iRead.IRReaderCenterViewController: 0x106e080e0> but requested parent is:<IRCommonLib.IRPageViewController: 0x108010600>"
+            currentReadingVC.view.removeFromSuperview()
         }
         pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
     }
@@ -319,10 +324,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.addNavigationContentViewIfNeeded()
         self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
-        let endY: CGFloat = self.shouldHideStatusBar ? -readNavigationBar!.height : 0
+        let endY: CGFloat = self.shouldHideStatusBar ? -readNavigationBar.height : 0
         UIView.animate(withDuration: 0.25) {
             self.setNeedsStatusBarAppearanceUpdate()
-            self.readNavigationBar!.y = endY
+            self.readNavigationBar.y = endY
         }
     }
 }

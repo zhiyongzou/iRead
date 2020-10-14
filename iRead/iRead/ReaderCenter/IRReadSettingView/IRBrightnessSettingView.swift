@@ -15,8 +15,8 @@ class IRBrightnessSettingView: UIView {
     static let totalHeight = bottomSapcing + viewHeight
 
     var brightnessSlider = UISlider()
-    var bigIcon = UIImageView()
-    var samllIcon = UIImageView()
+    var hightIcon = UIImageView()
+    var lowIcon = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,28 +30,28 @@ class IRBrightnessSettingView: UIView {
     
     func setupSubviews() {
         
-        let margin: CGFloat = 15
+        let margin: CGFloat = 10
         
-        self.addSubview(samllIcon)
-        samllIcon.backgroundColor = UIColor.randomColor()
-        samllIcon.snp.makeConstraints { (make) in
+        lowIcon.image = UIImage.init(named: "brightness_low")
+        self.addSubview(lowIcon)
+        lowIcon.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(margin)
-            make.height.width.equalTo(20)
+            make.height.width.equalTo(18)
             make.centerY.equalTo(self)
         }
         
-        self.addSubview(bigIcon)
-        bigIcon.backgroundColor = UIColor.randomColor()
-        bigIcon.snp.makeConstraints { (make) in
+        hightIcon.image = UIImage.init(named: "brightness_hight")
+        self.addSubview(hightIcon)
+        hightIcon.snp.makeConstraints { (make) in
             make.right.equalTo(self).offset(-margin)
-            make.height.width.equalTo(30)
+            make.height.width.equalTo(27)
             make.centerY.equalTo(self)
         }
         
         self.addSubview(brightnessSlider)
         brightnessSlider.snp.makeConstraints { (make) in
-            make.right.equalTo(bigIcon.snp.left).offset(-5)
-            make.left.equalTo(samllIcon.snp.right).offset(5)
+            make.right.equalTo(hightIcon.snp.left).offset(-margin)
+            make.left.equalTo(lowIcon.snp.right).offset(margin)
             make.centerY.equalTo(self)
         }
     }

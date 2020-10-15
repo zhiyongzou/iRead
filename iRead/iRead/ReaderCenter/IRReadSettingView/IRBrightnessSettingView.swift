@@ -48,11 +48,19 @@ class IRBrightnessSettingView: UIView {
             make.centerY.equalTo(self)
         }
         
+        brightnessSlider.minimumValue = 0;
+        brightnessSlider.maximumValue = 1.0
+        brightnessSlider.value = Float(UIScreen.main.brightness)
+        brightnessSlider.addTarget(self, action: #selector(brightnessSliderDidChange(_:)), for: .valueChanged)
         self.addSubview(brightnessSlider)
         brightnessSlider.snp.makeConstraints { (make) in
             make.right.equalTo(hightIcon.snp.left).offset(-margin)
             make.left.equalTo(lowIcon.snp.right).offset(margin)
             make.centerY.equalTo(self)
         }
+    }
+    
+    @objc func brightnessSliderDidChange(_ slider: UISlider) {
+        UIScreen.main.brightness = CGFloat(slider.value)
     }
 }

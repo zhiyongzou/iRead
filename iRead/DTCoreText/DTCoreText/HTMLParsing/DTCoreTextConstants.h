@@ -60,7 +60,6 @@ extern NSString * const DTWillFlushBlockCallBack;
 extern NSString * const DTProcessCustomHTMLAttributes;
 extern NSString * const DTIgnoreInlineStylesOption;
 extern NSString * const DTDocumentPreserveTrailingSpaces;
-extern NSString * const DTDefaultParagraphSpacing;
 
 
 // attributed string attribute constants

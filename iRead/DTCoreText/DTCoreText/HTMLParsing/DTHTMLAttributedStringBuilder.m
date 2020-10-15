@@ -252,13 +252,6 @@
 	// default paragraph style
 	_defaultParagraphStyle = [DTCoreTextParagraphStyle defaultParagraphStyle];
     
-    NSNumber *paragraphSpacing = [_options objectForKey:DTDefaultParagraphSpacing];
-    
-    if (paragraphSpacing)
-    {
-        _defaultParagraphStyle.paragraphSpacing = [paragraphSpacing floatValue];
-    }
-	
 	NSNumber *defaultLineHeightMultiplierNum = [_options objectForKey:DTDefaultLineHeightMultiplier];
 	
 	if (defaultLineHeightMultiplierNum)

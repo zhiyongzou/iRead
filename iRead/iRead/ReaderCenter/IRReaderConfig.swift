@@ -34,13 +34,12 @@ class IRReaderConfig: NSObject {
     /// 行高倍数
     static var lineHeightMultiple = NSNumber.init(value: 1.1)
     /// 段落间距
-    static var paragraphSpacing = NSNumber.init(value: 10)
+    static var paragraphSpacing: CGFloat = 5
     /// 翻页模式，默认横向仿真翻页
     static var transitionStyle = IRTransitionStyle(rawValue: UserDefaults.standard.integer(forKey: kReadTransitionStyle)) ?? .pageCurl
 }
 
 //MARK: - Keys
-
-let kReadTransitionStyle = "kReadTransitionStyle"
+let kReadTransitionStyle   = "kReadTransitionStyle"
 let kReadFollowSystemTheme = "kReadFollowSystemTheme"
 

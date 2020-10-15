@@ -33,7 +33,6 @@ class IRBookChapter: NSObject {
         let options: [String : Any] = [
             NSBaseURLDocumentOption: baseUrl,
             DTMaxImageSize: NSValue.init(cgSize: IRReaderConfig.pageSzie),
-            DTDefaultParagraphSpacing: IRReaderConfig.paragraphSpacing,
             NSTextSizeMultiplierDocumentOption: IRReaderConfig.textSizeMultiplier,
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
             DTDefaultLinkColor: "purple",
@@ -41,7 +40,22 @@ class IRBookChapter: NSObject {
             DTDefaultFontSize: IRReaderConfig.textSize
         ]
         // as 用法 https://developer.apple.com/swift/blog/?id=23
+        // as? 或 as! 向下转到它的子类
         let htmlString = NSAttributedString.init(htmlData: htmlData, options: options, documentAttributes: nil).mutableCopy() as! NSMutableAttributedString
+        let tempHtmlString = htmlString.mutableCopy() as? NSMutableAttributedString
+        
+        // 段落样式调整
+        tempHtmlString?.enumerateAttribute(.paragraphStyle, in: NSMakeRange(0, htmlString.length), options: [.longestEffectiveRangeNotRequired]) { (value, range, stop) in
+            // is: 检查一个实例是否属于特定子类型
+            if value is NSParagraphStyle {
+                let paragraphStyle: NSMutableParagraphStyle = (value as! NSParagraphStyle).mutableCopy() as! NSMutableParagraphStyle
+                paragraphStyle.paragraphSpacing = IRReaderConfig.paragraphSpacing
+                paragraphStyle.lineSpacing = IRReaderConfig.lineSpacing
+                htmlString.removeAttribute(.paragraphStyle, range: range)
+                htmlString.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
+            }
+        }
+        
         let textLayout = DTCoreTextLayouter.init(attributedString: htmlString)
         let textRect = CGRect.init(origin: CGPoint.zero, size: IRReaderConfig.pageSzie)
         var layoutFrame = textLayout?.layoutFrame(with: textRect, range: NSMakeRange(0, htmlString.length))
@@ -51,10 +65,15 @@ class IRBookChapter: NSObject {
         var pageList = [IRBookPage]()
         while pageOffset <= htmlString.length && pageOffset != 0 {
             
-            let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: chapterIndex)
-            pageModel.content = htmlString.attributedSubstring(from: visibleRange)
-            pageCount += 1;
-            pageList.append(pageModel)
+            let content = htmlString.attributedSubstring(from: visibleRange)
+            let textContent = content.string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            // 空白页判断
+            if textContent.count > 0 {
+                let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: chapterIndex)
+                pageModel.content = content
+                pageCount += 1;
+                pageList.append(pageModel)
+            }
             
             var nextPageNeedFirstLineHeadIndent = true
             if let paragraphRanges = layoutFrame?.paragraphRanges {
@@ -79,7 +98,7 @@ class IRBookChapter: NSObject {
                 let originalStyle = firstLineAtt.attribute(.paragraphStyle, at: 0, effectiveRange: nil)
                 if (originalStyle != nil) {
                     let firstLineStyle: NSMutableParagraphStyle = (originalStyle as! NSParagraphStyle).mutableCopy() as! NSMutableParagraphStyle
-                    firstLineStyle.firstLineHeadIndent = 0;
+                    firstLineStyle.firstLineHeadIndent = firstLineStyle.headIndent;
                     htmlString.addAttributes([.paragraphStyle: firstLineStyle], range: firstLineRange)
                 }
             }

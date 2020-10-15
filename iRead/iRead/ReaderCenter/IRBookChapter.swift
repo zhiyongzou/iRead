@@ -10,6 +10,11 @@ import UIKit
 import IRCommonLib
 
 class IRBookChapter: NSObject {
+    
+    /// 文字颜色
+    let textColor = IRReaderConfig.textColor
+    /// 文字大小
+    let textSize = IRReaderConfig.textSize
     /// 章节页列表
     var pageList: [IRBookPage]?
     /// 章节标题
@@ -36,8 +41,8 @@ class IRBookChapter: NSObject {
             NSTextSizeMultiplierDocumentOption: IRReaderConfig.textSizeMultiplier,
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
             DTDefaultLinkColor: "purple",
-            DTDefaultTextColor: IRReaderConfig.textColor,
-            DTDefaultFontSize: IRReaderConfig.textSize
+            DTDefaultTextColor: textColor,
+            DTDefaultFontSize: textSize
         ]
         // as 用法 https://developer.apple.com/swift/blog/?id=23
         // as? 或 as! 向下转到它的子类

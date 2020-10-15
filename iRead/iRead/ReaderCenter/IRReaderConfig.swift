@@ -23,8 +23,19 @@ class IRReaderConfig: NSObject {
     static var horizontalSpacing: CGFloat = 26;
     /// 文字颜色，默认黑色
     static var textColor = UIColor.black
-    /// 页面颜色，默认白色
+    static var textColorHex = "000000" {
+        willSet {
+            IRReaderConfig.textColor = UIColor.hexColor(newValue)
+        }
+    }
+    
+    /// 页面颜色，默认白色pageColor
     static var pageColor = UIColor.white
+    static var pageColorHex = "FFFFFF" {
+        willSet {
+            IRReaderConfig.pageColor = UIColor.hexColor(newValue)
+        }
+    }
     /// 字体大小
     static var textSize = NSNumber.init(value: 15)
     /// 字体大小倍数

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol IRSwitchSettingViewDeleagte {
-    func pageScrollSettingView(_ view: IRSwitchSettingView, isOn: Bool)
+    func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool)
 }
 
 class IRSwitchSettingView: UIView {
@@ -58,6 +58,6 @@ class IRSwitchSettingView: UIView {
     }
     
     @objc func didSwitchValueChange(switchView: UISwitch) {
-        self.delegate?.pageScrollSettingView(self, isOn: switchView.isOn)
+        self.delegate?.switchSettingView(self, isOn: switchView.isOn)
     }
 }

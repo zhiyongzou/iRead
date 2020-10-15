@@ -82,7 +82,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte {
     }
     
     //MARK: - IRSwitchSettingViewDeleagte
-    func pageScrollSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
+    func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
         IRReaderConfig.transitionStyle = isOn ? .scroll : .pageCurl
         UserDefaults.standard.set(IRReaderConfig.transitionStyle.rawValue, forKey: kReadTransitionStyle)
         self.deleage?.readSettingView(self, transitionStyleDidChagne: IRReaderConfig.transitionStyle)

@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate {
     
     var shouldHideStatusBar = true
     var book: FRBook!
@@ -308,21 +308,27 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func addNavigateTapGesture() {
         let tap = UITapGestureRecognizer()
+        tap.delegate = self
         tap.addTarget(self, action: #selector(didNavigateTapGestureClick(tapGesture:)))
         self.view.addGestureRecognizer(tap)
     }
     
-    @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
-        
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        // Tap 手势会影响其子视图中的 UICollectionView 的 didSelectItemAt 方法！！！
+        // didSelectItemAt not being called
+        // https://stackoverflow.com/questions/39780373/didselectitemat-not-being-called/39781185
         if let readSettingView = self.readSettingView {
             if readSettingView.superview != nil {
-                let tapPoint = tapGesture.location(in: self.view)
+                let tapPoint = gestureRecognizer.location(in: self.view)
                 if readSettingView.frame.contains(tapPoint) {
-                    return
+                    return false
                 }
             }
         }
-        
+        return true
+    }
+    
+    @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.addNavigationContentViewIfNeeded()
         self.readNavigationContentView!.isHidden = self.shouldHideStatusBar

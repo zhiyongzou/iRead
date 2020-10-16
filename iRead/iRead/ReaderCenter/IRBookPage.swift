@@ -20,4 +20,17 @@ class IRBookPage: NSObject {
         page.chapterIdx = chapterIdx
         return page
     }
+    
+    func updateTextColor(_ textColor: UIColor) {
+
+        guard let content = self.content else { return }
+        let mutableContent: NSMutableAttributedString = content.mutableCopy() as! NSMutableAttributedString
+        let tempContent = mutableContent.mutableCopy() as! NSMutableAttributedString
+        tempContent.enumerateAttributes(in: NSMakeRange(0, tempContent.length), options: [.longestEffectiveRangeNotRequired]) { (value: [NSAttributedString.Key : Any], rangge, stop) in
+            if !value.keys.contains(.link) {
+                mutableContent.addAttribute(.foregroundColor, value: textColor, range: rangge)
+            }
+        }
+        self.content = mutableContent
+    }
 }

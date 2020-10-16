@@ -49,14 +49,14 @@ class IRReaderConfig: NSObject {
     }
     
     /// 字体大小
-    static var textSize = NSNumber.init(value: 15)
+    static var textSize: CGFloat = 15
     /// 字体大小倍数
-    static var textSizeMultiplier = NSNumber.init(value: 1.1)
+    static var textSizeMultiplier: CGFloat = 1.1
     
     /// 行距
     static var lineSpacing: CGFloat = 5
     /// 行高倍数
-    static var lineHeightMultiple = NSNumber.init(value: 1.1)
+    static var lineHeightMultiple: CGFloat = 1.1
     /// 段落间距
     static var paragraphSpacing: CGFloat = 5
     

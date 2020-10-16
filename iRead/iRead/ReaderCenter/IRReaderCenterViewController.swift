@@ -91,7 +91,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             let popTipView = CMPopTipView.init(customView: readSettingView)
             popTipView?.has3DStyle = false
             popTipView?.animation = .pop
-            popTipView?.backgroundColor = IRReaderConfig.pageColor
+            popTipView?.backgroundColor = readSettingView.backgroundColor
             popTipView?.borderColor = IRSeparatorColor
             popTipView?.sidePadding = 20
             popTipView?.bubblePaddingX = -10
@@ -106,6 +106,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     //MARK: - IRReadSettingViewDelegate
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
         self.setupPageViewController()
+    }
+    
+    func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel) {
+        self.readSettingView?.backgroundColor = view.backgroundColor
+        self.readSettingView?.setNeedsDisplay()
     }
     
     //MARK: - UIPageViewControllerDelegate

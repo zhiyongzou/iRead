@@ -9,40 +9,48 @@
 import UIKit
 import IRCommonLib
 
+protocol IRReadColorSettingViewDelegate {
+    
+    func readColorSettingView(_ view: IRReadColorSettingView, didChangeSelectColor color: IRReadColorModel)
+    
+    func readColorSettingView(_ view: IRReadColorSettingView, isFollowSystemTheme isFollow: Bool)
+}
+
 class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     static let bottomSapcing: CGFloat = 5
     static let colorViewHeight: CGFloat = 60
     static let viewHeight: CGFloat = colorViewHeight + IRSwitchSettingView.viewHeight
     static let totalHeight = bottomSapcing + viewHeight
+    lazy var bottomLine = UIView()
+    lazy var systemFollowView = IRSwitchSettingView()
+    var collectionView: UICollectionView!
+    var currentSelectCell: IRReadColorCell?
+    var delegate: IRReadColorSettingViewDelegate?
     
     var colorLsit: [IRReadColorModel] = {
         
         var list = [IRReadColorModel]()
-        var color_FFFFFF = IRReadColorModel.init(textHex: "000000", pageHex: "FFFFFF", borderColor: UIColor.hexColor("000000"))
+        var color_FFFFFF = IRReadColorModel.init(textHex: "CD000000", pageHex: IRReadPageColorHex.HexFFFFFF.rawValue, borderColor: UIColor.hexColor("000000"))
         color_FFFFFF.isSelect = color_FFFFFF.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_FFFFFF)
         
-        var color_C9C196 = IRReadColorModel.init(textHex: "000000", pageHex: "C9C196", borderColor: UIColor.hexColor("AF8900"))
+        var color_C9C196 = IRReadColorModel.init(textHex: "CD000000", pageHex: IRReadPageColorHex.HexC9C196.rawValue, borderColor: UIColor.hexColor("AF8900"))
         color_C9C196.isSelect = color_C9C196.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_C9C196)
         
-        var color_505050 = IRReadColorModel.init(textHex: "FFFFFF", pageHex: "505050", borderColor: UIColor.hexColor("FFFFFF"))
+        var color_505050 = IRReadColorModel.init(textHex: "CDFFFFFF", pageHex: IRReadPageColorHex.Hex505050.rawValue, borderColor: UIColor.hexColor("FFFFFF"))
         color_505050.isSelect = color_505050.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_505050)
         
-        var color_000000 = IRReadColorModel.init(textHex: "FFFFFF", pageHex: "000000", borderColor: UIColor.hexColor("FFFFFF"))
+        var color_000000 = IRReadColorModel.init(textHex: "CDFFFFFF", pageHex: IRReadPageColorHex.Hex000000.rawValue, borderColor: UIColor.hexColor("FFFFFF"))
         color_000000.isSelect = color_000000.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_000000)
         
         return list
     }()
     
-    lazy var bottomLine = UIView()
-    lazy var systemFollowView = IRSwitchSettingView()
-    var collectionView: UICollectionView!
-    var currentSelectCell: IRReadColorCell?
-    
+    //MARK: - override
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,13 +62,14 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
         self.setupSubviews()
     }
     
+    //MARK: - Private
+    
     func setupSubviews() {
         
         self.setupCollectionView()
         
-        systemFollowView.titleLabel.textColor = IRReaderConfig.textColor
         systemFollowView.titleLabel.text = "自动启用夜间模式"
-        systemFollowView.isOn = UserDefaults.standard.bool(forKey: kReadFollowSystemTheme)
+        systemFollowView.isOn = IRReaderConfig.isFollowSystemTheme
         systemFollowView.delegate = self
         self.addSubview(systemFollowView)
         systemFollowView.snp.makeConstraints { (make) in
@@ -68,13 +77,17 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
             make.height.equalTo(IRSwitchSettingView.viewHeight)
         }
         
-        bottomLine.backgroundColor = IRSeparatorColor
         self.addSubview(bottomLine)
         bottomLine.snp.makeConstraints { (make) -> Void in
             make.right.left.equalTo(self)
             make.height.equalTo(1)
             make.bottom.equalTo(systemFollowView.snp.top)
         }
+    }
+    
+    func updateTextColor(_ color: UIColor, separatorColor: UIColor) {
+        bottomLine.backgroundColor = separatorColor
+        systemFollowView.titleLabel.textColor = color
     }
     
     private func setupCollectionView() {
@@ -127,14 +140,14 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
         currentSelectCell?.colorModel = currentSelectCell?.colorModel
         
         if let colorModel = currentSelectCell?.colorModel {
-            IRReaderConfig.pageColorHex = colorModel.pageColorHex
-            IRReaderConfig.textColorHex = colorModel.textColorHex
+            self.delegate?.readColorSettingView(self, didChangeSelectColor: colorModel)
         }
     }
 
     
     //MARK: - IRSwitchSettingViewDeleagte
     func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
-        
+        UserDefaults.standard.set(isOn, forKey: kReadFollowSystemTheme)
+        self.delegate?.readColorSettingView(self, isFollowSystemTheme: isOn)
     }
 }

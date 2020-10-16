@@ -41,7 +41,6 @@ class IRFontSettingView: UIView {
     
     func setupSubviews() {
         
-        fontTypeSelectView.titleLabel.textColor = IRReaderConfig.textColor
         fontTypeSelectView.titleLabel.text = "字体"
         fontTypeSelectView.detailText = "宋体"
         self.addSubview(fontTypeSelectView)
@@ -50,7 +49,6 @@ class IRFontSettingView: UIView {
             make.height.equalTo(IRArrowSettingView.viewHeight)
         }
         
-        bottomLine.backgroundColor = IRSeparatorColor
         self.addSubview(bottomLine)
         bottomLine.snp.makeConstraints { (make) -> Void in
             make.right.left.equalTo(self)
@@ -62,16 +60,13 @@ class IRFontSettingView: UIView {
         increaseBtn.addTarget(self, action: #selector(didIncreaseBtnClick), for: .touchUpInside)
         increaseBtn.contentHorizontalAlignment = .center
         increaseBtn.titleLabel?.font = UIFont.systemFont(ofSize: 25)
-        increaseBtn.setTitleColor(IRReaderConfig.textColor, for: .normal)
-        increaseBtn.setTitleColor(IRReaderConfig.textColor.withAlphaComponent(0.5), for: .highlighted)
         self.addSubview(increaseBtn)
         increaseBtn.snp.makeConstraints { (make) -> Void in
             make.right.top.equalTo(self)
             make.bottom.equalTo(fontTypeSelectView.snp.top)
             make.left.equalTo(self.snp.centerX)
         }
-        
-        midLine.backgroundColor = IRSeparatorColor
+    
         self.addSubview(midLine)
         midLine.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(self)
@@ -83,8 +78,6 @@ class IRFontSettingView: UIView {
         reduceBtn.addTarget(self, action: #selector(didReduceBtnClick), for: .touchUpInside)
         reduceBtn.contentHorizontalAlignment = .center
         reduceBtn.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        reduceBtn.setTitleColor(IRReaderConfig.textColor, for: .normal)
-        reduceBtn.setTitleColor(IRReaderConfig.textColor.withAlphaComponent(0.5), for: .highlighted)
         self.addSubview(reduceBtn)
         reduceBtn.snp.makeConstraints { (make) -> Void in
             make.left.top.equalTo(self)
@@ -93,4 +86,16 @@ class IRFontSettingView: UIView {
         }
     }
     
+    func updateTextColor(_ color: UIColor, separatorColor: UIColor) {
+        
+        midLine.backgroundColor = separatorColor
+        bottomLine.backgroundColor = separatorColor
+        fontTypeSelectView.titleLabel.textColor = color
+        
+        increaseBtn.setTitleColor(color, for: .normal)
+        increaseBtn.setTitleColor(color.withAlphaComponent(0.5), for: .highlighted)
+        
+        reduceBtn.setTitleColor(color, for: .normal)
+        reduceBtn.setTitleColor(color.withAlphaComponent(0.5), for: .highlighted)
+    }
 }

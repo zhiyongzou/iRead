@@ -12,7 +12,7 @@ import IRCommonLib
 class IRBookChapter: NSObject {
     
     /// 文字颜色
-    let textColor = IRReaderConfig.textColor
+    let textColorHex = IRReaderConfig.textColorHex
     /// 文字大小
     let textSize = IRReaderConfig.textSize
     /// 章节页列表
@@ -21,8 +21,6 @@ class IRBookChapter: NSObject {
     var title: String?
     /// 章节索引
     var chapterIdx: Int = 1
-    /// 内容
-    var content: NSAttributedString?
     
     
     public convenience init(withTocRefrence refrence: FRTocReference, chapterIndex: Int) {
@@ -41,7 +39,7 @@ class IRBookChapter: NSObject {
             NSTextSizeMultiplierDocumentOption: IRReaderConfig.textSizeMultiplier,
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
             DTDefaultLinkColor: "purple",
-            DTDefaultTextColor: textColor,
+            DTDefaultTextColor: UIColor.hexColor(textColorHex),
             DTDefaultFontSize: textSize
         ]
         // as 用法 https://developer.apple.com/swift/blog/?id=23
@@ -80,6 +78,7 @@ class IRBookChapter: NSObject {
                 pageList.append(pageModel)
             }
             
+            // 首行缩进处理
             var nextPageNeedFirstLineHeadIndent = true
             if let paragraphRanges = layoutFrame?.paragraphRanges {
                 for rangeValue in paragraphRanges {

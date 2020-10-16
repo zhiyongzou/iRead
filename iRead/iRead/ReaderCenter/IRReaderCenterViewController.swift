@@ -336,11 +336,15 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.addNavigationContentViewIfNeeded()
-        self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
+        if !self.shouldHideStatusBar {
+            self.readNavigationContentView!.isHidden = false
+        }
         let endY: CGFloat = self.shouldHideStatusBar ? -readNavigationBar.height : 0
         UIView.animate(withDuration: 0.25) {
             self.setNeedsStatusBarAppearanceUpdate()
             self.readNavigationBar.y = endY
+        } completion: { (finish) in
+            self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
         }
     }
 }

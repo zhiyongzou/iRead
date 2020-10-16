@@ -111,6 +111,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel) {
         self.readSettingView?.backgroundColor = view.backgroundColor
         self.readSettingView?.setNeedsDisplay()
+        
+        self.currentReadingVC.view.backgroundColor = IRReaderConfig.pageColor
+        self.readNavigationBar.backgroundColor = IRReaderConfig.pageColor
+        self.readNavigationBar.updateItemsImageColor(IRReaderConfig.textColor)
     }
     
     //MARK: - UIPageViewControllerDelegate

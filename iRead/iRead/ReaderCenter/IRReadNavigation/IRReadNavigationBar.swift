@@ -80,6 +80,16 @@ class IRReadNavigationBar: UIView {
             make.height.equalTo(1)
             make.bottom.equalTo(self)
         }
+        
+        self.updateItemsImageColor(IRReaderConfig.textColor)
+    }
+    
+    func updateItemsImageColor(_ color: UIColor) {
+        
+        self.tintColor = color
+        readSetting.setImage(readSetting.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
+        chapterList.setImage(chapterList.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
+        backButton.setImage(backButton.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
     //MARK: - Action

@@ -73,7 +73,6 @@ class IRReadNavigationBar: UIView {
         }
         
         bottomLine = UIView()
-        bottomLine.backgroundColor = IRSeparatorColor
         self.addSubview(bottomLine)
         bottomLine.snp.makeConstraints { (make) -> Void in
             make.right.left.equalTo(self)
@@ -81,11 +80,12 @@ class IRReadNavigationBar: UIView {
             make.bottom.equalTo(self)
         }
         
-        self.updateItemsImageColor(IRReaderConfig.textColor)
+        self.updateTintColor(IRReaderConfig.textColor)
     }
     
-    func updateItemsImageColor(_ color: UIColor) {
+    func updateTintColor(_ color: UIColor) {
         
+        bottomLine.backgroundColor = color.withAlphaComponent(0.08)
         self.tintColor = color
         readSetting.setImage(readSetting.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
         chapterList.setImage(chapterList.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)

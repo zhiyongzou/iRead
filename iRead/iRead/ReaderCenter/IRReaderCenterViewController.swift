@@ -115,7 +115,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.currentReadingVC.view.backgroundColor = IRReaderConfig.pageColor
         self.readNavigationBar.backgroundColor = IRReaderConfig.pageColor
-        self.readNavigationBar.updateItemsImageColor(IRReaderConfig.textColor)
+        self.readNavigationBar.updateTintColor(IRReaderConfig.textColor)
         
         let bookPage = self.currentReadingVC.bookPage
         bookPage?.updateTextColor(IRReaderConfig.textColor)

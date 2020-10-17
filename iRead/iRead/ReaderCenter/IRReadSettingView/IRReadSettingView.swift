@@ -13,9 +13,11 @@ protocol IRReadSettingViewDelegate {
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle)
     
     func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel)
+    
+    func readSettingView(_ view: IRReadSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int)
 }
 
-class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSettingViewDelegate {
+class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSettingViewDelegate, IRFontSettingViewDelegate {
         
     var deleage: IRReadSettingViewDelegate?
     
@@ -60,6 +62,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
             make.height.equalTo(IRReadColorSettingView.viewHeight)
         }
         
+        fontSettingView.delegate = self
         contentView.addSubview(fontSettingView)
         fontSettingView.snp.makeConstraints { (make) in
             make.right.left.equalTo(self)
@@ -149,5 +152,11 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     
     func readColorSettingView(_ view: IRReadColorSettingView, isFollowSystemTheme isFollow: Bool) {
         
+    }
+    
+    //MARK: - IRFontSettingViewDelegate
+    func fontSettingView(_ view: IRFontSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
+        self.deleage?.readSettingView(self, didChangeTextSizeMultiplier: textSizeMultiplier)
+        UserDefaults.standard.set(textSizeMultiplier, forKey: kReadTextSizeMultiplier)
     }
 }

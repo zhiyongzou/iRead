@@ -13,6 +13,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     var shouldHideStatusBar = true
     var book: FRBook!
     var pageViewController: IRPageViewController!
+    /// 当前阅读章节
+    var currentChapter: IRBookChapter?
     /// 当前阅读页VC
     var currentReadingVC: IRReadPageViewController!
     /// 上一页
@@ -104,6 +106,15 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     }
     
     //MARK: - IRReadSettingViewDelegate
+    
+    func readSettingView(_ view: IRReadSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
+        currentChapter?.updateTextSizeMultiplier(textSizeMultiplier)
+        let bookPage = self.currentReadingVC.bookPage!
+        let pageCount = currentChapter!.pageList!.count
+        let pageIdx = bookPage.pageIdx < pageCount ? bookPage.pageIdx : pageCount - 1
+        self.currentReadingVC.bookPage = currentChapter?.pageList?[pageIdx]
+    }
+    
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
         self.setupPageViewController()
     }
@@ -253,8 +264,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         if currentReadingVC == nil {
             currentReadingVC = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
             if let firstCahpter = book.tableOfContents.first {
-                let currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
-                currentReadingVC.bookPage = currentChapter.pageList?.first
+                currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
+                currentReadingVC.bookPage = currentChapter?.pageList?.first
             }
         }
         pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
@@ -266,11 +277,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
         guard var pageIndex = readVc.bookPage?.pageIdx else { return pageModel }
         guard var chapterIndex = readVc.bookPage?.chapterIdx else { return pageModel }
-        var currentChapter: IRBookChapter? = nil
-        // 后续解析优化
-        if let currentRefrence = self.book.tableOfContents?[chapterIndex] {
-            currentChapter = IRBookChapter.init(withTocRefrence: currentRefrence, chapterIndex: chapterIndex)
-        }
 
         if pageIndex > 0 {
             pageIndex -= 1;
@@ -294,12 +300,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
         guard var pageIndex = readVc.bookPage?.pageIdx else { return pageModel }
         guard var chapterIndex = readVc.bookPage?.chapterIdx else { return pageModel }
-        
-        var currentChapter: IRBookChapter? = nil
-        // 后续解析优化
-        if let currentRefrence = self.book.tableOfContents?[chapterIndex] {
-            currentChapter = IRBookChapter.init(withTocRefrence: currentRefrence, chapterIndex: chapterIndex)
-        }
 
         let pageCount = currentChapter?.pageList?.count ?? 0
         if pageIndex + 1 < pageCount {

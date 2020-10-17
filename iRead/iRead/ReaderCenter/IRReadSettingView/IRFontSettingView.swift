@@ -9,12 +9,19 @@
 import UIKit
 import IRCommonLib
 
+protocol IRFontSettingViewDelegate {
+    
+    func fontSettingView(_ view: IRFontSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int)
+}
+
 class IRFontSettingView: UIView {
 
+    let multiplierSacle: Int = 2
     static let bottomSapcing: CGFloat = 5
     static let viewHeight: CGFloat = IRArrowSettingView.viewHeight + 40
     static let totalHeight = bottomSapcing + viewHeight
     
+    var delegate: IRFontSettingViewDelegate?
     var fontTypeSelectView = IRArrowSettingView()
     lazy var bottomLine = UIView()
     lazy var midLine = UIView()
@@ -32,11 +39,19 @@ class IRFontSettingView: UIView {
     }
     
     @objc func didIncreaseBtnClick() {
-        
+        reduceBtn.isEnabled = true
+        let endValue = IRReaderConfig.textSizeMultiplier + multiplierSacle
+        IRReaderConfig.textSizeMultiplier = min(endValue, IRReaderConfig.maxTextSizeMultiplier)
+        increaseBtn.isEnabled = IRReaderConfig.textSizeMultiplier < IRReaderConfig.maxTextSizeMultiplier
+        self.delegate?.fontSettingView(self, didChangeTextSizeMultiplier: IRReaderConfig.textSizeMultiplier)
     }
     
     @objc func didReduceBtnClick() {
-        
+        increaseBtn.isEnabled = true
+        let endValue = IRReaderConfig.textSizeMultiplier - multiplierSacle
+        IRReaderConfig.textSizeMultiplier = max(endValue, IRReaderConfig.minTextSizeMultiplier)
+        reduceBtn.isEnabled = IRReaderConfig.textSizeMultiplier > IRReaderConfig.minTextSizeMultiplier
+        self.delegate?.fontSettingView(self, didChangeTextSizeMultiplier: IRReaderConfig.textSizeMultiplier)
     }
     
     func setupSubviews() {
@@ -57,6 +72,7 @@ class IRFontSettingView: UIView {
         }
         
         increaseBtn.setTitle("A", for: .normal)
+        increaseBtn.isEnabled = IRReaderConfig.textSizeMultiplier < IRReaderConfig.maxTextSizeMultiplier
         increaseBtn.addTarget(self, action: #selector(didIncreaseBtnClick), for: .touchUpInside)
         increaseBtn.contentHorizontalAlignment = .center
         increaseBtn.titleLabel?.font = UIFont.systemFont(ofSize: 25)
@@ -75,6 +91,7 @@ class IRFontSettingView: UIView {
         }
         
         reduceBtn.setTitle("A", for: .normal)
+        reduceBtn.isEnabled = IRReaderConfig.textSizeMultiplier > IRReaderConfig.minTextSizeMultiplier
         reduceBtn.addTarget(self, action: #selector(didReduceBtnClick), for: .touchUpInside)
         reduceBtn.contentHorizontalAlignment = .center
         reduceBtn.titleLabel?.font = UIFont.systemFont(ofSize: 20)
@@ -93,9 +110,11 @@ class IRFontSettingView: UIView {
         fontTypeSelectView.titleLabel.textColor = color
         
         increaseBtn.setTitleColor(color, for: .normal)
-        increaseBtn.setTitleColor(color.withAlphaComponent(0.5), for: .highlighted)
+        increaseBtn.setTitleColor(color.withAlphaComponent(0.3), for: .highlighted)
+        increaseBtn.setTitleColor(color.withAlphaComponent(0.3), for: .disabled)
         
         reduceBtn.setTitleColor(color, for: .normal)
-        reduceBtn.setTitleColor(color.withAlphaComponent(0.5), for: .highlighted)
+        reduceBtn.setTitleColor(color.withAlphaComponent(0.3), for: .highlighted)
+        reduceBtn.setTitleColor(color.withAlphaComponent(0.3), for: .disabled)
     }
 }

@@ -48,10 +48,18 @@ class IRReaderConfig: NSObject {
         }
     }
     
-    /// 字体大小
-    static var textSize: CGFloat = 15
+    /// 默认字体大小
+    static var defaultTextSize: CGFloat = 15
+    static let minTextSizeMultiplier: Int = 6
+    static let maxTextSizeMultiplier: Int = 20
     /// 字体大小倍数
-    static var textSizeMultiplier: CGFloat = 1.1
+    static var textSizeMultiplier: Int = {
+        var multiplier = UserDefaults.standard.integer(forKey: kReadTextSizeMultiplier)
+        if multiplier == 0 {
+            multiplier = 10
+        }
+        return multiplier
+    }()
     
     /// 行距
     static var lineSpacing: CGFloat = 5
@@ -65,6 +73,7 @@ class IRReaderConfig: NSObject {
 }
 
 //MARK: - Keys
-let kReadTransitionStyle   = "kReadTransitionStyle"
-let kReadFollowSystemTheme = "kReadFollowSystemTheme"
+let kReadTransitionStyle    = "kReadTransitionStyle"
+let kReadFollowSystemTheme  = "kReadFollowSystemTheme"
+let kReadTextSizeMultiplier = "kReadTextSizeMultiplier"
 

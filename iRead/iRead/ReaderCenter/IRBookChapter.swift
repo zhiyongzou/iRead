@@ -21,8 +21,9 @@ class IRBookChapter: NSObject {
     var title: String?
     /// 章节索引
     var chapterIdx: Int = 1
-    /// 原始 HTML 富文本
-    var htmlAttributedText: NSMutableAttributedString?
+    ///  HTML data
+    var htmlData: Data?
+    var baseUrl: URL?
     
     
     public convenience init(withTocRefrence refrence: FRTocReference, chapterIndex: Int) {
@@ -31,37 +32,50 @@ class IRBookChapter: NSObject {
         self.title = refrence.title
         self.chapterIdx = chapterIndex
         
-        guard let fullHref = refrence.resource?.fullHref else { return }
-        let baseUrl = URL.init(fileURLWithPath: fullHref)
-        guard let htmlData = try? Data.init(contentsOf: baseUrl) else { return }
+        guard let fullHref = refrence.resource?.fullHref else {
+            return
+        }
         
+        let baseUrl = URL.init(fileURLWithPath: fullHref)
+        self.baseUrl = baseUrl
+        
+        guard let htmlData = try? Data.init(contentsOf: baseUrl) else {
+            return
+        }
+        
+        self.htmlData = htmlData
+        let htmlString = self.htmlAttributedString(withData: htmlData)
+        self.pagination(withHtmlAttributedText: htmlString)
+    }
+    
+    func htmlAttributedString(withData htmlData: Data) -> NSMutableAttributedString {
+        
+        guard let baseUrl = self.baseUrl else { return NSMutableAttributedString() }
         let options: [String : Any] = [
             NSBaseURLDocumentOption: baseUrl,
             DTMaxImageSize: IRReaderConfig.pageSzie,
-            NSTextSizeMultiplierDocumentOption: IRReaderConfig.textSizeMultiplier,
+            NSTextSizeMultiplierDocumentOption: (CGFloat(textSizeMultiplier) / 10.0),
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
             DTDefaultLinkColor: "#536FFA",
             DTDefaultTextColor: UIColor.hexColor(textColorHex),
-            DTDefaultFontSize: IRReaderConfig.textSize
+            DTDefaultFontSize: IRReaderConfig.defaultTextSize
         ]
         // as 用法 https://developer.apple.com/swift/blog/?id=23
         // as? 或 as! 向下转到它的子类
         let htmlString = NSAttributedString.init(htmlData: htmlData, options: options, documentAttributes: nil).mutableCopy() as! NSMutableAttributedString
         let tempHtmlString = htmlString.mutableCopy() as? NSMutableAttributedString
         
-        // 段落样式调整
-        tempHtmlString?.enumerateAttribute(.paragraphStyle, in: NSMakeRange(0, htmlString.length), options: [.longestEffectiveRangeNotRequired]) { (value, range, stop) in
-            // is: 检查一个实例是否属于特定子类型
-            if value is NSParagraphStyle {
-                let paragraphStyle: NSMutableParagraphStyle = (value as! NSParagraphStyle).mutableCopy() as! NSMutableParagraphStyle
-                paragraphStyle.paragraphSpacing = IRReaderConfig.paragraphSpacing
-                paragraphStyle.lineSpacing = IRReaderConfig.lineSpacing
-                htmlString.removeAttribute(.paragraphStyle, range: range)
-                htmlString.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
+        tempHtmlString?.enumerateAttributes(in: NSMakeRange(0, htmlString.length), options: [.longestEffectiveRangeNotRequired]) { (value: [NSAttributedString.Key : Any], range, stop) in
+            
+            // 段落样式调整
+            if let paragraphStyle = value[.paragraphStyle] as? NSParagraphStyle {
+                let mutableStyle = paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
+                mutableStyle.paragraphSpacing = IRReaderConfig.paragraphSpacing
+                mutableStyle.lineSpacing = IRReaderConfig.lineSpacing
+                htmlString.addAttribute(.paragraphStyle, value: mutableStyle, range: range)
             }
         }
-        self.htmlAttributedText = htmlString
-        self.pagination(withHtmlAttributedText: htmlString)
+        return htmlString
     }
     
     func updateTextColorHex(_ textColorHex: String) {
@@ -73,8 +87,14 @@ class IRBookChapter: NSObject {
         }
     }
     
-    func updateTextSizeMultiplier(_ textSizeMultiplier: CGFloat) {
+    func updateTextSizeMultiplier(_ textSizeMultiplier: Int) {
         self.textSizeMultiplier = textSizeMultiplier
+        
+        guard let htmlData = self.htmlData else {
+            return
+        }
+        let htmlString = self.htmlAttributedString(withData: htmlData)
+        self.pagination(withHtmlAttributedText: htmlString)
     }
     
     func pagination(withHtmlAttributedText htmlString: NSMutableAttributedString) {
@@ -94,6 +114,7 @@ class IRBookChapter: NSObject {
             if textContent.count > 0 {
                 let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: self.chapterIdx)
                 pageModel.content = content
+                pageModel.range = visibleRange
                 pageCount += 1;
                 pageList.append(pageModel)
             }

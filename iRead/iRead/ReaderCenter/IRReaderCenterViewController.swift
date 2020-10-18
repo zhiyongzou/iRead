@@ -11,7 +11,7 @@ import IRCommonLib
 class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, CMPopTipViewDelegate {
     
     var shouldHideStatusBar = true
-    var book: FRBook!
+    var book: IRBook!
     var pageViewController: IRPageViewController!
     /// 当前阅读章节
     var currentChapter: IRBookChapter?
@@ -28,7 +28,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
    
     //MARK: - Init
     
-    convenience init(withBook book:FRBook) {
+    convenience init(withBook book:IRBook) {
         self.init()
         self.book = book
     }
@@ -284,7 +284,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
         if currentReadingVC == nil {
             currentReadingVC = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
-            if let firstCahpter = book.tableOfContents.first {
+            if let firstCahpter = book.bookMeta.tableOfContents.first {
                 currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
                 currentReadingVC.bookPage = currentChapter?.pageList?.first
             }
@@ -305,7 +305,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         } else {
             if chapterIndex > 0 {
                 chapterIndex -= 1;
-                if let preRefrence = self.book.tableOfContents?[chapterIndex] {
+                if let preRefrence = self.book.bookMeta.tableOfContents?[chapterIndex] {
                     currentChapter = IRBookChapter.init(withTocRefrence: preRefrence, chapterIndex: chapterIndex)
                 }
                 pageModel = currentChapter?.pageList?.last
@@ -327,9 +327,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             pageIndex += 1;
             pageModel = currentChapter?.pageList?[pageIndex]
         } else {
-            if chapterIndex + 1 < self.book.tableOfContents.count {
+            if chapterIndex + 1 < self.book.bookMeta.tableOfContents.count {
                 chapterIndex += 1;
-                if let nextRefrence = self.book.tableOfContents?[chapterIndex] {
+                if let nextRefrence = self.book.bookMeta.tableOfContents?[chapterIndex] {
                     currentChapter = IRBookChapter.init(withTocRefrence: nextRefrence, chapterIndex: chapterIndex)
                 }
                 pageModel = currentChapter?.pageList?.first

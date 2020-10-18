@@ -13,7 +13,7 @@ class IRHomeViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLa
     var collectionView: UICollectionView!
     let sectionEdgeInsetsLR: CGFloat = 40
     let minimumInteritemSpacing: CGFloat = 20
-    var bookList = [FRBook]()
+    var bookList = [IRBook]()
     
     
     override func viewDidLoad() {
@@ -47,7 +47,8 @@ class IRHomeViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLa
         }
         
         if let bookPath = bookPath {
-            guard let book: FRBook = try? epubParser.readEpub(epubPath: bookPath) else { return }
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath) else { return }
+            let book = IRBook.init(bookMeta)
             bookList.append(book)
         }
     }

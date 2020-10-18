@@ -20,7 +20,7 @@ class IRBookChapter: NSObject {
     /// 章节标题
     var title: String?
     /// 章节索引
-    var chapterIdx: Int = 1
+    var chapterIdx: Int = 0
     ///  HTML data
     var htmlData: Data?
     var baseUrl: URL?

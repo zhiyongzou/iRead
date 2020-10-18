@@ -74,11 +74,9 @@ class IRBookCell: UICollectionViewCell {
         return width / bookCoverScale + bookCellBottomHeight
     }
     
-    public var bookModel: FRBook? {
+    public var bookModel: IRBook? {
         willSet {
-            if let coverUrl = newValue?.coverImage?.fullHref {
-                bookCoverView.image = UIImage.init(contentsOfFile: coverUrl)
-            }
+            bookCoverView.image = newValue?.coverImage
         }
     }
 }

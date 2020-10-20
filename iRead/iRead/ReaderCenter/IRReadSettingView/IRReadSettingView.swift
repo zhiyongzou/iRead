@@ -9,7 +9,7 @@
 import UIKit
 import IRCommonLib
 
-protocol IRReadSettingViewDelegate {
+protocol IRReadSettingViewDelegate: AnyObject {
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle)
     
     func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel)
@@ -19,13 +19,15 @@ protocol IRReadSettingViewDelegate {
 
 class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSettingViewDelegate, IRFontSettingViewDelegate {
         
-    var deleage: IRReadSettingViewDelegate?
+    weak var deleage: IRReadSettingViewDelegate?
     
+    var fontSelectView: IRFontSelectView?
     var contentView = UIView()
     lazy var scrollSettingView = IRSwitchSettingView()
     lazy var colorSettingView = IRReadColorSettingView()
     lazy var fontSettingView = IRFontSettingView()
     lazy var brightnessSettingView = IRBrightnessSettingView()
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,6 +37,15 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.setupSubviews()
+    }
+    
+    override func willMove(toWindow newWindow: UIWindow?) {
+        
+        if newWindow == nil && fontSelectView?.superview != nil {
+            fontSelectView?.dissmissAnimated(false)
+        }
+        
+        super.willMove(toWindow: newWindow)
     }
     
     //MARK: - Private
@@ -82,49 +93,19 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     
     func updateViewBackgroungColor(byPageColorHex pageHex: String) {
         
-        var selfBgColor: UIColor!
-        let textColor = IRReaderConfig.textColor
-        var bgColor: UIColor
-        var separatorColor: UIColor
+        contentView.backgroundColor = IRReaderConfig.pageColor
+        self.backgroundColor = IRReaderConfig.bgColor
         
-        switch pageHex {
-        case IRReadPageColorHex.HexFFFFFF.rawValue: do {
-            bgColor = UIColor.white
-            selfBgColor = IRSeparatorColor
-            separatorColor = UIColor.init(white: 0, alpha: 0.05)
-            }
-        case IRReadPageColorHex.HexC9C196.rawValue: do {
-            bgColor = UIColor.hexColor("FCF8E9")
-            selfBgColor = UIColor.hexColor("E5E2D2")
-            separatorColor = UIColor.init(white: 0, alpha: 0.05)
-            }
-        case IRReadPageColorHex.Hex505050.rawValue: do {
-            bgColor = UIColor.hexColor("434343")
-            selfBgColor = UIColor.hexColor("323232")
-            separatorColor = UIColor.init(white: 1, alpha: 0.05)
-            }
-        case IRReadPageColorHex.Hex000000.rawValue: do {
-            bgColor = UIColor.hexColor("282828")
-            selfBgColor = UIColor.black
-            separatorColor = UIColor.init(white: 1, alpha: 0.05)
-            }
-        default:
-            bgColor = UIColor.white
-            separatorColor = IRSeparatorColor
-            selfBgColor = IRSeparatorColor
-        }
+        fontSelectView?.backgroundColor = IRReaderConfig.bgColor
+        fontSettingView.backgroundColor = IRReaderConfig.bgColor
+        scrollSettingView.backgroundColor = IRReaderConfig.bgColor
+        brightnessSettingView.backgroundColor = IRReaderConfig.bgColor
+        colorSettingView.backgroundColor = IRReaderConfig.bgColor
         
-        contentView.backgroundColor = selfBgColor
-        self.backgroundColor = bgColor
-        
-        fontSettingView.backgroundColor = bgColor
-        scrollSettingView.backgroundColor = bgColor
-        brightnessSettingView.backgroundColor = bgColor
-        colorSettingView.backgroundColor = bgColor
-        
-        fontSettingView.updateTextColor(textColor, separatorColor:separatorColor)
-        colorSettingView.updateTextColor(textColor, separatorColor:separatorColor)
-        scrollSettingView.titleLabel.textColor = textColor
+        fontSettingView.updateTextColor(IRReaderConfig.textColor, separatorColor:IRReaderConfig.separatorColor)
+        colorSettingView.updateTextColor(IRReaderConfig.textColor, separatorColor:IRReaderConfig.separatorColor)
+        scrollSettingView.titleLabel.textColor = IRReaderConfig.textColor
+        fontSelectView?.updateTextColor(IRReaderConfig.textColor, separatorColor: IRReaderConfig.separatorColor)
     }
     
     //MARK: - Public
@@ -145,7 +126,6 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     //MARK: - IRReadColorSettingViewDelegate
     func readColorSettingView(_ view: IRReadColorSettingView, didChangeSelectColor color: IRReadColorModel) {
         IRReaderConfig.pageColorHex = color.pageColorHex
-        IRReaderConfig.textColorHex = color.textColorHex
         self.updateViewBackgroungColor(byPageColorHex: color.pageColorHex)
         self.deleage?.readSettingView(self, didChangeSelectColor: color)
     }
@@ -158,5 +138,19 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     func fontSettingView(_ view: IRFontSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
         self.deleage?.readSettingView(self, didChangeTextSizeMultiplier: textSizeMultiplier)
         UserDefaults.standard.set(textSizeMultiplier, forKey: kReadTextSizeMultiplier)
+    }
+    
+    func fontSettingViewDidClickFontSelect(_ view: IRFontSettingView) {
+        
+        if fontSelectView == nil {
+            fontSelectView = IRFontSelectView()
+            fontSelectView?.backgroundColor = self.backgroundColor
+        }
+        
+        self.addSubview(fontSelectView!)
+        fontSelectView?.frame = CGRect.init(x: self.width, y: 0, width: self.width, height: self.height)
+        UIView.animate(withDuration: 0.25) {
+            self.fontSelectView?.x = 0
+        }
     }
 }

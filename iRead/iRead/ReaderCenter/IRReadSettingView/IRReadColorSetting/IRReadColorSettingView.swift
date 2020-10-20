@@ -9,7 +9,7 @@
 import UIKit
 import IRCommonLib
 
-protocol IRReadColorSettingViewDelegate {
+protocol IRReadColorSettingViewDelegate: AnyObject {
     
     func readColorSettingView(_ view: IRReadColorSettingView, didChangeSelectColor color: IRReadColorModel)
     
@@ -26,24 +26,25 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
     lazy var systemFollowView = IRSwitchSettingView()
     var collectionView: UICollectionView!
     var currentSelectCell: IRReadColorCell?
-    var delegate: IRReadColorSettingViewDelegate?
+    
+    weak var delegate: IRReadColorSettingViewDelegate?
     
     var colorLsit: [IRReadColorModel] = {
         
         var list = [IRReadColorModel]()
-        var color_FFFFFF = IRReadColorModel.init(textHex: "CD000000", pageHex: IRReadPageColorHex.HexFFFFFF.rawValue, borderColor: UIColor.hexColor("000000"))
+        var color_FFFFFF = IRReadColorModel.init(pageHex: IRReadPageColorHex.HexF8F8F8.rawValue, borderColor: UIColor.hexColor("000000"))
         color_FFFFFF.isSelect = color_FFFFFF.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_FFFFFF)
         
-        var color_C9C196 = IRReadColorModel.init(textHex: "CD000000", pageHex: IRReadPageColorHex.HexC9C196.rawValue, borderColor: UIColor.hexColor("AF8900"))
+        var color_C9C196 = IRReadColorModel.init(pageHex: IRReadPageColorHex.HexE9E6D7.rawValue, borderColor: UIColor.hexColor("AF8900"))
         color_C9C196.isSelect = color_C9C196.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_C9C196)
         
-        var color_505050 = IRReadColorModel.init(textHex: "CDFFFFFF", pageHex: IRReadPageColorHex.Hex505050.rawValue, borderColor: UIColor.hexColor("FFFFFF"))
+        var color_505050 = IRReadColorModel.init(pageHex: IRReadPageColorHex.Hex373737.rawValue, borderColor: UIColor.hexColor("FFFFFF"))
         color_505050.isSelect = color_505050.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_505050)
         
-        var color_000000 = IRReadColorModel.init(textHex: "CDFFFFFF", pageHex: IRReadPageColorHex.Hex000000.rawValue, borderColor: UIColor.hexColor("FFFFFF"))
+        var color_000000 = IRReadColorModel.init(pageHex: IRReadPageColorHex.Hex000000.rawValue, borderColor: UIColor.hexColor("FFFFFF"))
         color_000000.isSelect = color_000000.pageColorHex == IRReaderConfig.pageColorHex
         list.append(color_000000)
         

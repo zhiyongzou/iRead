@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol IRSwitchSettingViewDeleagte {
+protocol IRSwitchSettingViewDeleagte: AnyObject {
     func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool)
 }
 
@@ -16,7 +16,7 @@ class IRSwitchSettingView: UIView {
 
     static let viewHeight: CGFloat = 40
     
-    var delegate: IRSwitchSettingViewDeleagte?
+    weak var delegate: IRSwitchSettingViewDeleagte?
     
     var titleLabel = UILabel()
     var scrollSwitch = UISwitch()

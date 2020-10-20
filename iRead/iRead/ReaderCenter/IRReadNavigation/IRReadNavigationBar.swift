@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import IRCommonLib
 
-protocol IRReadNavigationBarDelegate: NSObjectProtocol {
+protocol IRReadNavigationBarDelegate: AnyObject {
     
     func readNavigationBar(didClickBack bar: IRReadNavigationBar)
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar)
@@ -24,7 +24,7 @@ class IRReadNavigationBar: UIView {
     var chapterList: UIButton!
     var readSetting: UIButton!
     var bottomLine: UIView!
-    var delegate: IRReadNavigationBarDelegate?
+    weak var delegate: IRReadNavigationBarDelegate?
     
     //MARK: - Override
     
@@ -43,7 +43,7 @@ class IRReadNavigationBar: UIView {
     func setupSubviews() {
         
         backButton = UIButton.init(type: .custom)
-        backButton.setImage(UIImage.init(named: "arrow_back"), for: .normal)
+        backButton.setImage(UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysTemplate), for: .normal)
         backButton.addTarget(self, action: #selector(didClickBackButton), for: .touchUpInside)
         self.addSubview(backButton)
         backButton.snp.makeConstraints { (make) -> Void in
@@ -53,7 +53,7 @@ class IRReadNavigationBar: UIView {
         }
         
         chapterList = UIButton.init(type: .custom)
-        chapterList.setImage(UIImage.init(named: "bar_chapter_list"), for: .normal)
+        chapterList.setImage(UIImage.init(named: "bar_chapter_list")?.withRenderingMode(.alwaysTemplate), for: .normal)
         chapterList.addTarget(self, action: #selector(didClickChapterListButton), for: .touchUpInside)
         self.addSubview(chapterList)
         chapterList.snp.makeConstraints { (make) -> Void in
@@ -63,7 +63,7 @@ class IRReadNavigationBar: UIView {
         }
         
         readSetting = UIButton.init(type: .custom)
-        readSetting.setImage(UIImage.init(named: "bar_read_setting"), for: .normal)
+        readSetting.setImage(UIImage.init(named: "bar_read_setting")?.withRenderingMode(.alwaysTemplate), for: .normal)
         readSetting.addTarget(self, action: #selector(didClickReadSettingButton), for: .touchUpInside)
         self.addSubview(readSetting)
         readSetting.snp.makeConstraints { (make) -> Void in
@@ -87,9 +87,6 @@ class IRReadNavigationBar: UIView {
         
         bottomLine.backgroundColor = color.withAlphaComponent(0.08)
         self.tintColor = color
-        readSetting.setImage(readSetting.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
-        chapterList.setImage(chapterList.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
-        backButton.setImage(backButton.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
     //MARK: - Action

@@ -9,19 +9,21 @@
 import UIKit
 import IRCommonLib
 
-protocol IRFontSettingViewDelegate {
+protocol IRFontSettingViewDelegate: AnyObject {
     
     func fontSettingView(_ view: IRFontSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int)
+    func fontSettingViewDidClickFontSelect(_ view: IRFontSettingView)
 }
 
-class IRFontSettingView: UIView {
-
+class IRFontSettingView: UIView, IRArrowSettingViewDelegate {
+    
     let multiplierSacle: Int = 2
     static let bottomSapcing: CGFloat = 5
     static let viewHeight: CGFloat = IRArrowSettingView.viewHeight + 40
     static let totalHeight = bottomSapcing + viewHeight
     
-    var delegate: IRFontSettingViewDelegate?
+    weak var delegate: IRFontSettingViewDelegate?
+    
     var fontTypeSelectView = IRArrowSettingView()
     lazy var bottomLine = UIView()
     lazy var midLine = UIView()
@@ -58,6 +60,7 @@ class IRFontSettingView: UIView {
         
         fontTypeSelectView.titleLabel.text = "字体"
         fontTypeSelectView.detailText = "宋体"
+        fontTypeSelectView.delegate = self
         self.addSubview(fontTypeSelectView)
         fontTypeSelectView.snp.makeConstraints { (make) in
             make.bottom.right.left.equalTo(self)
@@ -116,5 +119,10 @@ class IRFontSettingView: UIView {
         reduceBtn.setTitleColor(color, for: .normal)
         reduceBtn.setTitleColor(color.withAlphaComponent(0.3), for: .highlighted)
         reduceBtn.setTitleColor(color.withAlphaComponent(0.3), for: .disabled)
+    }
+    
+    // MARK: - IRArrowSettingViewDelegate
+    func didClickArrowSettingView(_ view: IRArrowSettingView) {
+        self.delegate?.fontSettingViewDidClickFontSelect(self)
     }
 }

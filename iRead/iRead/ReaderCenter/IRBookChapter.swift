@@ -53,11 +53,12 @@ class IRBookChapter: NSObject {
         guard let baseUrl = self.baseUrl else { return NSMutableAttributedString() }
         let options: [String : Any] = [
             NSBaseURLDocumentOption: baseUrl,
+            DTDefaultFontName: IRReaderConfig.fontName,
             DTMaxImageSize: IRReaderConfig.pageSzie,
             NSTextSizeMultiplierDocumentOption: (CGFloat(textSizeMultiplier) / 10.0),
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
             DTDefaultLinkColor: "#536FFA",
-            DTDefaultTextColor: UIColor.hexColor(textColorHex),
+            DTDefaultTextColor: UIColor.hexColor(textColorHex!),
             DTDefaultFontSize: IRReaderConfig.defaultTextSize
         ]
         // as 用法 https://developer.apple.com/swift/blog/?id=23

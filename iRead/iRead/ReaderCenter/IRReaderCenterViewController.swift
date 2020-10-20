@@ -30,6 +30,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     convenience init(withBook book:IRBook) {
         self.init()
+        _ = IRReaderConfig.initOnceReadColorConfig
         self.book = book
     }
     

@@ -9,6 +9,10 @@
 import UIKit
 import IRHexColor
 
+protocol IRArrowSettingViewDelegate: AnyObject {
+    func didClickArrowSettingView(_ view: IRArrowSettingView)
+}
+
 class IRArrowSettingView: UIView {
 
     static let viewHeight: CGFloat = 40
@@ -17,6 +21,7 @@ class IRArrowSettingView: UIView {
     var arrowView = UIImageView()
     var detailLabel: UILabel?
     
+    weak var delegate: IRArrowSettingViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,7 +34,8 @@ class IRArrowSettingView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.backgroundColor = UIColor.init(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 1)
+        self.delegate?.didClickArrowSettingView(self)
+        self.backgroundColor = UIColor.init(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 0.5)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -48,7 +54,7 @@ class IRArrowSettingView: UIView {
         detailLabel = UILabel()
         detailLabel?.textAlignment = .right
         detailLabel?.font = UIFont.systemFont(ofSize: 15)
-        detailLabel?.textColor = UIColor.hexColor("666666")
+        detailLabel?.textColor = UIColor.hexColor("BABABA")
         self.addSubview(detailLabel!)
         detailLabel?.snp.makeConstraints { (make) in
             make.right.equalTo(arrowView.snp.left).offset(-3)
@@ -68,7 +74,8 @@ class IRArrowSettingView: UIView {
             make.centerY.equalTo(self)
         }
         
-        arrowView.image = UIImage.init(named: "arrow_grey_right")
+        arrowView.image = UIImage.init(named: "arrow_grey_right")?.withRenderingMode(.alwaysTemplate)
+        arrowView.tintColor = UIColor.hexColor("BABABA")
         self.addSubview(arrowView)
         arrowView.snp.makeConstraints { (make) in
             make.width.height.equalTo(16)

@@ -116,6 +116,7 @@ class IRBookChapter: NSObject {
                 let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: self.chapterIdx)
                 pageModel.content = content
                 pageModel.range = visibleRange
+                pageModel.textColorHex = textColorHex
                 pageCount += 1;
                 pageList.append(pageModel)
             }

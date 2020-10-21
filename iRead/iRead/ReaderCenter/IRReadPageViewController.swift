@@ -18,7 +18,7 @@ class IRReadPageViewController: UIViewController {
         return pageLabel
     }()
 
-    var bookPage: IRBookPage? {
+    var pageModel: IRBookPage? {
         willSet {
             self.pageLabel.attributedString = newValue?.content
         }
@@ -33,6 +33,17 @@ class IRReadPageViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.view.addSubview(pageLabel)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if pageModel?.textColorHex != IRReaderConfig.textColorHex {
+            pageModel?.textColorHex = IRReaderConfig.textColorHex
+            pageModel?.updateTextColor(IRReaderConfig.textColor)
+            self.pageLabel.attributedString = pageModel?.content
+        }
+        self.view.backgroundColor = IRReaderConfig.pageColor
     }
     
     override func viewDidLayoutSubviews() {

@@ -10,8 +10,9 @@ import UIKit
 
 class IRBookPage: NSObject {
     
-    lazy var range = NSMakeRange(0, 0)
-    var content: NSAttributedString?
+    var textColorHex: String!
+    var range: NSRange!
+    var content: NSAttributedString!
     var pageIdx: Int = 0
     var chapterIdx: Int = 0
     
@@ -24,7 +25,6 @@ class IRBookPage: NSObject {
     
     func updateTextColor(_ textColor: UIColor) {
 
-        guard let content = self.content else { return }
         let mutableContent: NSMutableAttributedString = content.mutableCopy() as! NSMutableAttributedString
         let tempContent = mutableContent.mutableCopy() as! NSMutableAttributedString
         tempContent.enumerateAttributes(in: NSMakeRange(0, tempContent.length), options: [.longestEffectiveRangeNotRequired]) { (value: [NSAttributedString.Key : Any], range, stop) in

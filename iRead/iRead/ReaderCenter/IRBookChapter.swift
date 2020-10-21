@@ -11,10 +11,12 @@ import IRCommonLib
 
 class IRBookChapter: NSObject {
     
+    /// 字体
+    lazy var fontName = IRReaderConfig.fontName?.rawValue
     /// 文字颜色
-    var textColorHex = IRReaderConfig.textColorHex
+    lazy var textColorHex = IRReaderConfig.textColorHex
     /// 文字大小
-    var textSizeMultiplier = IRReaderConfig.textSizeMultiplier
+    lazy var textSizeMultiplier = IRReaderConfig.textSizeMultiplier
     /// 章节页列表
     var pageList: [IRBookPage]?
     /// 章节标题
@@ -53,7 +55,7 @@ class IRBookChapter: NSObject {
         guard let baseUrl = self.baseUrl else { return NSMutableAttributedString() }
         let options: [String : Any] = [
             NSBaseURLDocumentOption: baseUrl,
-            DTDefaultFontName: IRReaderConfig.fontName,
+            DTDefaultFontName: IRReaderConfig.fontName!.rawValue,
             DTMaxImageSize: IRReaderConfig.pageSzie,
             NSTextSizeMultiplierDocumentOption: (CGFloat(textSizeMultiplier) / 10.0),
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
@@ -75,8 +77,33 @@ class IRBookChapter: NSObject {
                 mutableStyle.lineSpacing = IRReaderConfig.lineSpacing
                 htmlString.addAttribute(.paragraphStyle, value: mutableStyle, range: range)
             }
+            
+            // 字体调整
+            if let value = value[.font] as? UIFont {
+                if value.fontName != IRReaderConfig.fontName!.rawValue {
+                    let font = UIFont.init(name: IRReaderConfig.fontName!.rawValue, size: value.pointSize) ?? value
+                    htmlString.addAttribute(.font, value: font, range: range)
+                }
+            }
         }
         return htmlString
+    }
+    
+    func updateTextFontName(_ fontName: String) {
+        self.fontName = fontName
+        
+        guard let htmlData = self.htmlData else {
+            return
+        }
+        let htmlString = self.htmlAttributedString(withData: htmlData)
+        let tempHtmlString = htmlString.mutableCopy() as? NSMutableAttributedString
+        tempHtmlString?.enumerateAttribute(.font, in: NSMakeRange(0, htmlString.length), options: [.longestEffectiveRangeNotRequired], using: { (value, range, stop) in
+            if let value = value as? UIFont {
+                let font = UIFont.init(name: fontName, size: value.pointSize) ?? value
+                htmlString.addAttribute(.font, value: font, range: range)
+            }
+        })
+        self.pagination(withHtmlAttributedText: htmlString)
     }
     
     func updateTextColorHex(_ textColorHex: String) {

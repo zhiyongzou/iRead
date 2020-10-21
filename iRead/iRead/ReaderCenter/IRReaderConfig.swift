@@ -15,6 +15,28 @@ public enum IRReadPageColorHex: String {
     case Hex000000 = "000000"
 }
 
+public enum IRReadTextFontName: String {
+    case PingFangSC = "PingFangSC-Regular"
+    case STSong     = "STSong"
+    case STKaitiSC  = "STKaitiSC-Regular"
+    case STYuanti   = "STYuanti-SC-Regular"
+    case STHeitiSC  = "STHeitiSC-Medium"
+    
+    func displayName() -> String {
+        if self.rawValue == IRReadTextFontName.PingFangSC.rawValue {
+            return "苹方"
+        } else if self.rawValue == IRReadTextFontName.STSong.rawValue {
+            return "宋体"
+        } else if self.rawValue == IRReadTextFontName.STKaitiSC.rawValue {
+            return "楷体"
+        } else if self.rawValue == IRReadTextFontName.STYuanti.rawValue {
+            return "圆体"
+        } else {
+            return "黑体"
+        }
+    }
+}
+
 public enum IRTransitionStyle: Int {
     // 横向仿真翻页
     case pageCurl = 0
@@ -51,7 +73,12 @@ class IRReaderConfig: NSObject {
         }
     }
     
-    static var fontName = "PingFangSC-Regular"
+    /// 字体类型名
+    static var fontName = IRReadTextFontName(rawValue: UserDefaults.standard.string(forKey: kReadTextFontName) ?? IRReadTextFontName.PingFangSC.rawValue) {
+        willSet {
+            UserDefaults.standard.set(newValue?.rawValue, forKey: kReadTextFontName)
+        }
+    }
     
     /// 默认字体大小
     static var defaultTextSize: CGFloat = 15
@@ -111,4 +138,5 @@ let kReadTransitionStyle    = "kReadTransitionStyle"
 let kReadFollowSystemTheme  = "kReadFollowSystemTheme"
 let kReadTextSizeMultiplier = "kReadTextSizeMultiplier"
 let kReadPageColorHex       = "kReadPageColorHex"
+let kReadTextFontName       = "kReadTextFontName"
 

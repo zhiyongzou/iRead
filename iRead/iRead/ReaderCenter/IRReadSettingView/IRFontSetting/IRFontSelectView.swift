@@ -10,22 +10,28 @@ import UIKit
 import SnapKit
 import IRCommonLib
 
+protocol IRFontSelectViewDelegate: AnyObject {
+    func fontSelectView(_ view: IRFontSelectView, didSelectFontName fontName: String)
+}
+
 class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     let topBarHeight: CGFloat = 45
+    
+    weak var delegate: IRFontSelectViewDelegate?
+    
     var backButton = UIButton.init(type: .custom)
     var titleLabel = UILabel()
     var separatorLine = UIView()
-    
     var collectionView: UICollectionView!
     
     var fontList = {
         
-        return [IRFontModel.init(dispalyName: "苹方", fontName: "PingFangSC-Regular"),
-                IRFontModel.init(dispalyName: "宋体", fontName: "STSongti-SC-Regular"),
-                IRFontModel.init(dispalyName: "楷体", fontName: "STKaitiSC-Regular"),
-                IRFontModel.init(dispalyName: "圆体", fontName: "STYuanti-SC-Regular"),
-                IRFontModel.init(dispalyName: "娃娃体", fontName: "DFWaWaSC-W5")]
+        return [IRFontModel.init(dispalyName: IRReadTextFontName.PingFangSC.displayName(), fontName: IRReadTextFontName.PingFangSC.rawValue),
+                IRFontModel.init(dispalyName: IRReadTextFontName.STSong.displayName(), fontName: IRReadTextFontName.STSong.rawValue),
+                IRFontModel.init(dispalyName: IRReadTextFontName.STKaitiSC.displayName(), fontName: IRReadTextFontName.STKaitiSC.rawValue),
+                IRFontModel.init(dispalyName: IRReadTextFontName.STYuanti.displayName(), fontName: IRReadTextFontName.STYuanti.rawValue),
+                IRFontModel.init(dispalyName: IRReadTextFontName.STHeitiSC.displayName(), fontName: IRReadTextFontName.STHeitiSC.rawValue)]
     }()
     
 
@@ -102,7 +108,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        self.delegate?.fontSelectView(self, didSelectFontName: fontList[indexPath.item].fontName)
     }
     
     //MARK: - Action

@@ -143,6 +143,13 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func readSettingView(_ view: IRReadSettingView, didSelectFontName fontName: String) {
         
+        let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
+        let currentChapter = IRBookChapter.init(withTocRefrence: book.bookMeta.tableOfContents[chapterIndex], chapterIndex: chapterIndex)
+        currentChapter.updateTextFontName(fontName)
+        let pageModel = self.currentReadingVC.pageModel!
+        let pageCount = currentChapter.pageList!.count
+        let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
+        self.currentReadingVC.pageModel = currentChapter.pageList?[pageIdx]
     }
     
     //MARK: - UIPageViewControllerDelegate

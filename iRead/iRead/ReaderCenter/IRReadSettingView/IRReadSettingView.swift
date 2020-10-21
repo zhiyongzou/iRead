@@ -15,10 +15,12 @@ protocol IRReadSettingViewDelegate: AnyObject {
     func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel)
     
     func readSettingView(_ view: IRReadSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int)
+    
+    func readSettingView(_ view: IRReadSettingView, didSelectFontName fontName: String)
 }
 
-class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSettingViewDelegate, IRFontSettingViewDelegate {
-        
+class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSettingViewDelegate, IRFontSettingViewDelegate, IRFontSelectViewDelegate {
+    
     weak var deleage: IRReadSettingViewDelegate?
     
     var fontSelectView: IRFontSelectView?
@@ -116,6 +118,13 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         }
     }
     
+    //MARK: - IRFontSelectViewDelegate
+    func fontSelectView(_ view: IRFontSelectView, didSelectFontName fontName: String) {
+        IRReaderConfig.fontName = IRReadTextFontName(rawValue: fontName)
+        fontSettingView.fontTypeSelectView.detailText = IRReaderConfig.fontName?.displayName()
+        self.deleage?.readSettingView(self, didSelectFontName: fontName)
+    }
+    
     //MARK: - IRSwitchSettingViewDeleagte
     func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
         IRReaderConfig.transitionStyle = isOn ? .scroll : .pageCurl
@@ -144,6 +153,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         
         if fontSelectView == nil {
             fontSelectView = IRFontSelectView()
+            fontSelectView?.delegate = self
             fontSelectView?.backgroundColor = self.backgroundColor
         }
         

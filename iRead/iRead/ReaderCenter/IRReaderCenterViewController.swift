@@ -39,7 +39,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.updateReadPageSzie()
-        self.setupPageViewController()
+        self.setupPageViewControllerWithPageModel(nil)
         self.addNavigateTapGesture()
     }
     
@@ -120,11 +120,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         let pageModel = self.currentReadingVC.pageModel!
         let pageCount = currentChapter.pageList!.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
-        self.currentReadingVC.pageModel = currentChapter.pageList?[pageIdx]
+        self.setupPageViewControllerWithPageModel(currentChapter.pageList?[pageIdx])
     }
     
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
-        self.setupPageViewController()
+        self.setupPageViewControllerWithPageModel(self.currentReadingVC.pageModel)
     }
     
     func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel) {
@@ -149,7 +149,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         let pageModel = self.currentReadingVC.pageModel!
         let pageCount = currentChapter.pageList!.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
-        self.currentReadingVC.pageModel = currentChapter.pageList?[pageIdx]
+        self.setupPageViewControllerWithPageModel(currentChapter.pageList?[pageIdx])
     }
     
     //MARK: - UIPageViewControllerDelegate
@@ -266,7 +266,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         IRReaderConfig.pageSzie = CGSize.init(width: width, height: height)
     }
     
-    func setupPageViewController() {
+    /// 设置页面控制器
+    /// - Parameter pageModel: 展示页，nil 则展示第一章第一页
+    func setupPageViewControllerWithPageModel(_ pageModel: IRBookPage?) {
         
         if let pageViewController = self.pageViewController {
             pageViewController.willMove(toParent: nil)
@@ -296,11 +298,17 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
         if currentReadingVC == nil {
             currentReadingVC = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+        }
+        
+        if pageModel == nil {
             if let firstCahpter = book.bookMeta.tableOfContents.first {
                 let currentChapter = IRBookChapter.init(withTocRefrence: firstCahpter, chapterIndex: 0)
                 currentReadingVC.pageModel = currentChapter.pageList?.first
             }
+        } else {
+            currentReadingVC.pageModel = pageModel
         }
+        
         pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
     }
     

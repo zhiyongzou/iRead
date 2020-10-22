@@ -17,7 +17,7 @@ public enum IRReadPageColorHex: String {
 
 public enum IRReadTextFontName: String {
     case PingFangSC = "PingFangSC-Regular"
-    case STSong     = "STSong"
+    case STSong     = "STSongti-SC-Regular"
     case STKaitiSC  = "STKaitiSC-Regular"
     case STYuanti   = "STYuanti-SC-Regular"
     case STHeitiSC  = "STHeitiSC-Medium"
@@ -74,9 +74,12 @@ class IRReaderConfig: NSObject {
     }
     
     /// 字体类型名
-    static var fontName = IRReadTextFontName(rawValue: UserDefaults.standard.string(forKey: kReadTextFontName) ?? IRReadTextFontName.PingFangSC.rawValue) {
+    static var fontName: IRReadTextFontName = {
+        let font: IRReadTextFontName = IRReadTextFontName(rawValue: UserDefaults.standard.string(forKey: kReadTextFontName) ?? IRReadTextFontName.PingFangSC.rawValue) ?? IRReadTextFontName.PingFangSC
+        return font
+    }() {
         willSet {
-            UserDefaults.standard.set(newValue?.rawValue, forKey: kReadTextFontName)
+            UserDefaults.standard.set(newValue.rawValue, forKey: kReadTextFontName)
         }
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct IRFontModel {
+class IRFontModel: NSObject {
     
     var dispalyName: String
     var fontName: String

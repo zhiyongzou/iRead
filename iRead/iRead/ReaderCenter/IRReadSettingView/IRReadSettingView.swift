@@ -121,11 +121,11 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     //MARK: - IRFontSelectViewDelegate
     func fontSelectView(_ view: IRFontSelectView, didSelectFontName fontName: String) {
         
-        if IRReaderConfig.fontName?.rawValue == fontName {
+        if IRReaderConfig.fontName.rawValue == fontName {
             return
         }
-        IRReaderConfig.fontName = IRReadTextFontName(rawValue: fontName)
-        fontSettingView.fontTypeSelectView.detailText = IRReaderConfig.fontName?.displayName()
+        IRReaderConfig.fontName = IRReadTextFontName(rawValue: fontName)!
+        fontSettingView.fontTypeSelectView.detailText = IRReaderConfig.fontName.displayName()
         self.deleage?.readSettingView(self, didSelectFontName: fontName)
     }
     

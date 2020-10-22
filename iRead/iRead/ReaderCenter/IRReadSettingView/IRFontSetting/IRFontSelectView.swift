@@ -102,7 +102,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let fontCell: IRFontSelectCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRFontSelectCell", for: indexPath) as! IRFontSelectCell
         fontCell.fontModel = fontList[indexPath.item]
-        fontCell.isSelected = fontCell.fontModel?.dispalyName == IRReaderConfig.fontName?.displayName()
+        fontCell.isSelected = fontCell.fontModel?.dispalyName == IRReaderConfig.fontName.displayName()
         if fontCell.isSelected {
             currentSelectIndex = indexPath
         }
@@ -128,8 +128,6 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
             fontCell.isSelected = true
             
             self.delegate?.fontSelectView(self, didSelectFontName: fontList[indexPath.item].fontName)
-        } else {
-            // download font
         }
     }
     

@@ -10,13 +10,31 @@
 import UIKit
 import IRCommonLib
 
+protocol IRFontDownloadDelegate: AnyObject {
+    
+    func fontDownloadDidBegin(_ downloader: IRFontDownload)
+    
+    func fontDownloadDidFinish(_ downloader: IRFontDownload)
+    
+    func fontDownloadDidFail(_ downloader: IRFontDownload, error: Error?)
+    
+    func fontDownloadDownloading(_ downloader: IRFontDownload, progress: Double)
+}
+
 class IRFontDownload: NSObject {
     
-    var stop = true
+    var begin = true {
+        willSet {
+            stop = !newValue
+        }
+    }
+    var stop = false
+    
+    weak var delegate: IRFontDownloadDelegate?
     
     func downloadFontWithName(_ fontName: String) {
         
-        IRDebugLog(fontName)
+        IRDebugLog("Download \(fontName)")
         
         // Create a dictionary with the font's PostScript name.
         let attributes = [kCTFontNameAttribute : fontName] as CFDictionary
@@ -33,42 +51,45 @@ class IRFontDownload: NSObject {
         CTFontDescriptorMatchFontDescriptorsWithProgressHandler(descs, nil) { (state, progressParamater) -> Bool in
             
             let progressValue = (progressParamater as Dictionary)[kCTFontDescriptorMatchingPercentage]?.doubleValue
-            
             switch state {
-            case .didBegin: do {
-                IRDebugLog("didBegin")
-            }
-            
-            case .didMatch: do {
-                IRDebugLog("didMatch")
-            }
-                
-            case .didFinish: do {
-                IRDebugLog("didFinish")
-            }
-                
-            case .willBeginDownloading: do {
-                IRDebugLog("willBeginDownloading")
-            }
-            case .didFinishDownloading: do {
-                IRDebugLog("didFinishDownloading")
-            }
-                
-            case .downloading: do {
-                IRDebugLog("downloading#####\(progressValue ?? 0.0)")
-            }
-                
-            case .didFailWithError:
-                if let error = (progressParamater as Dictionary)[kCTFontDescriptorMatchingError] as? NSError {
-                    print(error.description)
-                } else {
-                    print("ERROR MESSAGE IS NOT AVAILABLE")
+                case .didBegin: do {
+                    OperationQueue.main.addOperation {
+                        self.delegate?.fontDownloadDidBegin(self)
+                    }
                 }
-                
-            default: print(String(reflecting: state))
+
+                case .didFinish: do {
+                    OperationQueue.main.addOperation {
+                        self.delegate?.fontDownloadDidFinish(self)
+                    }
+                }
+
+                case .downloading: do {
+                    OperationQueue.main.addOperation {
+                        self.delegate?.fontDownloadDownloading(self, progress: progressValue ?? 0)
+                    }
+                }
+                    
+                case .didFailWithError: do {
+                    if let error = (progressParamater as Dictionary)[kCTFontDescriptorMatchingError] as? NSError {
+                        OperationQueue.main.addOperation {
+                            self.delegate?.fontDownloadDidFail(self, error: error)
+                        }
+                    } else {
+                        print("ERROR MESSAGE IS NOT AVAILABLE")
+                    }
+                }
+                    
+                default: do {
+                    IRDebugLog(String(reflecting: state))
+                }
             }
             
-            return self.stop
+            if self.stop {
+                return false
+            }
+            
+            return true
         }
     }
 }

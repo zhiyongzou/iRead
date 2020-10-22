@@ -24,6 +24,8 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     var titleLabel = UILabel()
     var separatorLine = UIView()
     var collectionView: UICollectionView!
+    var currentSelectIndex: IndexPath?
+    
     
     var fontList = {
         
@@ -58,7 +60,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
         
         titleLabel.text = "字体"
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.systemFont(ofSize: 18)
+        titleLabel.font = UIFont.systemFont(ofSize: 20)
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(backButton)
@@ -100,6 +102,10 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let fontCell: IRFontSelectCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRFontSelectCell", for: indexPath) as! IRFontSelectCell
         fontCell.fontModel = fontList[indexPath.item]
+        fontCell.isSelected = fontCell.fontModel?.dispalyName == IRReaderConfig.fontName?.displayName()
+        if fontCell.isSelected {
+            currentSelectIndex = indexPath
+        }
         return fontCell
     }
 
@@ -108,7 +114,23 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.fontSelectView(self, didSelectFontName: fontList[indexPath.item].fontName)
+        
+        collectionView.deselectItem(at: indexPath, animated: false)
+        
+        let font = fontList[indexPath.item]
+        if font.isDownload {
+            if currentSelectIndex != nil {
+                let fontCell: IRFontSelectCell = collectionView.cellForItem(at: currentSelectIndex!) as! IRFontSelectCell
+                fontCell.isSelected = false
+            }
+            currentSelectIndex = indexPath
+            let fontCell: IRFontSelectCell = collectionView.cellForItem(at: currentSelectIndex!) as! IRFontSelectCell
+            fontCell.isSelected = true
+            
+            self.delegate?.fontSelectView(self, didSelectFontName: fontList[indexPath.item].fontName)
+        } else {
+            // download font
+        }
     }
     
     //MARK: - Action

@@ -17,6 +17,6 @@ struct IRFontModel {
     init(dispalyName: String, fontName: String) {
         self.dispalyName = dispalyName
         self.fontName = fontName
-        self.isDownload = UIFont.init(name: fontName, size: 12) != nil
+        self.isDownload = UIFont.init(name: fontName, size: 20) != nil
     }
 }

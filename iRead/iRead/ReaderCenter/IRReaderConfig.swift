@@ -91,7 +91,7 @@ class IRReaderConfig: NSObject {
     }()
     
     /// 行距
-    static var lineSpacing: CGFloat = 5
+    static var lineSpacing: CGFloat = 2
     /// 行高倍数
     static var lineHeightMultiple: CGFloat = 1.1
     /// 段落间距

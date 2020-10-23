@@ -20,10 +20,8 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
 
     static let bottomSapcing: CGFloat = 5
     static let colorViewHeight: CGFloat = 60
-    static let viewHeight: CGFloat = colorViewHeight + IRSwitchSettingView.viewHeight
+    static let viewHeight: CGFloat = colorViewHeight
     static let totalHeight = bottomSapcing + viewHeight
-    lazy var bottomLine = UIView()
-    lazy var systemFollowView = IRSwitchSettingView()
     var collectionView: UICollectionView!
     var currentSelectCell: IRReadColorCell?
     
@@ -66,31 +64,9 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
     //MARK: - Private
     
     func setupSubviews() {
-        
         self.setupCollectionView()
-        
-        systemFollowView.titleLabel.text = "自动启用夜间模式"
-        systemFollowView.isOn = IRReaderConfig.isFollowSystemTheme
-        systemFollowView.delegate = self
-        self.addSubview(systemFollowView)
-        systemFollowView.snp.makeConstraints { (make) in
-            make.bottom.right.left.equalTo(self)
-            make.height.equalTo(IRSwitchSettingView.viewHeight)
-        }
-        
-        self.addSubview(bottomLine)
-        bottomLine.snp.makeConstraints { (make) -> Void in
-            make.right.left.equalTo(self)
-            make.height.equalTo(1)
-            make.bottom.equalTo(systemFollowView.snp.top)
-        }
     }
-    
-    func updateTextColor(_ color: UIColor, separatorColor: UIColor) {
-        bottomLine.backgroundColor = separatorColor
-        systemFollowView.titleLabel.textColor = color
-    }
-    
+
     private func setupCollectionView() {
         
         let flowLayout = UICollectionViewFlowLayout()

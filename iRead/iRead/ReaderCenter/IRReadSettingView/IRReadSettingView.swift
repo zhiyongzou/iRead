@@ -105,7 +105,6 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         colorSettingView.backgroundColor = IRReaderConfig.bgColor
         
         fontSettingView.updateTextColor(IRReaderConfig.textColor, separatorColor:IRReaderConfig.separatorColor)
-        colorSettingView.updateTextColor(IRReaderConfig.textColor, separatorColor:IRReaderConfig.separatorColor)
         scrollSettingView.titleLabel.textColor = IRReaderConfig.textColor
         fontSelectView?.updateTextColor(IRReaderConfig.textColor, separatorColor: IRReaderConfig.separatorColor)
     }

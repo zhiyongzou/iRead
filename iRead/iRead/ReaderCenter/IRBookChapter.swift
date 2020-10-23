@@ -73,7 +73,6 @@ class IRBookChapter: NSObject {
             // 段落样式调整
             if let paragraphStyle = value[.paragraphStyle] as? NSParagraphStyle {
                 let mutableStyle = paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
-                mutableStyle.paragraphSpacing = IRReaderConfig.paragraphSpacing
                 mutableStyle.lineSpacing = IRReaderConfig.lineSpacing
                 htmlString.addAttribute(.paragraphStyle, value: mutableStyle, range: range)
             }

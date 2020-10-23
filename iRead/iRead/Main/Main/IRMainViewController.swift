@@ -21,6 +21,11 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         self.commonInit()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        IRReaderConfig.initReaderConfig()
+    }
+    
     override var selectedIndex: Int {
         willSet {
             self.updateNavigationItems(withIndex: newValue)

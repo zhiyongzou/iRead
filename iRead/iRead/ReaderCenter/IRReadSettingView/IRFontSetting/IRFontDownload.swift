@@ -92,4 +92,19 @@ class IRFontDownload: NSObject {
             return true
         }
     }
+    
+    static func loadFontWithName(_ fontName: String) {
+        
+        let attributes = [kCTFontNameAttribute : fontName] as CFDictionary
+        let fontDescription = CTFontDescriptorCreateWithAttributes(attributes)
+        let descs = [fontDescription] as CFArray
+        CTFontDescriptorMatchFontDescriptorsWithProgressHandler(descs, nil) { (state, progressParamater) -> Bool in
+            
+            if state == .didFinish {
+                IRDebugLog("Did Finish Load: \(fontName)")
+            }
+            
+            return true
+        }
+    }
 }

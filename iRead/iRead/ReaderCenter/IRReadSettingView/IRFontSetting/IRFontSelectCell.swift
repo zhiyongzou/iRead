@@ -172,6 +172,7 @@ class IRFontSelectCell: UICollectionViewCell, IRFontDownloadDelegate {
         progressLabel?.isHidden = true
         fontModel?.isDownload = true
         titleLabel.font = UIFont.init(name: fontModel!.fontName, size: 20)
+        UserDefaults.standard.set(true, forKey: fontModel!.fontName)
     }
     
     func fontDownloadDidFail(_ downloader: IRFontDownload, error: Error?) {

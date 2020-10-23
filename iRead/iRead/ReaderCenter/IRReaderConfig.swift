@@ -46,12 +46,6 @@ public enum IRTransitionStyle: Int {
 
 class IRReaderConfig: NSObject {
     
-    static let initOnceReadColorConfig: Bool = {
-        pageColorHex = UserDefaults.standard.string(forKey: kReadPageColorHex) ?? IRReadPageColorHex.HexF8F8F8.rawValue
-        IRReaderConfig.updateReadColorConfig(pageColorHex: pageColorHex)
-        return true
-    }()
-    
     /// 阅读页面尺寸
     static var pageSzie: CGSize = CGSize.zero
     /// 阅读页面水平边距
@@ -101,7 +95,7 @@ class IRReaderConfig: NSObject {
     /// 行高倍数
     static var lineHeightMultiple: CGFloat = 1.1
     /// 段落间距
-    static var paragraphSpacing: CGFloat = 5
+    static var paragraphSpacing: CGFloat = 10
     
     /// 翻页模式，默认横向仿真翻页
     static var transitionStyle = IRTransitionStyle(rawValue: UserDefaults.standard.integer(forKey: kReadTransitionStyle)) ?? .pageCurl
@@ -133,6 +127,21 @@ class IRReaderConfig: NSObject {
         
         pageColor = UIColor.hexColor(pageColorHex)
         textColor = UIColor.hexColor(textColorHex)
+    }
+    
+    static func initReaderConfig() {
+        pageColorHex = UserDefaults.standard.string(forKey: kReadPageColorHex) ?? IRReadPageColorHex.HexF8F8F8.rawValue
+        IRReaderConfig.updateReadColorConfig(pageColorHex: pageColorHex)
+        
+        if UserDefaults.standard.bool(forKey: IRReadTextFontName.STSong.rawValue) {
+            IRFontDownload.loadFontWithName(IRReadTextFontName.STSong.rawValue)
+        }
+        if UserDefaults.standard.bool(forKey: IRReadTextFontName.STKaitiSC.rawValue) {
+            IRFontDownload.loadFontWithName(IRReadTextFontName.STKaitiSC.rawValue)
+        }
+        if UserDefaults.standard.bool(forKey: IRReadTextFontName.STYuanti.rawValue) {
+            IRFontDownload.loadFontWithName(IRReadTextFontName.STYuanti.rawValue)
+        }
     }
 }
 

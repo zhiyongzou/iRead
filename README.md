@@ -1,5 +1,5 @@
 # iRead
 阅读器，epub
 
-## UI资源
-* [免费图标 iconfont](https://www.iconfont.cn/)
+## 快照
+![](https://gitee.com/zhiyongzou/images/raw/master/iRead/read_snap.png)

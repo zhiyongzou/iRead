@@ -69,7 +69,7 @@ class IRReadNavigationBar: UIView {
         readSetting.snp.makeConstraints { (make) -> Void in
             make.width.height.equalTo(itemHeight)
             make.bottom.equalTo(self)
-            make.right.equalTo(self).offset(-50)
+            make.right.equalTo(self).offset(-20)
         }
         
         bottomLine = UIView()

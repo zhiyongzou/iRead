@@ -94,7 +94,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             popTipView?.animation = .slide
             popTipView?.backgroundColor = readSettingView.backgroundColor
             popTipView?.borderColor = IRSeparatorColor
-            popTipView?.sidePadding = 20
+            popTipView?.sidePadding = 15
             popTipView?.bubblePaddingX = -10
             popTipView?.bubblePaddingY = -10
             popTipView?.disableTapToDismiss = true

@@ -113,7 +113,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     class var viewSize: CGSize {
         get {
             let height = IRSwitchSettingView.viewHeight + IRReadColorSettingView.totalHeight + IRFontSettingView.totalHeight + IRBrightnessSettingView.totalHeight
-            return CGSize.init(width: 300, height: height)
+            return CGSize.init(width: 280, height: height)
         }
     }
     

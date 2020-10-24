@@ -15,24 +15,43 @@ public enum IRReadPageColorHex: String {
     case Hex000000 = "000000"
 }
 
-public enum IRReadTextFontName: String {
+/// [iOS Fonts]：http://iosfonts.com
+/// 中文字体
+public enum IRReadZHFontName: String {
     case PingFangSC = "PingFangSC-Regular"
     case STSong     = "STSongti-SC-Regular"
     case STKaitiSC  = "STKaitiSC-Regular"
     case STYuanti   = "STYuanti-SC-Regular"
-    case STHeitiSC  = "STHeitiSC-Medium"
     
     func displayName() -> String {
-        if self.rawValue == IRReadTextFontName.PingFangSC.rawValue {
-            return "苹方"
-        } else if self.rawValue == IRReadTextFontName.STSong.rawValue {
+        if self.rawValue == IRReadZHFontName.STSong.rawValue {
             return "宋体"
-        } else if self.rawValue == IRReadTextFontName.STKaitiSC.rawValue {
+        } else if self.rawValue == IRReadZHFontName.STKaitiSC.rawValue {
             return "楷体"
-        } else if self.rawValue == IRReadTextFontName.STYuanti.rawValue {
+        } else if self.rawValue == IRReadZHFontName.STYuanti.rawValue {
             return "圆体"
         } else {
-            return "黑体"
+            return "苹方"
+        }
+    }
+}
+
+/// 英文字体
+public enum IRReadENFontName: String {
+    case TimesNewRoman = "TimesNewRomanPSMT"
+    case American      = "AmericanTypewriter"
+    case Georgia       = "Georgia"
+    case Palatino      = "Palatino-Roman"
+    
+    func displayName() -> String {
+        if self.rawValue == IRReadENFontName.American.rawValue {
+            return "American"
+        } else if self.rawValue == IRReadENFontName.Georgia.rawValue {
+            return "Georgia"
+        } else if self.rawValue == IRReadENFontName.Palatino.rawValue {
+            return "Palatino"
+        } else {
+            return "Times New Roman"
         }
     }
 }
@@ -46,6 +65,9 @@ public enum IRTransitionStyle: Int {
 
 class IRReaderConfig: NSObject {
     
+    /// 中文
+    static var isChinese = true
+    
     /// 阅读页面尺寸
     static var pageSzie: CGSize = CGSize.zero
     /// 阅读页面水平边距
@@ -58,7 +80,7 @@ class IRReaderConfig: NSObject {
     static var textColor: UIColor!
     static var textColorHex: String!
     
-    /// 页面颜色，默认白色pageColor
+    /// 页面颜色，默认白色 pageColor
     static var pageColor: UIColor!
     static var pageColorHex: String! {
         willSet {
@@ -68,12 +90,41 @@ class IRReaderConfig: NSObject {
     }
     
     /// 字体类型名
-    static var fontName: IRReadTextFontName = {
-        let font: IRReadTextFontName = IRReadTextFontName(rawValue: UserDefaults.standard.string(forKey: kReadTextFontName) ?? IRReadTextFontName.PingFangSC.rawValue) ?? IRReadTextFontName.PingFangSC
+    static var fontName: String {
+        get {
+            if IRReaderConfig.isChinese {
+                return IRReaderConfig.zhFontName.rawValue
+            } else {
+                return IRReaderConfig.enFontName.rawValue
+            }
+        }
+    }
+    
+    static var fontDispalyName: String {
+        get {
+            if IRReaderConfig.isChinese {
+                return IRReaderConfig.zhFontName.displayName()
+            } else {
+                return IRReaderConfig.enFontName.displayName()
+            }
+        }
+    }
+    
+    static var zhFontName: IRReadZHFontName = {
+        let font: IRReadZHFontName = IRReadZHFontName(rawValue: UserDefaults.standard.string(forKey: kReadZHFontName) ?? IRReadZHFontName.PingFangSC.rawValue) ?? IRReadZHFontName.PingFangSC
         return font
     }() {
         willSet {
-            UserDefaults.standard.set(newValue.rawValue, forKey: kReadTextFontName)
+            UserDefaults.standard.set(newValue.rawValue, forKey: kReadZHFontName)
+        }
+    }
+    
+    static var enFontName: IRReadENFontName = {
+        let font: IRReadENFontName = IRReadENFontName(rawValue: UserDefaults.standard.string(forKey: kReadENFontName) ?? IRReadENFontName.TimesNewRoman.rawValue) ?? IRReadENFontName.TimesNewRoman
+        return font
+    }() {
+        willSet {
+            UserDefaults.standard.set(newValue.rawValue, forKey: kReadENFontName)
         }
     }
     
@@ -133,14 +184,14 @@ class IRReaderConfig: NSObject {
         pageColorHex = UserDefaults.standard.string(forKey: kReadPageColorHex) ?? IRReadPageColorHex.HexF8F8F8.rawValue
         IRReaderConfig.updateReadColorConfig(pageColorHex: pageColorHex)
         
-        if UserDefaults.standard.bool(forKey: IRReadTextFontName.STSong.rawValue) {
-            IRFontDownload.loadFontWithName(IRReadTextFontName.STSong.rawValue)
+        if UserDefaults.standard.bool(forKey: IRReadZHFontName.STSong.rawValue) {
+            IRFontDownload.loadFontWithName(IRReadZHFontName.STSong.rawValue)
         }
-        if UserDefaults.standard.bool(forKey: IRReadTextFontName.STKaitiSC.rawValue) {
-            IRFontDownload.loadFontWithName(IRReadTextFontName.STKaitiSC.rawValue)
+        if UserDefaults.standard.bool(forKey: IRReadZHFontName.STKaitiSC.rawValue) {
+            IRFontDownload.loadFontWithName(IRReadZHFontName.STKaitiSC.rawValue)
         }
-        if UserDefaults.standard.bool(forKey: IRReadTextFontName.STYuanti.rawValue) {
-            IRFontDownload.loadFontWithName(IRReadTextFontName.STYuanti.rawValue)
+        if UserDefaults.standard.bool(forKey: IRReadZHFontName.STYuanti.rawValue) {
+            IRFontDownload.loadFontWithName(IRReadZHFontName.STYuanti.rawValue)
         }
     }
 }
@@ -150,5 +201,6 @@ let kReadTransitionStyle    = "kReadTransitionStyle"
 let kReadFollowSystemTheme  = "kReadFollowSystemTheme"
 let kReadTextSizeMultiplier = "kReadTextSizeMultiplier"
 let kReadPageColorHex       = "kReadPageColorHex"
-let kReadTextFontName       = "kReadTextFontName"
+let kReadZHFontName         = "kReadZHFontName"
+let kReadENFontName         = "kReadENFontName"
 

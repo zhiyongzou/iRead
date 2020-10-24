@@ -16,6 +16,14 @@ class IRBook: NSObject {
     var cureentReadPage: IRBookPage?
     var coverImage: UIImage?
     
+    var isChinese: Bool {
+        if bookMeta.metadata.language.hasPrefix("zh") {
+            return true
+        }
+        return false
+    }
+    
+    
     init(withBookMeta bookMeta: FRBook) {
         self.bookMeta = bookMeta
         super.init()

@@ -29,7 +29,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     lazy var colorSettingView = IRReadColorSettingView()
     lazy var fontSettingView = IRFontSettingView()
     lazy var brightnessSettingView = IRBrightnessSettingView()
-
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -120,11 +120,15 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     //MARK: - IRFontSelectViewDelegate
     func fontSelectView(_ view: IRFontSelectView, didSelectFontName fontName: String) {
         
-        if IRReaderConfig.fontName.rawValue == fontName {
+        if IRReaderConfig.fontName == fontName {
             return
         }
-        IRReaderConfig.fontName = IRReadTextFontName(rawValue: fontName)!
-        fontSettingView.fontTypeSelectView.detailText = IRReaderConfig.fontName.displayName()
+        if IRReaderConfig.isChinese {
+            IRReaderConfig.zhFontName = IRReadZHFontName(rawValue: fontName)!
+        } else {
+            IRReaderConfig.enFontName = IRReadENFontName(rawValue: fontName)!
+        }
+        fontSettingView.fontTypeSelectView.detailText = IRReaderConfig.fontDispalyName
         self.deleage?.readSettingView(self, didSelectFontName: fontName)
     }
     

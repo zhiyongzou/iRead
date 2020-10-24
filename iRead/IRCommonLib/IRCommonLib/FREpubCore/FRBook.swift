@@ -10,11 +10,11 @@
 import UIKit
 
 open class FRBook: NSObject {
-    var metadata = FRMetadata()
     var spine = FRSpine()
     var smils = FRSmils()
     var version: Double?
     
+    public var metadata = FRMetadata()
     public var opfResource: FRResource!
     public var tocResource: FRResource?
     public var uniqueIdentifier: String?

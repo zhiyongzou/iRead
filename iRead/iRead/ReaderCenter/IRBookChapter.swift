@@ -12,7 +12,7 @@ import IRCommonLib
 class IRBookChapter: NSObject {
     
     /// 字体
-    lazy var fontName = IRReaderConfig.fontName.rawValue
+    lazy var fontName = IRReaderConfig.fontName
     /// 文字颜色
     lazy var textColorHex = IRReaderConfig.textColorHex
     /// 文字大小
@@ -55,7 +55,7 @@ class IRBookChapter: NSObject {
         guard let baseUrl = self.baseUrl else { return NSMutableAttributedString() }
         let options: [String : Any] = [
             NSBaseURLDocumentOption: baseUrl,
-            DTDefaultFontName: IRReaderConfig.fontName.rawValue,
+            DTDefaultFontName: IRReaderConfig.fontName,
             DTMaxImageSize: IRReaderConfig.pageSzie,
             NSTextSizeMultiplierDocumentOption: (CGFloat(textSizeMultiplier) / 10.0),
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
@@ -80,8 +80,8 @@ class IRBookChapter: NSObject {
             
             // 字体调整
             if let value = value[.font] as? UIFont {
-                if value.fontName != IRReaderConfig.fontName.rawValue {
-                    let font = UIFont.init(name: IRReaderConfig.fontName.rawValue, size: value.pointSize) ?? value
+                if value.fontName != IRReaderConfig.fontName {
+                    let font = UIFont.init(name: IRReaderConfig.fontName, size: value.pointSize) ?? value
                     htmlString.addAttribute(.font, value: font, range: range)
                 }
             }

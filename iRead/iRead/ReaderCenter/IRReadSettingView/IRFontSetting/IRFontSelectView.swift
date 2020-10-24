@@ -27,15 +27,28 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     var currentSelectIndex: IndexPath?
     
     
-    var fontList = {
+    var zhFontList = {
         
-        return [IRFontModel.init(dispalyName: IRReadTextFontName.PingFangSC.displayName(), fontName: IRReadTextFontName.PingFangSC.rawValue),
-                IRFontModel.init(dispalyName: IRReadTextFontName.STSong.displayName(), fontName: IRReadTextFontName.STSong.rawValue),
-                IRFontModel.init(dispalyName: IRReadTextFontName.STKaitiSC.displayName(), fontName: IRReadTextFontName.STKaitiSC.rawValue),
-                IRFontModel.init(dispalyName: IRReadTextFontName.STYuanti.displayName(), fontName: IRReadTextFontName.STYuanti.rawValue),
-                IRFontModel.init(dispalyName: IRReadTextFontName.STHeitiSC.displayName(), fontName: IRReadTextFontName.STHeitiSC.rawValue)]
+        return [IRFontModel.init(dispalyName: IRReadZHFontName.PingFangSC.displayName(), fontName: IRReadZHFontName.PingFangSC.rawValue),
+                IRFontModel.init(dispalyName: IRReadZHFontName.STSong.displayName(), fontName: IRReadZHFontName.STSong.rawValue),
+                IRFontModel.init(dispalyName: IRReadZHFontName.STKaitiSC.displayName(), fontName: IRReadZHFontName.STKaitiSC.rawValue),
+                IRFontModel.init(dispalyName: IRReadZHFontName.STYuanti.displayName(), fontName: IRReadZHFontName.STYuanti.rawValue)]
     }()
     
+    var enFontList = {
+        
+        return [IRFontModel.init(dispalyName: IRReadENFontName.TimesNewRoman.displayName(), fontName: IRReadENFontName.TimesNewRoman.rawValue),
+                IRFontModel.init(dispalyName: IRReadENFontName.American.displayName(), fontName: IRReadENFontName.American.rawValue),
+                IRFontModel.init(dispalyName: IRReadENFontName.Georgia.displayName(), fontName: IRReadENFontName.Georgia.rawValue),
+                IRFontModel.init(dispalyName: IRReadENFontName.Palatino.displayName(), fontName: IRReadENFontName.Palatino.rawValue)]
+    }()
+    
+    
+    var fontList: [IRFontModel] {
+        get {
+            return IRReaderConfig.isChinese ? zhFontList : enFontList
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -102,7 +115,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let fontCell: IRFontSelectCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRFontSelectCell", for: indexPath) as! IRFontSelectCell
         fontCell.fontModel = fontList[indexPath.item]
-        fontCell.isSelected = fontCell.fontModel?.dispalyName == IRReaderConfig.fontName.displayName()
+        fontCell.isSelected = fontCell.fontModel?.dispalyName == IRReaderConfig.fontDispalyName
         if fontCell.isSelected {
             currentSelectIndex = indexPath
         }

@@ -10,7 +10,7 @@ import UIKit
 
 class IRFontSelectCell: UICollectionViewCell, IRFontDownloadDelegate {
     
-    static let cellHeight: CGFloat = 45
+    static let cellHeight: CGFloat = 46
     var fontDownload: IRFontDownload?
     var selectView: UIImageView?
     var downloadBtn: UIButton?

@@ -78,11 +78,10 @@ struct Meta {
 /**
  Manages book metadata.
  */
-class FRMetadata {
+open class FRMetadata {
     var creators = [Author]()
     var contributors = [Author]()
     var dates = [EventDate]()
-    var language = "en-US"
     var titles = [String]()
     var identifiers = [Identifier]()
     var subjects = [String]()
@@ -91,6 +90,8 @@ class FRMetadata {
     var format = FRMediaType.epub.name
     var rights = [String]()
     var metaAttributes = [Meta]()
+    
+    public var language = "en-US"
 
     /**
      Find a book unique identifier by ID

@@ -29,6 +29,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     convenience init(withBook book:IRBook) {
         self.init()
         self.book = book
+        IRReaderConfig.isChinese = book.isChinese
     }
     
     //MARK: - Override
@@ -245,6 +246,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         if #available(iOS 11.0, *) {
             safe = self.view.safeAreaInsets
         }
+        if safe == UIEdgeInsets.zero {
+            safe = UIEdgeInsets.init(top: 20, left: 0, bottom: 20, right: 0)
+        }
         let barH = safe.top + readNavigationBar.itemHeight
         readNavigationBar.frame = CGRect.init(x: 0, y: -barH, width: self.view.width, height: barH)
     }
@@ -253,9 +257,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         
         var safeInsets = UIEdgeInsets.zero
         if #available(iOS 11.0, *) {
-            if let safeAreaInsets = self.navigationController?.view.safeAreaInsets {
-                safeInsets = safeAreaInsets
-            }
+            safeInsets = self.navigationController!.view.safeAreaInsets
+        }
+        
+        if safeInsets == UIEdgeInsets.zero {
+            safeInsets = UIEdgeInsets.init(top: 20, left: 0, bottom: 20, right: 0)
         }
         
         let width = self.view.width - IRReaderConfig.horizontalSpacing * 2

@@ -10,8 +10,9 @@ import UIKit
 import IRCommonLib
 
 enum IRTabIndex: Int {
-    case home = 0
-    case mine = 1
+    case home      = 0
+    case bookshelf = 1
+    case mine      = 2
 }
 
 class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
@@ -42,7 +43,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     func setupTabbarItems() {
         self.tabBar.tintColor = IRAppThemeColor
         
-        let tabbarTitles = ["首页", "我的"]
+        let tabbarTitles = ["首页", "书架", "我的"]
         var childViewControllers = [UIViewController]()
         
         for (index, _) in tabbarTitles.enumerated() {
@@ -55,6 +56,8 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
             switch index {
             case IRTabIndex.home.rawValue:
                 normalName = "tabbar_home_n"; selectName = "tabbar_home_s"
+            case IRTabIndex.bookshelf.rawValue:
+                normalName = "tabbar_bookshelf_n"; selectName = "tabbar_bookshelf_s"
             case IRTabIndex.mine.rawValue:
                 normalName = "tabbar_mine_n"; selectName = "tabbar_mine_s"
             default:
@@ -73,6 +76,8 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         switch index {
         case IRTabIndex.home.rawValue:
             vc = IRHomeViewController()
+        case IRTabIndex.bookshelf.rawValue:
+            vc = IRBookshelfViewController()
         case IRTabIndex.mine.rawValue:
             vc = IRMineViewController()
         default:

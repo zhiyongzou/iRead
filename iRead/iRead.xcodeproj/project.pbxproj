@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126CF6C2545888500C71415 /* IRChapterListViewController.swift */; };
+		8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */; };
 		812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E49732531A4050082D902 /* IRReadPageViewController.swift */; };
 		8136A08E25355A2C005C1646 /* IRPageBackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A08D25355A2C005C1646 /* IRPageBackViewController.swift */; };
 		8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A0D5253589C0005C1646 /* IRReadNavigationBar.swift */; };
@@ -63,6 +65,8 @@
 		00DD04FE011F463B67348768 /* Pods-iRead.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.release.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.release.xcconfig"; sourceTree = "<group>"; };
 		3DA102CBABD9ED364C525C64 /* libPods-iRead.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iRead.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B7166AED0711D73236BE22 /* Pods-iRead.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.debug.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.debug.xcconfig"; sourceTree = "<group>"; };
+		8126CF6C2545888500C71415 /* IRChapterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRChapterListViewController.swift; sourceTree = "<group>"; };
+		8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfViewController.swift; sourceTree = "<group>"; };
 		812E49732531A4050082D902 /* IRReadPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadPageViewController.swift; sourceTree = "<group>"; };
 		8136A08D25355A2C005C1646 /* IRPageBackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRPageBackViewController.swift; sourceTree = "<group>"; };
 		8136A0D5253589C0005C1646 /* IRReadNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationBar.swift; sourceTree = "<group>"; };
@@ -138,6 +142,22 @@
 				3DA102CBABD9ED364C525C64 /* libPods-iRead.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8126CF6B2545884900C71415 /* IRChapterList */ = {
+			isa = PBXGroup;
+			children = (
+				8126CF6C2545888500C71415 /* IRChapterListViewController.swift */,
+			);
+			path = IRChapterList;
+			sourceTree = "<group>";
+		};
+		8126CF742545ABAA00C71415 /* Bookshelf */ = {
+			isa = PBXGroup;
+			children = (
+				8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */,
+			);
+			path = Bookshelf;
 			sourceTree = "<group>";
 		};
 		8136A0D425358976005C1646 /* IRReadNavigation */ = {
@@ -235,6 +255,7 @@
 		816DFBE32404D7A10030E55B /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				8126CF742545ABAA00C71415 /* Bookshelf */,
 				81B7E1E0251DE0A400E84A37 /* Mine */,
 				81B7E1DF251DE09E00E84A37 /* Home */,
 				81B7E1DE251DE09500E84A37 /* Main */,
@@ -245,6 +266,7 @@
 		8180406325206A5C00F31442 /* ReaderCenter */ = {
 			isa = PBXGroup;
 			children = (
+				8126CF6B2545884900C71415 /* IRChapterList */,
 				8136A28825369C0C005C1646 /* IRReadSettingView */,
 				8136A0D425358976005C1646 /* IRReadNavigation */,
 				818040A02521951400F31442 /* IRReaderConfig.swift */,
@@ -497,6 +519,8 @@
 				81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */,
 				812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */,
 				81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */,
+				8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */,
+				8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */,
 				818040A52521967800F31442 /* IRBookChapter.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,

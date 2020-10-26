@@ -11,8 +11,8 @@ import IRCommonLib
 class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     var collectionView: UICollectionView!
-    let sectionEdgeInsetsLR: CGFloat = 40
-    let minimumInteritemSpacing: CGFloat = 20
+    let sectionEdgeInsetsLR: CGFloat = 20
+    let minimumInteritemSpacing: CGFloat = 30
     var bookList = [IRBook]()
     
     
@@ -20,11 +20,21 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         super.viewDidLoad()
         self.setupCollectionView()
         
+        self.navigationItem.title = IRTabBarName.bookshelf.rawValue
+        
     #if DEBUG
         self.addTestBook(name: "支付战争")
         self.addTestBook(name: "细说明朝")
         self.addTestBook(name: "The Silver Chair")
     #endif
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.navigationItem.largeTitleDisplayMode = .automatic
+        }
     }
     
     override func viewDidLayoutSubviews() {

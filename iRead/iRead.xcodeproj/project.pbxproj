@@ -155,6 +155,7 @@
 		8126CF742545ABAA00C71415 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
+				81B7E1E5251DE32600E84A37 /* IRBookCell.swift */,
 				8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */,
 			);
 			path = Bookshelf;
@@ -293,7 +294,6 @@
 			isa = PBXGroup;
 			children = (
 				81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */,
-				81B7E1E5251DE32600E84A37 /* IRBookCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";

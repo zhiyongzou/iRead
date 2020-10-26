@@ -9,10 +9,16 @@
 import UIKit
 import IRCommonLib
 
-enum IRTabIndex: Int {
+enum IRTabBarIndex: Int {
     case home      = 0
     case bookshelf = 1
     case mine      = 2
+}
+
+enum IRTabBarName: String {
+    case home      = "首页"
+    case bookshelf = "书架"
+    case mine      = "我的"
 }
 
 class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
@@ -55,7 +61,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     func setupTabbarItems() {
         self.tabBar.tintColor = IRAppThemeColor
         
-        let tabbarTitles = ["首页", "书架", "我的"]
+        let tabbarTitles = [IRTabBarName.home.rawValue, IRTabBarName.bookshelf.rawValue, IRTabBarName.mine.rawValue]
         var childViewControllers = [UIViewController]()
         
         for (index, _) in tabbarTitles.enumerated() {
@@ -66,11 +72,11 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         for (index, item) in self.tabBar.items!.enumerated() {
             var normalName: String?, selectName: String?
             switch index {
-            case IRTabIndex.home.rawValue:
+            case IRTabBarIndex.home.rawValue:
                 normalName = "tabbar_home_n"; selectName = "tabbar_home_s"
-            case IRTabIndex.bookshelf.rawValue:
+            case IRTabBarIndex.bookshelf.rawValue:
                 normalName = "tabbar_bookshelf_n"; selectName = "tabbar_bookshelf_s"
-            case IRTabIndex.mine.rawValue:
+            case IRTabBarIndex.mine.rawValue:
                 normalName = "tabbar_mine_n"; selectName = "tabbar_mine_s"
             default:
                 IRDebugLog("TabIndex: (\(index)) undefine")
@@ -86,11 +92,11 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     func childViewController(withTabIndex index: Int) -> UIViewController {
         var vc: UIViewController
         switch index {
-        case IRTabIndex.home.rawValue:
+        case IRTabBarIndex.home.rawValue:
             vc = IRHomeViewController()
-        case IRTabIndex.bookshelf.rawValue:
+        case IRTabBarIndex.bookshelf.rawValue:
             vc = IRBookshelfViewController()
-        case IRTabIndex.mine.rawValue:
+        case IRTabBarIndex.mine.rawValue:
             vc = IRMineViewController()
         default:
             vc = UIViewController()
@@ -102,18 +108,12 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.rightBarButtonItems = nil
         self.navigationItem.leftBarButtonItems = nil
         
-        switch index {
-        case IRTabIndex.home.rawValue:
-            self.navigationItem.title = self.selectedViewController?.navigationItem.title
-        case IRTabIndex.mine.rawValue:
-            self.navigationItem.title = self.selectedViewController?.navigationItem.title
-        default:
-            IRDebugLog("TabIndex: (\(index)) undefine")
-        }
+        self.navigationItem.titleView = self.selectedViewController?.navigationItem.titleView
+        self.navigationItem.title = self.selectedViewController?.navigationItem.title
     }
     
     // MARK: - UITabBarControllerDelegate
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-         IRDebugLog("TabIndex: (\(item)) undefine")
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.updateNavigationItems(withIndex: tabBarController.viewControllers?.firstIndex(of:viewController) ?? IRTabBarIndex.home.rawValue)
     }
 }

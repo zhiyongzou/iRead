@@ -17,6 +17,9 @@ enum IRTabIndex: Int {
 
 class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
 
+    var initOnceAfterViewDidAppear = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.commonInit()
@@ -24,7 +27,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        IRReaderConfig.initReaderConfig()
+        self.initAfterViewDidAppear()
     }
     
     override var selectedIndex: Int {
@@ -34,6 +37,15 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - Private
+    
+    func initAfterViewDidAppear() {
+        if initOnceAfterViewDidAppear {
+            return
+        }
+        initOnceAfterViewDidAppear = true
+        
+        IRReaderConfig.initReaderConfig()
+    }
     
     func commonInit() {
         self.delegate = self

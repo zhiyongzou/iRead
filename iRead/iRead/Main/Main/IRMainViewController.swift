@@ -108,7 +108,6 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.rightBarButtonItems = nil
         self.navigationItem.leftBarButtonItems = nil
         
-        self.navigationItem.titleView = self.selectedViewController?.navigationItem.titleView
         self.navigationItem.title = self.selectedViewController?.navigationItem.title
     }
     

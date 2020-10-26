@@ -78,7 +78,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     }
     
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar) {
-        
+        let chapterVc = IRChapterListViewController()
+        chapterVc.chapterList = book.bookMeta.tableOfContents
+        chapterVc.title = book.bookMeta.title
+        self.navigationController?.pushViewController(chapterVc, animated: true)
     }
     
     func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar) {

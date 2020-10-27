@@ -19,6 +19,7 @@ def common_pods
   pod 'IRHexColor', '~> 0.0.1'
   pod 'AEXML', '~> 4.5.0'
   pod 'SSZipArchive', '~> 2.2.2'
+  pod 'FMDB', '~> 2.7.5'
 end
 
 # local_pods
@@ -44,7 +45,6 @@ target 'iRead' do
   pod 'SnapKit', '~> 5.0.1'
   pod 'CMPopTipView', '~> 2.3.2'
   pod 'HGCircularSlider', '~> 2.2.0'
-  pod 'FMDB', '~> 2.7.5'
 
 end
 

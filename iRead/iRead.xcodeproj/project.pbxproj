@@ -30,6 +30,8 @@
 		818040A72521969000F31442 /* IRBookPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818040A62521969000F31442 /* IRBookPage.swift */; };
 		818F99C3253BEDB800C47427 /* IRBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818F99C2253BEDB800C47427 /* IRBook.swift */; };
 		8193A3EC2546FB1200501F8F /* IRChapterListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193A3EB2546FB1200501F8F /* IRChapterListCell.swift */; };
+		8193A44E25480AAB00501F8F /* IRDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193A44D25480AAB00501F8F /* IRDBManager.swift */; };
+		8193A4A025484FB100501F8F /* IRDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193A49F25484FB100501F8F /* IRDBModel.swift */; };
 		819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819422FB253702B4002B5D62 /* IRArrowSettingView.swift */; };
 		81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78BD6253E969B00353157 /* IRFontModel.swift */; };
 		81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78EA52541847000353157 /* IRReadNavigationContentView.swift */; };
@@ -96,6 +98,8 @@
 		818040A62521969000F31442 /* IRBookPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookPage.swift; sourceTree = "<group>"; };
 		818F99C2253BEDB800C47427 /* IRBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBook.swift; sourceTree = "<group>"; };
 		8193A3EB2546FB1200501F8F /* IRChapterListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRChapterListCell.swift; sourceTree = "<group>"; };
+		8193A44D25480AAB00501F8F /* IRDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRDBManager.swift; sourceTree = "<group>"; };
+		8193A49F25484FB100501F8F /* IRDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRDBModel.swift; sourceTree = "<group>"; };
 		819422FB253702B4002B5D62 /* IRArrowSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRArrowSettingView.swift; sourceTree = "<group>"; };
 		81B78BD6253E969B00353157 /* IRFontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontModel.swift; sourceTree = "<group>"; };
 		81B78EA52541847000353157 /* IRReadNavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationContentView.swift; sourceTree = "<group>"; };
@@ -213,6 +217,7 @@
 			children = (
 				816DFBE02404D71C0030E55B /* App */,
 				816DFBE32404D7A10030E55B /* Main */,
+				8193A44525480A3300501F8F /* Common */,
 				8180406325206A5C00F31442 /* ReaderCenter */,
 				816DFBE22404D77D0030E55B /* Resources */,
 				816DFBBE2404D3A00030E55B /* Info.plist */,
@@ -282,6 +287,23 @@
 				8136A08D25355A2C005C1646 /* IRPageBackViewController.swift */,
 			);
 			path = ReaderCenter;
+			sourceTree = "<group>";
+		};
+		8193A44525480A3300501F8F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8193A44C25480AAB00501F8F /* IRDBManager */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8193A44C25480AAB00501F8F /* IRDBManager */ = {
+			isa = PBXGroup;
+			children = (
+				8193A44D25480AAB00501F8F /* IRDBManager.swift */,
+				8193A49F25484FB100501F8F /* IRDBModel.swift */,
+			);
+			path = IRDBManager;
 			sourceTree = "<group>";
 		};
 		81B7E1DE251DE09500E84A37 /* Main */ = {
@@ -540,8 +562,10 @@
 				8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */,
 				818040A12521951400F31442 /* IRReaderConfig.swift in Sources */,
 				8136A08E25355A2C005C1646 /* IRPageBackViewController.swift in Sources */,
+				8193A44E25480AAB00501F8F /* IRDBManager.swift in Sources */,
 				8136A2D92536D1D8005C1646 /* IRFontSettingView.swift in Sources */,
 				816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */,
+				8193A4A025484FB100501F8F /* IRDBModel.swift in Sources */,
 				818040A3252195CD00F31442 /* IRReaderCenterViewController.swift in Sources */,
 				81C97760253DB83800E9CCCB /* IRFontSelectView.swift in Sources */,
 				8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */,

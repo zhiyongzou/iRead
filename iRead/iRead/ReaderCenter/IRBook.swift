@@ -23,6 +23,11 @@ class IRBook: NSObject {
         return false
     }
     
+    var bookName: String? {
+        get {
+            bookMeta.title
+        }
+    }
     
     init(withBookMeta bookMeta: FRBook) {
         self.bookMeta = bookMeta

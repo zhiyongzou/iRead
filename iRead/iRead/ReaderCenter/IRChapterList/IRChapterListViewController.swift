@@ -14,8 +14,7 @@ protocol IRChapterListViewControllerDelagate: AnyObject {
 
 class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     
-    var delegate: IRChapterListViewControllerDelagate?
-    
+    weak var delegate: IRChapterListViewControllerDelagate?
     
     var collectionView: UICollectionView!
     

@@ -9,6 +9,8 @@
 import IRCommonLib
 
 protocol IRBookParseDelegate: AnyObject {
+    
+    func bookBeginParse(_: IRBook)
     func book(_: IRBook, currentParseProgress progress: Float)
     func bookDidFinishParse(_: IRBook)
 }
@@ -77,6 +79,8 @@ class IRBook: NSObject {
     func parseBookMeta() {
         
         isFinishParse = false
+        self.parseDelegate?.bookBeginParse(self)
+        
         var tempList = [AnyObject]()
         var pageCount = 0
         

@@ -76,6 +76,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     //MARK: - IRBookParseDelegate
     
+    func bookBeginParse(_: IRBook) {
+        
+    }
+    
     func book(_: IRBook, currentParseProgress progress: Float) {
         IRDebugLog(progress)
     }

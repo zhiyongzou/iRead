@@ -89,6 +89,9 @@ class IRReaderConfig: NSObject {
         }
     }
     
+    static var statusBarStyle: UIStatusBarStyle = .default
+    static var barStyle: UIBarStyle = .default
+    
     /// 字体类型名
     static var fontName: String {
         get {
@@ -162,18 +165,26 @@ class IRReaderConfig: NSObject {
             textColorHex = "333333"
             separatorColor = UIColor.init(white: 0, alpha: 0.05)
             bgColor = UIColor.hexColor("FFFFFF")
+            statusBarStyle = .default
+            barStyle = .default
         } else if pageColorHex == IRReadPageColorHex.HexE9E6D7.rawValue {
             textColorHex = "4C3824"
             separatorColor = UIColor.init(white: 0, alpha: 0.05)
             bgColor = UIColor.hexColor("FDF9EA")
+            statusBarStyle = .default
+            barStyle = .default
         } else if pageColorHex == IRReadPageColorHex.Hex373737.rawValue {
             textColorHex = "DDDDDD"
             separatorColor = UIColor.init(white: 1, alpha: 0.05)
             bgColor = UIColor.hexColor("454545")
+            statusBarStyle = .lightContent
+            barStyle = .black
         } else  {
             textColorHex = "AAAAAA"
             separatorColor = UIColor.init(white: 1, alpha: 0.05)
             bgColor = UIColor.hexColor("282828")
+            statusBarStyle = .lightContent
+            barStyle = .black
         }
         
         pageColor = UIColor.hexColor(pageColorHex)

@@ -25,12 +25,19 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         super.viewDidLoad()
         self.setupLeftBackBarButton()
         self.setupCollectionView()
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = false
-        }
+        self.setupNavigationBar()
     }
     
     // MARK: - Private
+    
+    func setupNavigationBar() {
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+        }
+        self.navigationController?.navigationBar.barStyle = IRReaderConfig.barStyle
+        self.navigationController?.navigationBar.barTintColor = IRReaderConfig.pageColor
+        self.backButtonItem?.tintColor = IRReaderConfig.textColor
+    }
     
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()

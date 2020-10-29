@@ -45,6 +45,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.barStyle = .default
+        self.navigationController?.navigationBar.barTintColor = nil
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
@@ -58,7 +60,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return IRReaderConfig.statusBarStyle
     }
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
@@ -146,6 +148,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         let pageModel = self.currentReadingVC.pageModel
         pageModel?.updateTextColor(IRReaderConfig.textColor)
         self.currentReadingVC.pageModel = pageModel
+        
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     func readSettingView(_ view: IRReadSettingView, didSelectFontName fontName: String) {

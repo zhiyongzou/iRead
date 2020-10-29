@@ -14,7 +14,7 @@ protocol IRSwitchSettingViewDeleagte: AnyObject {
 
 class IRSwitchSettingView: UIView {
 
-    static let viewHeight: CGFloat = 40
+    static let viewHeight: CGFloat = 42
     
     weak var delegate: IRSwitchSettingViewDeleagte?
     

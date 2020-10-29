@@ -9,7 +9,9 @@
 import UIKit
 
 open class IRBaseViewcontroller: UIViewController {
-
+    
+    open var backButtonItem: UIBarButtonItem?
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         IRDebugLog(self)
@@ -26,9 +28,10 @@ open class IRBaseViewcontroller: UIViewController {
     }
     
     open func setupLeftBackBarButton() {
-        let backImg = UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysOriginal)
-        let back = UIBarButtonItem.init(image: backImg, style: .plain, target: self, action: #selector(didClickedLeftBackItem(item:)))
-        self.navigationItem.leftBarButtonItem = back
+        let backImg = UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysTemplate)
+        backButtonItem = UIBarButtonItem.init(image: backImg, style: .plain, target: self, action: #selector(didClickedLeftBackItem(item:)))
+        backButtonItem?.tintColor = UIColor.init(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        self.navigationItem.leftBarButtonItem = backButtonItem
     }
     
     @objc private func didClickedLeftBackItem(item: UIBarButtonItem) {

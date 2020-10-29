@@ -6,7 +6,7 @@
 //  Copyright © 2020 zzyong. All rights reserved.
 //
 
-import UIKit
+import IRCommonLib
 import SnapKit
 
 class IRChapterListCell: UICollectionViewCell {
@@ -14,6 +14,12 @@ class IRChapterListCell: UICollectionViewCell {
     let spacing = 20
     var titleLabel = UILabel()
     var separatorLine = UIView()
+    
+    var tocReference :FRTocReference! {
+        willSet {
+            titleLabel.text = newValue.title
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

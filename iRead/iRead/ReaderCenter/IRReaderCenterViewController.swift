@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, IRChapterListViewControllerDelagate {
     
     var shouldHideStatusBar = true
     var book: IRBook!
@@ -79,6 +79,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar) {
         let chapterVc = IRChapterListViewController()
+        chapterVc.delegate = self
         chapterVc.chapterList = book.bookMeta.tableOfContents
         chapterVc.title = book.bookMeta.title
         self.navigationController?.pushViewController(chapterVc, animated: true)
@@ -105,6 +106,16 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             popTipView?.presentPointing(at: bar.readSetting, in: self.view, animated: true)
             self.readSettingView = popTipView;
         }
+    }
+    
+    //MARK: - IRChapterListViewControllerDelagate
+    
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int) {
+        let currentChapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: chapterIdx)
+        self.setupPageViewControllerWithPageModel(currentChapter.pageList?.first)
+        
+        self.shouldHideStatusBar = !self.shouldHideStatusBar;
+        self.updateReadNavigationBarDispalyState(animated: false)
     }
     
     //MARK: - IRReadSettingViewDelegate
@@ -155,7 +166,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         // 隐藏阅读导航栏
         if !self.shouldHideStatusBar {
             self.shouldHideStatusBar = true
-            self.updateReadNavigationBarDispalyState()
+            self.updateReadNavigationBarDispalyState(animated: true)
         }
         
         guard let nextVc = pendingViewControllers.first else { return }
@@ -219,16 +230,23 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     //MARK: - Private
     
-    func updateReadNavigationBarDispalyState() {
+    func updateReadNavigationBarDispalyState(animated: Bool) {
         self.addNavigationContentViewIfNeeded()
         if !self.shouldHideStatusBar {
             self.readNavigationContentView!.isHidden = false
         }
         let endY: CGFloat = self.shouldHideStatusBar ? -readNavigationBar.height : 0
-        UIView.animate(withDuration: 0.25) {
+        
+        if animated {
+            UIView.animate(withDuration: 0.25) {
+                self.setNeedsStatusBarAppearanceUpdate()
+                self.readNavigationBar.y = endY
+            } completion: { (finish) in
+                self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
+            }
+        } else {
             self.setNeedsStatusBarAppearanceUpdate()
             self.readNavigationBar.y = endY
-        } completion: { (finish) in
             self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
         }
     }
@@ -399,6 +417,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
-        self.updateReadNavigationBarDispalyState()
+        self.updateReadNavigationBarDispalyState(animated: true)
     }
 }

@@ -8,7 +8,14 @@
 
 import IRCommonLib
 
+protocol IRChapterListViewControllerDelagate: AnyObject {
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int)
+}
+
 class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
+    
+    var delegate: IRChapterListViewControllerDelagate?
+    
     
     var collectionView: UICollectionView!
     
@@ -46,7 +53,7 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let chapterCell: IRChapterListCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterListCell", for: indexPath) as! IRChapterListCell
-        chapterCell.titleLabel.text = chapterList[indexPath.item].title
+        chapterCell.tocReference = chapterList[indexPath.item]
         return chapterCell
     }
 
@@ -60,6 +67,7 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item], chapterIdx: indexPath.item)
+        self.navigationController?.popViewController(animated: true)
     }
 }

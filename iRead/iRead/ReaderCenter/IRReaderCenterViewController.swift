@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, IRChapterListViewControllerDelagate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, IRChapterListViewControllerDelagate, IRBookParseDelegate {
     
     var shouldHideStatusBar = true
     var book: IRBook!
@@ -29,6 +29,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     convenience init(withBook book:IRBook) {
         self.init()
         self.book = book
+        book.parseDelegate = self
+        book.parseBookMeta()
         IRReaderConfig.isChinese = book.isChinese
     }
     
@@ -70,6 +72,16 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         pageViewController.view.frame = self.view.bounds
+    }
+    
+    //MARK: - IRBookParseDelegate
+    
+    func book(_: IRBook, currentParseProgress progress: Float) {
+        IRDebugLog(progress)
+    }
+    
+    func bookDidFinishParse(_: IRBook) {
+        
     }
     
     //MARK: - IRReadNavigationBarDelegate

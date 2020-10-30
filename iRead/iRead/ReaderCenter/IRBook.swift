@@ -10,15 +10,15 @@ import IRCommonLib
 
 protocol IRBookParseDelegate: AnyObject {
     
-    func bookBeginParse(_: IRBook)
-    func book(_: IRBook, currentParseProgress progress: Float)
-    func bookDidFinishParse(_: IRBook)
+    func bookBeginParse(_ book: IRBook)
+    func book(_ book: IRBook, currentParseProgress progress: Float)
+    func bookDidFinishParse(_ book: IRBook)
 }
 
 class IRBook: NSObject {
 
     weak var parseDelegate: IRBookParseDelegate?
-    var bookMeta: FRBook
+    private var bookMeta: FRBook
     var coverImage: UIImage?
     var isFinishParse = false
     var pageCount = 0
@@ -40,6 +40,13 @@ class IRBook: NSObject {
             return true
         }
         return false
+    }
+    
+    /// 未解析的章节列表
+    var originalChapterList: [FRTocReference] {
+        get {
+            return bookMeta.tableOfContents
+        }
     }
     
     var bookName: String? {
@@ -64,10 +71,14 @@ class IRBook: NSObject {
     
     func didFinishParse(chapterList: [AnyObject], pageCount: Int) {
         
+        var pageOffset = 0
         for item in chapterList {
             if item is IRBookChapter {
-                IRDebugLog((item as! IRBookChapter).title)
-                self.chapterList.append(item as! IRBookChapter)
+                let chapter = item as! IRBookChapter
+                chapter.pageOffset = pageOffset
+                pageOffset += chapter.pageList.count
+                self.chapterList.append(chapter)
+                IRDebugLog(chapter.title)
             }
         }
         self.pageCount = pageCount
@@ -76,9 +87,19 @@ class IRBook: NSObject {
         IRDebugLog("book parse finish")
     }
     
+    func chapter(withIndex index: Int) -> IRBookChapter {
+        
+        if isFinishParse {
+            return chapterList[index]
+        } else {
+            return IRBookChapter.init(withTocRefrence: bookMeta.tableOfContents[index], chapterIndex: index)
+        }
+    }
+    
     func parseBookMeta() {
         
         isFinishParse = false
+        chapterList.removeAll()
         self.parseDelegate?.bookBeginParse(self)
         
         var tempList = [AnyObject]()
@@ -94,15 +115,20 @@ class IRBook: NSObject {
             parseQueue.addOperation {
                 let index = self.bookMeta.tableOfContents.firstIndex(of: tocReference)!
                 let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
-                IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList!.count)")
+                IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
                 self.insertQueue.sync {
-                    pageCount += chapter.pageList?.count ?? 0
+                    pageCount += chapter.pageList.count
                     finishCount += 1
                     tempList[index] = chapter
-                    if finishCount >= self.chapterCount {
-                        self.didFinishParse(chapterList: tempList, pageCount: pageCount)
+                    
+                    DispatchQueue.main.async {
+                        self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
                     }
-                    self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
+                    if finishCount >= self.chapterCount {
+                        DispatchQueue.main.async {
+                            self.didFinishParse(chapterList: tempList, pageCount: pageCount)
+                        }
+                    }
                 }
             }
         }

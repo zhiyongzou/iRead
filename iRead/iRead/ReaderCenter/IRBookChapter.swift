@@ -18,11 +18,13 @@ class IRBookChapter: NSObject {
     /// 文字大小
     lazy var textSizeMultiplier = IRReaderConfig.textSizeMultiplier
     /// 章节页列表
-    var pageList: [IRBookPage]?
+    lazy var pageList = [IRBookPage]()
     /// 章节标题
     var title: String?
     /// 章节索引
     var chapterIdx: Int = 0
+    /// 页码偏移
+    var pageOffset: Int?
     ///  HTML data
     var htmlData: Data?
     var baseUrl: URL?
@@ -48,6 +50,19 @@ class IRBookChapter: NSObject {
         self.htmlData = htmlData
         let htmlString = self.htmlAttributedString(withData: htmlData)
         self.pagination(withHtmlAttributedText: htmlString)
+    }
+    
+    func page(withIndex index: Int) -> IRBookPage {
+        
+        if pageOffset != nil {
+            let pageModel = pageList[index]
+            if let pageOffset = pageOffset {
+                pageModel.displayPageIdx = pageOffset + index + 1
+            }
+            return pageModel
+        } else {
+            return pageList[index]
+        }
     }
     
     func htmlAttributedString(withData htmlData: Data) -> NSMutableAttributedString {
@@ -109,7 +124,6 @@ class IRBookChapter: NSObject {
     func updateTextColorHex(_ textColorHex: String) {
         self.textColorHex = textColorHex
         let textColor = UIColor.hexColor(textColorHex)
-        guard let pageList = self.pageList else { return }
         for pageModel in pageList {
             pageModel.updateTextColor(textColor)
         }

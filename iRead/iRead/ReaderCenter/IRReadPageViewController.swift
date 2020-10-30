@@ -11,16 +11,28 @@ import UIKit
 class IRReadPageViewController: UIViewController {
 
     private var pageSize = CGSize.zero
+    var pageLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = IRReaderConfig.textColor
+        return label
+    }()
     
-    private var pageLabel: DTAttributedLabel = {
-        let pageLabel = DTAttributedLabel()
-        pageLabel.backgroundColor = UIColor.clear
-        return pageLabel
+    private var contentLabel: DTAttributedLabel = {
+        let label = DTAttributedLabel()
+        label.backgroundColor = UIColor.clear
+        return label
     }()
 
     var pageModel: IRBookPage? {
         willSet {
-            self.pageLabel.attributedString = newValue?.content
+            self.contentLabel.attributedString = newValue?.content
+            if let displayPageIdx = newValue?.displayPageIdx {
+                self.pageLabel.text = String(displayPageIdx)
+            } else {
+                self.pageLabel.text = ""
+            }
         }
     }
     
@@ -32,6 +44,7 @@ class IRReadPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = IRReaderConfig.pageColor
+        self.view.addSubview(contentLabel)
         self.view.addSubview(pageLabel)
     }
     
@@ -41,7 +54,7 @@ class IRReadPageViewController: UIViewController {
         if pageModel?.textColorHex != IRReaderConfig.textColorHex {
             pageModel?.textColorHex = IRReaderConfig.textColorHex
             pageModel?.updateTextColor(IRReaderConfig.textColor)
-            self.pageLabel.attributedString = pageModel?.content
+            self.contentLabel.attributedString = pageModel?.content
         }
         self.view.backgroundColor = IRReaderConfig.pageColor
     }
@@ -51,6 +64,8 @@ class IRReadPageViewController: UIViewController {
         
         let pageX = (self.view.width - pageSize.width) / 2.0
         let pageY = (self.view.height - pageSize.height) / 2.0
-        pageLabel.frame = CGRect.init(origin: CGPoint.init(x: pageX, y: pageY), size: pageSize)
+        contentLabel.frame = CGRect.init(origin: CGPoint.init(x: pageX, y: pageY), size: pageSize)
+        
+        pageLabel.frame = CGRect.init(x: 0, y: contentLabel.frame.maxY + IRReaderConfig.pageIndexSpacing, width: self.view.width, height: 12)
     }
 }

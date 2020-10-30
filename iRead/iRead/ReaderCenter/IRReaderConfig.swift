@@ -144,6 +144,8 @@ class IRReaderConfig: NSObject {
         return multiplier
     }()
     
+    /// 文本与页码的间距
+    static var pageIndexSpacing: CGFloat = 10
     /// 行距
     static var lineSpacing: CGFloat = 2
     /// 行高倍数

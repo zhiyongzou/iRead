@@ -15,6 +15,7 @@ class IRBookPage: NSObject {
     var content: NSAttributedString!
     var pageIdx: Int = 0
     var chapterIdx: Int = 0
+    var displayPageIdx: Int?
     
     class func bookPage(withPageIdx pageIdx: Int, chapterIdx: Int) -> IRBookPage {
         let page = IRBookPage()

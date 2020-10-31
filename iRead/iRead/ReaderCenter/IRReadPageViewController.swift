@@ -15,7 +15,6 @@ class IRReadPageViewController: UIViewController {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = IRReaderConfig.textColor
         return label
     }()
     
@@ -43,7 +42,7 @@ class IRReadPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = IRReaderConfig.pageColor
+        self.updateThemeColor()
         self.view.addSubview(contentLabel)
         self.view.addSubview(pageLabel)
     }
@@ -67,5 +66,10 @@ class IRReadPageViewController: UIViewController {
         contentLabel.frame = CGRect.init(origin: CGPoint.init(x: pageX, y: pageY), size: pageSize)
         
         pageLabel.frame = CGRect.init(x: 0, y: contentLabel.frame.maxY + IRReaderConfig.pageIndexSpacing, width: self.view.width, height: 12)
+    }
+    
+    func updateThemeColor() {
+        self.view.backgroundColor = IRReaderConfig.pageColor
+        pageLabel.textColor = IRReaderConfig.textColor
     }
 }

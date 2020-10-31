@@ -60,8 +60,8 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
             safeInsets = self.view.safeAreaInsets
         }
         
-        if safeInsets == UIEdgeInsets.zero {
-            safeInsets = UIEdgeInsets.init(top: 20, left: 0, bottom: 20, right: 0)
+        if safeInsets.bottom == 0 || safeInsets.top == 0 {
+            safeInsets = UIEdgeInsets.init(top: 30, left: 0, bottom: 30, right: 0)
         }
         
         let width = self.view.width - IRReaderConfig.horizontalSpacing * 2

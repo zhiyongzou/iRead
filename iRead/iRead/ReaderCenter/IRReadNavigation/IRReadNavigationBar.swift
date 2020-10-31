@@ -80,13 +80,14 @@ class IRReadNavigationBar: UIView {
             make.bottom.equalTo(self)
         }
         
-        self.updateTintColor(IRReaderConfig.textColor)
+        self.updateThemeColor()
     }
     
-    func updateTintColor(_ color: UIColor) {
+    func updateThemeColor() {
         
-        bottomLine.backgroundColor = color.withAlphaComponent(0.08)
-        self.tintColor = color
+        self.backgroundColor = IRReaderConfig.pageColor
+        bottomLine.backgroundColor = IRReaderConfig.textColor.withAlphaComponent(0.08)
+        self.tintColor = IRReaderConfig.textColor
     }
     
     //MARK: - Action

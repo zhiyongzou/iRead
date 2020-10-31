@@ -9,9 +9,17 @@
 import UIKit
 import SnapKit
 
+protocol IRReadBottomBarDelegate: AnyObject {
+    
+    func readBottomBar(_: IRReadBottomBar, didChangePageIndex pageIndex: Int)
+    func readBottomBar(_: IRReadBottomBar, didEndChangePageIndex pageIndex: Int)
+}
+
 class IRReadBottomBar: UIView {
 
     let barHeight: CGFloat = 40
+    
+    weak var delegate: IRReadBottomBarDelegate?
     
     /// 当前阅读页码
     var curentPageIdx = 0 {
@@ -61,6 +69,19 @@ class IRReadBottomBar: UIView {
         self.setupSubviews()
     }
     
+    //MARK: - Action
+    
+    @objc func eadSliderValueDidChange(_ slider: UISlider) {
+        self.curentPageIdx = Int(slider.value)
+        self.delegate?.readBottomBar(self, didChangePageIndex: curentPageIdx)
+    }
+    
+    @objc func readSliderValueDidEndChange(_ slider: UISlider) {
+        self.delegate?.readBottomBar(self, didEndChangePageIndex: curentPageIdx)
+    }
+    
+    //MARK: - Private
+    
     func updateThemeColor() {
         self.backgroundColor = IRReaderConfig.pageColor
         pageInfoLabel.textColor = IRReaderConfig.textColor
@@ -81,6 +102,7 @@ class IRReadBottomBar: UIView {
     }
     
     func updatePageInfo() {
+        readSlider.minimumValue = 1.0
         readSlider.maximumValue = Float(bookPageCount)
         readSlider.value = Float(curentPageIdx)
         pageInfoLabel.text = "第\(curentPageIdx)页，共\(bookPageCount)页"
@@ -92,10 +114,11 @@ class IRReadBottomBar: UIView {
         let spacing: CGFloat = 25
         
         readSlider.isHidden = true
-        readSlider.minimumValue = 0
         readSlider.minimumTrackTintColor = UIColor.clear
         readSlider.maximumTrackTintColor = UIColor.clear
         readSlider.setThumbImage(UIImage.init(named: "slider_thumb")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        readSlider.addTarget(self, action: #selector(eadSliderValueDidChange(_:)), for: .valueChanged)
+        readSlider.addTarget(self, action: #selector(readSliderValueDidEndChange(_:)), for: .touchUpInside)
         self.addSubview(readSlider)
         readSlider.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(12)

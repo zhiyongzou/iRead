@@ -96,6 +96,20 @@ class IRBook: NSObject {
         }
     }
     
+    func chapter(withPageIndex index: Int) -> IRBookChapter {
+        
+        var chapter: IRBookChapter!
+        // 算法后续优化
+        for item in chapterList {
+            if (index >= item.pageOffset!) && (index <= (item.pageOffset! + item.pageList.count)) {
+                chapter = item
+                break
+            }
+        }
+        
+        return chapter
+    }
+    
     func parseBookMeta() {
         
         isFinishParse = false

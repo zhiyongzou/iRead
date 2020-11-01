@@ -90,10 +90,10 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
             make.height.equalTo(IRBrightnessSettingView.viewHeight)
         }
         
-        self.updateViewBackgroungColor(byPageColorHex: IRReaderConfig.pageColorHex)
+        self.updateThemeColor()
     }
     
-    func updateViewBackgroungColor(byPageColorHex pageHex: String) {
+    func updateThemeColor() {
         
         contentView.backgroundColor = IRReaderConfig.pageColor
         self.backgroundColor = IRReaderConfig.bgColor
@@ -142,7 +142,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     //MARK: - IRReadColorSettingViewDelegate
     func readColorSettingView(_ view: IRReadColorSettingView, didChangeSelectColor color: IRReadColorModel) {
         IRReaderConfig.pageColorHex = color.pageColorHex
-        self.updateViewBackgroungColor(byPageColorHex: color.pageColorHex)
+        self.updateThemeColor()
         self.deleage?.readSettingView(self, didChangeSelectColor: color)
     }
     

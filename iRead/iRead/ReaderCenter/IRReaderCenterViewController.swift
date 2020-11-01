@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, IRChapterListViewControllerDelagate, IRBookParseDelegate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, IRChapterListViewControllerDelagate, IRBookParseDelegate, IRReadBottomBarDelegate {
     
     var shouldHideStatusBar = true
     var book: IRBook!
@@ -23,6 +23,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     var readNavigationContentView: IRReadNavigationContentView?
     /// 阅读设置
     var readSettingView: CMPopTipView?
+    var chapterTipView: IRChapterTipView?
     
    
     //MARK: - Init
@@ -72,6 +73,33 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         pageViewController.view.frame = self.view.bounds
+    }
+    
+    //MARK: - IRReadBottomBarDelegate
+    
+    func readBottomBar(_: IRReadBottomBar, didChangePageIndex pageIndex: Int) {
+        
+        if chapterTipView == nil {
+            chapterTipView = IRChapterTipView()
+            chapterTipView!.isUserInteractionEnabled = false
+            let height = IRChapterTipView.viewHeight
+            let width = IRReaderConfig.pageSzie.width
+            let x = (self.readNavigationContentView!.width - width) / 2.0
+            let y = self.readBottomBar.frame.minY - height - 10
+            chapterTipView!.frame = CGRect.init(x: x, y: y, width: width, height: height)
+            self.readNavigationContentView!.addSubview(chapterTipView!)
+        }
+        chapterTipView!.isHidden = false
+        let chapter = book.chapter(withPageIndex: pageIndex)
+        chapterTipView!.update(title: chapter.title, pageIndex: pageIndex)
+    }
+    
+    func readBottomBar(_: IRReadBottomBar, didEndChangePageIndex pageIndex: Int) {
+        
+        self.chapterTipView?.isHidden = true
+        let chapter = book.chapter(withPageIndex: pageIndex)
+        let pageModel = chapter.page(withIndex: pageIndex - chapter.pageOffset! - 1)
+        self.setupPageViewControllerWithPageModel(pageModel)
     }
     
     //MARK: - IRBookParseDelegate
@@ -189,6 +217,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         self.currentReadingVC.updateThemeColor()
         self.readNavigationBar.updateThemeColor()
         self.readBottomBar.updateThemeColor()
+        self.chapterTipView?.updateThemeColor()
         
         let pageModel = self.currentReadingVC.pageModel
         pageModel?.updateTextColor(IRReaderConfig.textColor)
@@ -319,7 +348,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         readNavigationContentView?.frame = self.view.bounds
         
         readNavigationBar.delegate = self
-        readNavigationBar.backgroundColor = IRReaderConfig.pageColor
         readNavigationContentView?.addSubview(readNavigationBar)
         var safe = UIEdgeInsets.zero
         if #available(iOS 11.0, *) {
@@ -332,7 +360,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         let barH = safe.top + readNavigationBar.itemHeight
         readNavigationBar.frame = CGRect.init(x: 0, y: -barH, width: width, height: barH)
         
-        readBottomBar.backgroundColor = IRReaderConfig.pageColor
+        readBottomBar.delegate = self
         readBottomBar.curentPageIdx = self.currentReadingVC.pageModel?.displayPageIdx ?? 0
         readNavigationContentView!.addSubview(readBottomBar)
         let bottomH = safe.bottom + readNavigationBar.itemHeight

@@ -45,6 +45,7 @@
 		81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C97756253DB7DB00E9CCCB /* IRFontDownload.swift */; };
 		81C97760253DB83800E9CCCB /* IRFontSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9775F253DB83800E9CCCB /* IRFontSelectView.swift */; };
 		81C97765253DB86300E9CCCB /* IRFontSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C97764253DB86300E9CCCB /* IRFontSelectCell.swift */; };
+		81CB116A254EECB70084E991 /* IRChapterTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB1169254EECB70084E991 /* IRChapterTipView.swift */; };
 		DB303FBF06BE075570EFDA68 /* libPods-iRead.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA102CBABD9ED364C525C64 /* libPods-iRead.a */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +115,7 @@
 		81C97756253DB7DB00E9CCCB /* IRFontDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontDownload.swift; sourceTree = "<group>"; };
 		81C9775F253DB83800E9CCCB /* IRFontSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontSelectView.swift; sourceTree = "<group>"; };
 		81C97764253DB86300E9CCCB /* IRFontSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontSelectCell.swift; sourceTree = "<group>"; };
+		81CB1169254EECB70084E991 /* IRChapterTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRChapterTipView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 		8180406325206A5C00F31442 /* ReaderCenter */ = {
 			isa = PBXGroup;
 			children = (
+				81CB1168254EEC7E0084E991 /* IRChapterTipView */,
 				8126CF6B2545884900C71415 /* IRChapterList */,
 				8136A28825369C0C005C1646 /* IRReadSettingView */,
 				8136A0D425358976005C1646 /* IRReadNavigation */,
@@ -354,6 +357,14 @@
 				81B78BD6253E969B00353157 /* IRFontModel.swift */,
 			);
 			path = IRFontSetting;
+			sourceTree = "<group>";
+		};
+		81CB1168254EEC7E0084E991 /* IRChapterTipView */ = {
+			isa = PBXGroup;
+			children = (
+				81CB1169254EECB70084E991 /* IRChapterTipView.swift */,
+			);
+			path = IRChapterTipView;
 			sourceTree = "<group>";
 		};
 		CEADD0ABB21439E30F462373 /* Pods */ = {
@@ -573,6 +584,7 @@
 				818040A3252195CD00F31442 /* IRReaderCenterViewController.swift in Sources */,
 				81C97760253DB83800E9CCCB /* IRFontSelectView.swift in Sources */,
 				8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */,
+				81CB116A254EECB70084E991 /* IRChapterTipView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

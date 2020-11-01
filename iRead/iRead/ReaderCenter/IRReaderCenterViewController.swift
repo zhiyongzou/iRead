@@ -203,6 +203,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         let pageCount = currentChapter.pageList.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
         self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
+        book.parseBookMeta()
     }
     
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
@@ -235,6 +236,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         let pageCount = currentChapter.pageList.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
         self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
+        book.parseBookMeta()
     }
     
     //MARK: - UIPageViewControllerDelegate

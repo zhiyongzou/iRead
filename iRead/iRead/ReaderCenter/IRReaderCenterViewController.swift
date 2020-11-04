@@ -31,9 +31,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     convenience init(withBook book:IRBook) {
         self.init()
         self.book = book
+        IRReaderConfig.isChinese = book.isChinese
         book.parseDelegate = self
         book.parseBookMeta()
-        IRReaderConfig.isChinese = book.isChinese
     }
     
     //MARK: - Override

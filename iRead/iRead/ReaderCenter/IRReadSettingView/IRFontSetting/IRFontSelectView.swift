@@ -12,6 +12,7 @@ import IRCommonLib
 
 protocol IRFontSelectViewDelegate: AnyObject {
     func fontSelectView(_ view: IRFontSelectView, didSelectFontName fontName: String)
+    func fontSelectViewDidClickBackButton(_ view: IRFontSelectView)
 }
 
 class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -147,7 +148,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     //MARK: - Action
     
     @objc func didClickBackButton() {
-        self.dissmissAnimated(true)
+        self.delegate?.fontSelectViewDidClickBackButton(self)
     }
     
     //MARK: - Public
@@ -157,18 +158,5 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
         titleLabel.textColor = color
         backButton.tintColor = color
         collectionView.reloadData()
-    }
-    
-    func dissmissAnimated(_ animated: Bool) {
-        
-        if animated {
-            UIView.animate(withDuration: 0.25) {
-                self.x = self.width
-            } completion: { (finish) in
-                self.removeFromSuperview()
-            }
-        } else {
-            self.removeFromSuperview()
-        }
     }
 }

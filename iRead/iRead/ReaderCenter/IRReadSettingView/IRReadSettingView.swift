@@ -24,6 +24,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     weak var deleage: IRReadSettingViewDelegate?
     
     var fontSelectView: IRFontSelectView?
+    var scrollView = UIScrollView()
     var contentView = UIView()
     lazy var scrollSettingView = IRSwitchSettingView()
     lazy var colorSettingView = IRReadColorSettingView()
@@ -44,33 +45,41 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     override func willMove(toWindow newWindow: UIWindow?) {
         
         if newWindow == nil && fontSelectView?.superview != nil {
-            fontSelectView?.dissmissAnimated(false)
+            scrollView.setContentOffset(CGPoint.zero, animated: false)
         }
         
         super.willMove(toWindow: newWindow)
     }
     
+    override func layoutSubviews() {
+        superview?.layoutSubviews()
+        
+        scrollView.frame = self.bounds
+        scrollView.contentSize = CGSize.init(width: self.width * 2, height: self.height)
+        contentView.frame = scrollView.bounds
+    }
+    
     //MARK: - Private
     func setupSubviews() {
         
-        self.addSubview(contentView)
-        contentView.snp.makeConstraints { (make) in
-            make.edges.equalTo(self)
-        }
+        scrollView.showsHorizontalScrollIndicator = false
+        self.addSubview(scrollView)
+        
+        scrollView.addSubview(contentView)
         
         scrollSettingView.titleLabel.text = "竖向翻页"
         scrollSettingView.isOn = IRReaderConfig.transitionStyle == .scroll
         scrollSettingView.delegate = self
         contentView.addSubview(scrollSettingView)
         scrollSettingView.snp.makeConstraints { (make) in
-            make.bottom.right.left.equalTo(self)
+            make.bottom.right.left.equalTo(contentView)
             make.height.equalTo(IRSwitchSettingView.viewHeight)
         }
         
         colorSettingView.delegate = self
         contentView.addSubview(colorSettingView)
         colorSettingView.snp.makeConstraints { (make) in
-            make.right.left.equalTo(self)
+            make.right.left.equalTo(contentView)
             make.bottom.equalTo(scrollSettingView.snp.top).offset(-IRReadColorSettingView.bottomSapcing)
             make.height.equalTo(IRReadColorSettingView.viewHeight)
         }
@@ -78,14 +87,14 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         fontSettingView.delegate = self
         contentView.addSubview(fontSettingView)
         fontSettingView.snp.makeConstraints { (make) in
-            make.right.left.equalTo(self)
+            make.right.left.equalTo(contentView)
             make.bottom.equalTo(colorSettingView.snp.top).offset(-IRFontSettingView.bottomSapcing)
             make.height.equalTo(IRFontSettingView.viewHeight)
         }
         
         contentView.addSubview(brightnessSettingView)
         brightnessSettingView.snp.makeConstraints { (make) in
-            make.right.left.equalTo(self)
+            make.right.left.equalTo(contentView)
             make.bottom.equalTo(fontSettingView.snp.top).offset(-IRBrightnessSettingView.bottomSapcing)
             make.height.equalTo(IRBrightnessSettingView.viewHeight)
         }
@@ -132,6 +141,10 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         self.deleage?.readSettingView(self, didSelectFontName: fontName)
     }
     
+    func fontSelectViewDidClickBackButton(_ view: IRFontSelectView) {
+        scrollView.setContentOffset(CGPoint.zero, animated: true)
+    }
+    
     //MARK: - IRSwitchSettingViewDeleagte
     func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
         IRReaderConfig.transitionStyle = isOn ? .scroll : .pageCurl
@@ -162,12 +175,9 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
             fontSelectView = IRFontSelectView()
             fontSelectView?.delegate = self
             fontSelectView?.backgroundColor = self.backgroundColor
+            scrollView.addSubview(fontSelectView!)
+            fontSelectView?.frame = CGRect.init(x: self.width, y: 0, width: self.width, height: self.height)
         }
-        
-        self.addSubview(fontSelectView!)
-        fontSelectView?.frame = CGRect.init(x: self.width, y: 0, width: self.width, height: self.height)
-        UIView.animate(withDuration: 0.25) {
-            self.fontSelectView?.x = 0
-        }
+        scrollView.setContentOffset(CGPoint.init(x: self.width, y: 0), animated: true)
     }
 }

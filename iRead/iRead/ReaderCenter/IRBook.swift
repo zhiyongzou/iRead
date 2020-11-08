@@ -26,11 +26,18 @@ class IRBook: NSObject {
     lazy var chapterList = [IRBookChapter]()
     var currentReadChapter: IRBookChapter?
     var cureentReadPage: IRBookPage?
-    lazy var insertQueue = DispatchQueue.init(label: "book_insert_queue")
     
     var parseQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "book_parse_queue"
+        queue.qualityOfService = .background
+        return queue
+    }()
+    
+    var insertQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.name = "book_insert_queue"
         queue.qualityOfService = .background
         return queue
     }()
@@ -71,15 +78,14 @@ class IRBook: NSObject {
     
     func didFinishParse(chapterList: [AnyObject], pageCount: Int) {
         
+        self.chapterList.removeAll()
         var pageOffset = 0
         for item in chapterList {
-            if item is IRBookChapter {
-                let chapter = item as! IRBookChapter
-                chapter.pageOffset = pageOffset
-                pageOffset += chapter.pageList.count
-                self.chapterList.append(chapter)
-                IRDebugLog(chapter.title)
-            }
+            let chapter = item as! IRBookChapter
+            chapter.pageOffset = pageOffset
+            pageOffset += chapter.pageList.count
+            self.chapterList.append(chapter)
+            IRDebugLog(chapter.title)
         }
         self.pageCount = pageCount
         isFinishParse = true
@@ -113,64 +119,60 @@ class IRBook: NSObject {
     func parseBookMeta() {
         
         parseQueue.cancelAllOperations()
+        insertQueue.cancelAllOperations()
         isFinishParse = false
         self.parseDelegate?.bookBeginParse(self)
         
-        var tempList = [AnyObject]()
+        var resultList = [AnyObject]()
         var pageCount = 0
         
         // 占位
         for _ in 0..<chapterCount {
-            tempList.append(NSNull())
+            resultList.append(NSNull())
         }
         
         var finishCount = 0
-        
-        if chapterList.count > 0 {
+        if chapterList.count > 0 && chapterList.count == self.chapterCount {
             for chapter in chapterList {
                 parseQueue.addOperation {
                     if chapter.fontName != IRReaderConfig.fontName {
                         chapter.updateTextFontName(IRReaderConfig.fontName)
                     } else if chapter.textSizeMultiplier != IRReaderConfig.textSizeMultiplier {
                         chapter.updateTextSizeMultiplier(IRReaderConfig.textSizeMultiplier)
-                    } else {
-                        print("Not change")
                     }
-                    
                     IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
-                    self.insertQueue.sync {
+                    self.insertQueue.addOperation {
                         pageCount += chapter.pageList.count
                         finishCount += 1
-                        tempList[chapter.chapterIdx] = chapter
+                        resultList[chapter.chapterIdx] = chapter
                         DispatchQueue.main.async {
                             self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
                         }
                         if finishCount >= self.chapterCount {
                             DispatchQueue.main.async {
-                                self.didFinishParse(chapterList: tempList, pageCount: pageCount)
+                                self.didFinishParse(chapterList: resultList, pageCount: pageCount)
                             }
                         }
                     }
                 }
             }
-            chapterList.removeAll()
         } else {
             for tocReference: FRTocReference in bookMeta.tableOfContents {
                 parseQueue.addOperation {
                     let index = self.bookMeta.tableOfContents.firstIndex(of: tocReference)!
                     let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
                     IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
-                    self.insertQueue.sync {
+                    self.insertQueue.addOperation {
                         pageCount += chapter.pageList.count
                         finishCount += 1
-                        tempList[index] = chapter
+                        resultList[index] = chapter
                         
                         DispatchQueue.main.async {
                             self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
                         }
                         if finishCount >= self.chapterCount {
                             DispatchQueue.main.async {
-                                self.didFinishParse(chapterList: tempList, pageCount: pageCount)
+                                self.didFinishParse(chapterList: resultList, pageCount: pageCount)
                             }
                         }
                     }

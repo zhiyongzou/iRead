@@ -108,6 +108,7 @@ class IRFontSettingView: UIView, IRArrowSettingViewDelegate {
     
     func updateThemeColor() {
         
+        self.backgroundColor = IRReaderConfig.bgColor
         midLine.backgroundColor = IRReaderConfig.separatorColor
         bottomLine.backgroundColor = IRReaderConfig.separatorColor
         fontTypeSelectView.titleLabel.textColor = IRReaderConfig.textColor

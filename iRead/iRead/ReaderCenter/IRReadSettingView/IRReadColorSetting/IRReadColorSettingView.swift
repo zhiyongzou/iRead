@@ -86,6 +86,10 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
         self.addSubview(collectionView)
     }
     
+    func updateThemeColor() {
+        self.backgroundColor = IRReaderConfig.bgColor
+    }
+    
     // MARK: - UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

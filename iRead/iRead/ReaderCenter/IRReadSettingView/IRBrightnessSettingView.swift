@@ -28,6 +28,12 @@ class IRBrightnessSettingView: UIView {
         self.setupSubviews()
     }
     
+    func updateThemeColor() {
+        self.backgroundColor = IRReaderConfig.bgColor
+        brightnessSlider.minimumTrackTintColor = IRReaderConfig.textColor
+        brightnessSlider.maximumTrackTintColor = IRReaderConfig.textColor.withAlphaComponent(0.25)
+    }
+    
     func setupSubviews() {
         
         let margin: CGFloat = 10

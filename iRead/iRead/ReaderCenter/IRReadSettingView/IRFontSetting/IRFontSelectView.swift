@@ -154,6 +154,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     //MARK: - Public
     
     func updateThemeColor() {
+        self.backgroundColor = IRReaderConfig.bgColor
         separatorLine.backgroundColor = IRReaderConfig.separatorColor
         titleLabel.textColor = IRReaderConfig.textColor
         backButton.tintColor = IRReaderConfig.textColor

@@ -55,8 +55,6 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         super.layoutSubviews()
         
         scrollView.frame = self.bounds
-        scrollView.contentSize = CGSize.init(width: self.width * 2, height: self.height)
-        contentView.frame = scrollView.bounds
     }
     
     //MARK: - Private
@@ -67,6 +65,10 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         self.addSubview(scrollView)
         
         scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints { (make) in
+            make.center.equalTo(scrollView)
+            make.size.equalTo(IRReadSettingView.viewSize)
+        }
         
         scrollSettingView.titleLabel.text = "竖向翻页"
         scrollSettingView.isOn = IRReaderConfig.transitionStyle == .scroll
@@ -178,6 +180,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
             fontSelectView?.backgroundColor = self.backgroundColor
             scrollView.addSubview(fontSelectView!)
             fontSelectView?.frame = CGRect.init(x: self.width, y: 0, width: self.width, height: self.height)
+            scrollView.contentSize = CGSize.init(width: self.width * 2, height: self.height)
         }
         scrollView.setContentOffset(CGPoint.init(x: self.width, y: 0), animated: true)
     }

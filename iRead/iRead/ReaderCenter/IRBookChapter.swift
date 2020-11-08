@@ -74,7 +74,7 @@ class IRBookChapter: NSObject {
             DTMaxImageSize: IRReaderConfig.pageSzie,
             NSTextSizeMultiplierDocumentOption: (CGFloat(textSizeMultiplier) / 10.0),
             DTDefaultLineHeightMultiplier: IRReaderConfig.lineHeightMultiple,
-            DTDefaultLinkColor: "#536FFA",
+            DTDefaultLinkColor: IRReaderConfig.linkColorHex,
             DTDefaultTextColor: UIColor.hexColor(textColorHex!),
             DTDefaultFontSize: IRReaderConfig.defaultTextSize
         ]

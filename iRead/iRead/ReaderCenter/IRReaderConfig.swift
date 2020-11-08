@@ -76,6 +76,8 @@ class IRReaderConfig: NSObject {
     /// 是否跟随系统夜间主题
     static var isFollowSystemTheme: Bool = UserDefaults.standard.bool(forKey: kReadFollowSystemTheme);
     
+    static var linkColorHex = "#536FFA"
+    
     /// 文字颜色，默认黑色
     static var textColor: UIColor!
     static var textColorHex: String!

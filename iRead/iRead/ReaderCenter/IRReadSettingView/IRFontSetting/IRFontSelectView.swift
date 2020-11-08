@@ -104,7 +104,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
             make.top.equalTo(separatorLine.snp.bottom)
         }
         
-        self.updateTextColor(IRReaderConfig.textColor, separatorColor: IRReaderConfig.separatorColor)
+        self.updateThemeColor()
     }
     
     // MARK: - UICollectionView
@@ -153,10 +153,10 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     
     //MARK: - Public
     
-    func updateTextColor(_ color: UIColor, separatorColor: UIColor) {
-        separatorLine.backgroundColor = separatorColor
-        titleLabel.textColor = color
-        backButton.tintColor = color
+    func updateThemeColor() {
+        separatorLine.backgroundColor = IRReaderConfig.separatorColor
+        titleLabel.textColor = IRReaderConfig.textColor
+        backButton.tintColor = IRReaderConfig.textColor
         collectionView.reloadData()
     }
 }

@@ -61,6 +61,11 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
         self.setupSubviews()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        collectionView.frame = CGRect.init(x: 10, y: 0, width: self.width - 20, height: self.height)
+    }
+    
     //MARK: - Private
     
     func setupSubviews() {
@@ -79,12 +84,6 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
         collectionView.backgroundColor = UIColor.clear
         collectionView.register(IRReadColorCell.self, forCellWithReuseIdentifier: "IRReadColorCell")
         self.addSubview(collectionView)
-        collectionView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self)
-            make.height.equalTo(IRReadColorSettingView.colorViewHeight)
-            make.right.equalTo(self).offset(-10)
-            make.left.equalTo(self).offset(10)
-        }
     }
     
     // MARK: - UICollectionView

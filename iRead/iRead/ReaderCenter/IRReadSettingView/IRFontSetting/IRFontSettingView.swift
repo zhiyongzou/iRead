@@ -106,19 +106,19 @@ class IRFontSettingView: UIView, IRArrowSettingViewDelegate {
         }
     }
     
-    func updateTextColor(_ color: UIColor, separatorColor: UIColor) {
+    func updateThemeColor() {
         
-        midLine.backgroundColor = separatorColor
-        bottomLine.backgroundColor = separatorColor
-        fontTypeSelectView.titleLabel.textColor = color
+        midLine.backgroundColor = IRReaderConfig.separatorColor
+        bottomLine.backgroundColor = IRReaderConfig.separatorColor
+        fontTypeSelectView.titleLabel.textColor = IRReaderConfig.textColor
         
-        increaseBtn.setTitleColor(color, for: .normal)
-        increaseBtn.setTitleColor(color.withAlphaComponent(0.3), for: .highlighted)
-        increaseBtn.setTitleColor(color.withAlphaComponent(0.3), for: .disabled)
+        increaseBtn.setTitleColor(IRReaderConfig.textColor, for: .normal)
+        increaseBtn.setTitleColor(IRReaderConfig.textColor.withAlphaComponent(0.3), for: .highlighted)
+        increaseBtn.setTitleColor(IRReaderConfig.textColor.withAlphaComponent(0.3), for: .disabled)
         
-        reduceBtn.setTitleColor(color, for: .normal)
-        reduceBtn.setTitleColor(color.withAlphaComponent(0.3), for: .highlighted)
-        reduceBtn.setTitleColor(color.withAlphaComponent(0.3), for: .disabled)
+        reduceBtn.setTitleColor(IRReaderConfig.textColor, for: .normal)
+        reduceBtn.setTitleColor(IRReaderConfig.textColor.withAlphaComponent(0.3), for: .highlighted)
+        reduceBtn.setTitleColor(IRReaderConfig.textColor.withAlphaComponent(0.3), for: .disabled)
     }
     
     // MARK: - IRArrowSettingViewDelegate

@@ -52,7 +52,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     }
     
     override func layoutSubviews() {
-        superview?.layoutSubviews()
+        super.layoutSubviews()
         
         scrollView.frame = self.bounds
         scrollView.contentSize = CGSize.init(width: self.width * 2, height: self.height)
@@ -63,6 +63,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     func setupSubviews() {
         
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.isScrollEnabled = false
         self.addSubview(scrollView)
         
         scrollView.addSubview(contentView)
@@ -113,9 +114,9 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
         brightnessSettingView.backgroundColor = IRReaderConfig.bgColor
         colorSettingView.backgroundColor = IRReaderConfig.bgColor
         
-        fontSettingView.updateTextColor(IRReaderConfig.textColor, separatorColor:IRReaderConfig.separatorColor)
+        fontSettingView.updateThemeColor()
         scrollSettingView.titleLabel.textColor = IRReaderConfig.textColor
-        fontSelectView?.updateTextColor(IRReaderConfig.textColor, separatorColor: IRReaderConfig.separatorColor)
+        fontSelectView?.updateThemeColor()
     }
     
     //MARK: - Public

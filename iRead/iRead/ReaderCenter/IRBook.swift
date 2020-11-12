@@ -26,18 +26,13 @@ class IRBook: NSObject {
     lazy var chapterList = [IRBookChapter]()
     var currentReadChapter: IRBookChapter?
     var cureentReadPage: IRBookPage?
+    /// 当前队列解析id
+    var parseQueueId = 0
+    
     
     var parseQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "book_parse_queue"
-        queue.qualityOfService = .background
-        return queue
-    }()
-    
-    var insertQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        queue.name = "book_insert_queue"
         queue.qualityOfService = .background
         return queue
     }()
@@ -118,8 +113,8 @@ class IRBook: NSObject {
     
     func parseBookMeta() {
         
+        parseQueueId += 1
         parseQueue.cancelAllOperations()
-        insertQueue.cancelAllOperations()
         isFinishParse = false
         self.parseDelegate?.bookBeginParse(self)
         
@@ -132,6 +127,8 @@ class IRBook: NSObject {
         }
         
         var finishCount = 0
+        let currentQueueId = parseQueueId
+        
         if chapterList.count > 0 && chapterList.count == self.chapterCount {
             for chapter in chapterList {
                 parseQueue.addOperation {
@@ -141,17 +138,14 @@ class IRBook: NSObject {
                         chapter.updateTextSizeMultiplier(IRReaderConfig.textSizeMultiplier)
                     }
                     IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
-                    self.insertQueue.addOperation {
+                    DispatchQueue.main.async {
+                        if currentQueueId != self.parseQueueId { return }
                         pageCount += chapter.pageList.count
                         finishCount += 1
                         resultList[chapter.chapterIdx] = chapter
-                        DispatchQueue.main.async {
-                            self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
-                        }
+                        self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
                         if finishCount >= self.chapterCount {
-                            DispatchQueue.main.async {
-                                self.didFinishParse(chapterList: resultList, pageCount: pageCount)
-                            }
+                            self.didFinishParse(chapterList: resultList, pageCount: pageCount)
                         }
                     }
                 }
@@ -162,18 +156,14 @@ class IRBook: NSObject {
                     let index = self.bookMeta.tableOfContents.firstIndex(of: tocReference)!
                     let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
                     IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
-                    self.insertQueue.addOperation {
+                    DispatchQueue.main.async {
+                        if currentQueueId != self.parseQueueId { return }
                         pageCount += chapter.pageList.count
                         finishCount += 1
-                        resultList[index] = chapter
-                        
-                        DispatchQueue.main.async {
-                            self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
-                        }
+                        resultList[chapter.chapterIdx] = chapter
+                        self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
                         if finishCount >= self.chapterCount {
-                            DispatchQueue.main.async {
-                                self.didFinishParse(chapterList: resultList, pageCount: pageCount)
-                            }
+                            self.didFinishParse(chapterList: resultList, pageCount: pageCount)
                         }
                     }
                 }

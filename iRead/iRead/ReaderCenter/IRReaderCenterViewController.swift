@@ -36,6 +36,12 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         book.parseBookMeta()
     }
     
+#if DEBUG
+    deinit {
+        IRDebugLog("")
+    }
+#endif
+    
     //MARK: - Override
     
     override func viewDidLoad() {
@@ -120,12 +126,12 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     
     func bookDidFinishParse(_ book: IRBook) {
         
-        if let currentPage = self.currentReadingVC.pageModel {
+        if let currentPage = self.currentReadingVC?.pageModel {
             let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
             self.currentReadingVC.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
         }
         
-        if let viewControllers = self.pageViewController.viewControllers {
+        if let viewControllers = self.pageViewController?.viewControllers {
             for vc in viewControllers {
                 if !(vc is IRReadPageViewController) {
                     continue

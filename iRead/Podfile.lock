@@ -28,7 +28,7 @@ PODS:
     - DTFoundation/DTHTMLParser (= 1.0.0)
   - DTFoundation/DTHTMLParser (1.0.0)
   - EpubBooks (1.0.0)
-  - FLEX (4.1.1)
+  - FLEX (4.2.2)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -72,7 +72,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   EpubBooks:
-    :commit: 69ce230638ffb28a72e079524ec077958f6c9936
+    :commit: b723f0c89352c557ad0600024d595df5bf827b98
     :git: https://github.com/zhiyongzou/EpubBooks.git
 
 SPEC CHECKSUMS:
@@ -81,7 +81,7 @@ SPEC CHECKSUMS:
   DTCoreText: 614f7426823989c3dabe9127fc674123f0049c01
   DTFoundation: 2cd4cbe869518fc73b6d6a5d4a8e0daaa7392931
   EpubBooks: 5f6071d471fb0d26ce1cfc770037cb9b76507aaa
-  FLEX: 81096107977a09836eb440173010ceeef01105d6
+  FLEX: dbd68ae9c67fcc872c79c9e5a728f38243dfaa78
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HGCircularSlider: afb1942743a2df156dcc7a3500216e523e14266b
   IRHexColor: 259fc1291f253f026aec0505112e95623ac57e0e

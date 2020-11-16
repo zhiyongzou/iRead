@@ -26,6 +26,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         self.addTestBook(name: "支付战争")
         self.addTestBook(name: "细说明朝")
         self.addTestBook(name: "The Silver Chair")
+        self.addTestBook(name: "Гарри Поттер")
+        self.addTestBook(name: "Крушение империи")
     #endif
     }
     

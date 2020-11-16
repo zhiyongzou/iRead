@@ -102,9 +102,12 @@ class IRReadBottomBar: UIView {
     }
     
     func updatePageInfo() {
-        readSlider.minimumValue = 1.0
-        readSlider.maximumValue = Float(bookPageCount)
-        readSlider.value = Float(curentPageIdx)
+        
+        let onlyOnePage = bookPageCount == 1
+        readSlider.isUserInteractionEnabled = !onlyOnePage
+        readSlider.minimumValue = onlyOnePage ? 0 : 1
+        readSlider.maximumValue = onlyOnePage ? 1 : Float(bookPageCount)
+        readSlider.setValue(Float(curentPageIdx), animated: false)
         pageInfoLabel.text = "第\(curentPageIdx)页，共\(bookPageCount)页"
         progressView.progress = bookPageCount > 0 ? Float(curentPageIdx) / Float(bookPageCount) : 0
     }

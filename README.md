@@ -1,9 +1,9 @@
 # iRead
-reader，epub
+iRead is an EPUB reader for iOS written in Swift.
 
 ## Features
 
-- [x] ePub 2 and ePub 3 support
+- [x] Epub 2 and Epub 3 support
 - [x] Custom Fonts
 - [x] Custom Text Size
 - [x] Themes / Support 4 modes
@@ -11,7 +11,13 @@ reader，epub
 - [x] Parse epub cover image
 - [x] Support Vertical and Horizontal scrolling
 - [x] Chapter list / Sub-chapter support / Chapter select
-- [x] Support dimming
+- [x] Support Dimming
+- [ ] Upload book by wifi
+- [ ] Reading Record
+- [ ] Reading Notes
+- [ ] Reading Goal
+- [ ] Bookmark
+- [ ] Bookshelf Edit/Delete/Sort
 - [ ] Bookshelf
 - [ ] Home
 - [ ] Mine

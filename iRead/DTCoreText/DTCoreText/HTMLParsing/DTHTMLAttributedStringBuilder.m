@@ -673,6 +673,21 @@
 
 - (void)parser:(DTHTMLParser *)parser didStartElement:(NSString *)elementName attributes:(NSDictionary *)attributeDict
 {
+    // 兼容 XML image 标签
+    if ([elementName isEqualToString:@"image"]) {
+        elementName = @"img";
+        NSString *xlink = @"xlink:href";
+        NSMutableDictionary *temp = [attributeDict mutableCopy];
+        id srcValue = [attributeDict objectForKey:xlink];
+        if (srcValue != nil) {
+            [temp setObject:srcValue forKey:@"src"];
+            [temp removeObjectForKey:xlink];
+            attributeDict = temp.copy;
+        } else {
+            return;
+        }
+    }
+    
 	DT_WEAK_VARIABLE typeof(self) weakSelf = self;
 	dispatch_group_async(_treeBuildingGroup, _treeBuildingQueue, ^{
 		DTHTMLAttributedStringBuilder *strongSelf = weakSelf;
@@ -784,6 +799,9 @@
 
 - (void)parser:(DTHTMLParser *)parser didEndElement:(NSString *)elementName
 {
+    if ([elementName isEqualToString:@"image"]) {
+        elementName = @"img";
+    }
 	DT_WEAK_VARIABLE typeof(self) weakSelf = self;
 	dispatch_group_async(_treeBuildingGroup, _treeBuildingQueue, ^{
 		@autoreleasepool {

@@ -31,6 +31,7 @@ class IRReadBottomBar: UIView {
     /// 总页数
     var bookPageCount = 0 {
         didSet {
+            readSlider.isUserInteractionEnabled = !(bookPageCount == 1)
             self.updatePageInfo()
         }
     }
@@ -104,7 +105,6 @@ class IRReadBottomBar: UIView {
     func updatePageInfo() {
         
         let onlyOnePage = bookPageCount == 1
-        readSlider.isUserInteractionEnabled = !onlyOnePage
         readSlider.minimumValue = onlyOnePage ? 0 : 1
         readSlider.maximumValue = onlyOnePage ? 1 : Float(bookPageCount)
         readSlider.setValue(Float(curentPageIdx), animated: false)
@@ -119,6 +119,7 @@ class IRReadBottomBar: UIView {
         readSlider.isHidden = true
         readSlider.minimumTrackTintColor = UIColor.clear
         readSlider.maximumTrackTintColor = UIColor.clear
+        readSlider.touchPointOffset = 8
         readSlider.setThumbImage(UIImage.init(named: "slider_thumb")?.withRenderingMode(.alwaysTemplate), for: .normal)
         readSlider.addTarget(self, action: #selector(eadSliderValueDidChange(_:)), for: .valueChanged)
         readSlider.addTarget(self, action: #selector(readSliderValueDidEndChange(_:)), for: .touchUpInside)

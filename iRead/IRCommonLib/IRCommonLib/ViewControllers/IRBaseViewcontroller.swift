@@ -30,7 +30,7 @@ open class IRBaseViewcontroller: UIViewController {
     open func setupLeftBackBarButton() {
         let backImg = UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysTemplate)
         backButtonItem = UIBarButtonItem.init(image: backImg, style: .plain, target: self, action: #selector(didClickedLeftBackItem(item:)))
-        backButtonItem?.tintColor = UIColor.init(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        backButtonItem?.tintColor = UIColor.rgba(80, 80, 80, 1)
         self.navigationItem.leftBarButtonItem = backButtonItem
     }
     

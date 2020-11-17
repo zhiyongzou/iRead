@@ -11,7 +11,7 @@ import UIKit
 class IRBookPage: NSObject {
     
     var textColorHex: String!
-    var range: NSRange!
+    lazy var range = NSMakeRange(0, 0)
     var content: NSAttributedString!
     var pageIdx: Int = 0
     var chapterIdx: Int = 0

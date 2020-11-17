@@ -367,6 +367,9 @@ open class FREpubParser: NSObject, SSZipArchiveDelegate {
 
         for item in book.tableOfContents {
             tocItems.append(item)
+            if let key = item.resource?.href {
+                book.tableOfContentsMap[key] = item
+            }
             tocItems.append(contentsOf: countTocChild(item))
         }
         return tocItems
@@ -376,7 +379,13 @@ open class FREpubParser: NSObject, SSZipArchiveDelegate {
         var tocItems = [FRTocReference]()
 
         item.children.forEach {
+            if let key = $0.resource?.href {
+                book.tableOfContentsMap[key] = $0
+            }
             tocItems.append($0)
+            if $0.children.count > 0 {
+                tocItems.append(contentsOf: countTocChild($0))
+            }
         }
         return tocItems
     }

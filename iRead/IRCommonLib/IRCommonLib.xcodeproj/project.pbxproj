@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		812E49722531A1FB0082D902 /* IRPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E49712531A1FB0082D902 /* IRPageViewController.swift */; };
+		8162E45325637223007BDDA2 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E45225637223007BDDA2 /* UIControl+Extensions.swift */; };
 		817A2BF1247E6914007C5EF7 /* FREpubParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A2BE5247E6914007C5EF7 /* FREpubParser.swift */; };
 		817A2BF2247E6914007C5EF7 /* FRParseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A2BE6247E6914007C5EF7 /* FRParseError.swift */; };
 		817A2BF3247E6914007C5EF7 /* FRTocReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A2BE7247E6914007C5EF7 /* FRTocReference.swift */; };
@@ -54,6 +55,7 @@
 		2FF6FE3CA91D503DD333DA37 /* Pods-iRead-IRCommonLib.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead-IRCommonLib.debug.xcconfig"; path = "Target Support Files/Pods-iRead-IRCommonLib/Pods-iRead-IRCommonLib.debug.xcconfig"; sourceTree = "<group>"; };
 		812E49712531A1FB0082D902 /* IRPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRPageViewController.swift; sourceTree = "<group>"; };
 		814171562461ADBE00694536 /* libIRCommonLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIRCommonLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8162E45225637223007BDDA2 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		817A2BE5247E6914007C5EF7 /* FREpubParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FREpubParser.swift; sourceTree = "<group>"; };
 		817A2BE6247E6914007C5EF7 /* FRParseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRParseError.swift; sourceTree = "<group>"; };
 		817A2BE7247E6914007C5EF7 /* FRTocReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRTocReference.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		81B7E1E7251DE97800E84A37 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8162E45225637223007BDDA2 /* UIControl+Extensions.swift */,
 				81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */,
 				81B7E1EB251DF19B00E84A37 /* UIView+Extensions.swift */,
 			);
@@ -273,6 +276,7 @@
 				817A2BF5247E6914007C5EF7 /* FRSpine.swift in Sources */,
 				817A2BF4247E6914007C5EF7 /* FRStringExtension.swift in Sources */,
 				81B7E1EA251DE9BA00E84A37 /* UIColor+Extensions.swift in Sources */,
+				8162E45325637223007BDDA2 /* UIControl+Extensions.swift in Sources */,
 				817A2BF9247E6914007C5EF7 /* FRResource.swift in Sources */,
 				817A2BF6247E6914007C5EF7 /* FRBook.swift in Sources */,
 				817A2BF7247E6914007C5EF7 /* FRSmils.swift in Sources */,

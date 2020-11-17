@@ -159,7 +159,6 @@ class IRReaderConfig: NSObject {
     static var transitionStyle = IRTransitionStyle(rawValue: UserDefaults.standard.integer(forKey: kReadTransitionStyle)) ?? .pageCurl
     
     //MARK: - UI Color Theme
-    static var secondaryTextColor: UIColor!
     static var separatorColor: UIColor!
     static var bgColor: UIColor!
  

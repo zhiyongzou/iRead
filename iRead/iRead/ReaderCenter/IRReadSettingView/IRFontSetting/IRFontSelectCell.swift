@@ -41,7 +41,7 @@ class IRFontSelectCell: UICollectionViewCell, IRFontDownloadDelegate {
     override var isHighlighted: Bool {
         willSet {
             if newValue {
-                contentView.backgroundColor = UIColor.init(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 0.5)
+                contentView.backgroundColor = UIColor.rgba(200, 200, 200, 0.5)
             } else {
                 contentView.backgroundColor = UIColor.clear
             }

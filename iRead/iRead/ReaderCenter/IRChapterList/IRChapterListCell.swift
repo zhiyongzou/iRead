@@ -16,8 +16,10 @@ class IRChapterListCell: UICollectionViewCell {
     var separatorLine = UIView()
     
     var tocReference :FRTocReference! {
-        willSet {
-            titleLabel.text = newValue.title
+        didSet {
+            titleLabel.text = tocReference.title
+            let isSection = tocReference.children.count > 0
+            self.backgroundColor = isSection ? IRReaderConfig.separatorColor : UIColor.clear
         }
     }
     
@@ -34,7 +36,7 @@ class IRChapterListCell: UICollectionViewCell {
     override var isHighlighted: Bool {
         willSet {
             if newValue {
-                contentView.backgroundColor = UIColor.init(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 0.5)
+                contentView.backgroundColor = UIColor.rgba(200, 200, 200, 0.5)
             } else {
                 contentView.backgroundColor = UIColor.clear
             }
@@ -51,15 +53,14 @@ class IRChapterListCell: UICollectionViewCell {
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(contentView.snp.left).offset(spacing)
+            make.right.equalTo(contentView.snp.right).offset(-spacing)
             make.centerY.equalTo(contentView)
         }
         
         contentView.addSubview(separatorLine)
         separatorLine.backgroundColor = IRReaderConfig.separatorColor
         separatorLine.snp.makeConstraints { (make) -> Void in
-            make.left.equalTo(titleLabel)
-            make.bottom.equalTo(contentView)
-            make.right.equalTo(contentView).offset(-spacing)
+            make.left.right.bottom.equalTo(contentView)
             make.height.equalTo(1)
         }
     }

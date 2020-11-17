@@ -10,9 +10,9 @@
 import UIKit
 
 open class FRBook: NSObject {
-    var spine = FRSpine()
-    var smils = FRSmils()
-    var version: Double?
+    public var spine = FRSpine()
+    public var smils = FRSmils()
+    public var version: Double?
     
     public var metadata = FRMetadata()
     public var opfResource: FRResource!
@@ -23,6 +23,7 @@ open class FRBook: NSObject {
     public var resources = FRResources()
     public var tableOfContents: [FRTocReference]!
     public var flatTableOfContents: [FRTocReference]!
+    public var tableOfContentsMap = [String: FRTocReference]()
 
     var hasAudio: Bool {
         return smils.smils.count > 0

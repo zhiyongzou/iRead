@@ -20,7 +20,7 @@ class IRBookChapter: NSObject {
     /// 章节页列表
     lazy var pageList = [IRBookPage]()
     /// 章节标题
-    var title: String?
+    var title = ""
     /// 章节索引
     var chapterIdx: Int = 0
     /// 页码偏移
@@ -140,6 +140,15 @@ class IRBookChapter: NSObject {
     }
     
     func pagination(withHtmlAttributedText htmlString: NSMutableAttributedString) {
+        
+        if htmlString.length == 0 {
+            // 空白章节
+            let pageModel = IRBookPage.bookPage(withPageIdx: 0, chapterIdx: self.chapterIdx)
+            pageModel.content = htmlString
+            pageModel.textColorHex = textColorHex
+            self.pageList = [pageModel]
+            return
+        }
         
         let textLayout = DTCoreTextLayouter.init(attributedString: htmlString)
         let textRect = CGRect.init(origin: CGPoint.zero, size: IRReaderConfig.pageSzie)

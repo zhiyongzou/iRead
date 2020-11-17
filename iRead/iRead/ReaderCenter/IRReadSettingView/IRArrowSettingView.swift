@@ -35,7 +35,7 @@ class IRArrowSettingView: UIView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.delegate?.didClickArrowSettingView(self)
-        self.backgroundColor = UIColor.init(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 0.5)
+        self.backgroundColor = UIColor.rgba(200, 200, 200, 0.5)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

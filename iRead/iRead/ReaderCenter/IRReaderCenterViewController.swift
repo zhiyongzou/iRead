@@ -161,7 +161,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar) {
         let chapterVc = IRChapterListViewController()
         chapterVc.delegate = self
-        chapterVc.chapterList = book.originalChapterList
+        chapterVc.chapterList = book.flatChapterList
         chapterVc.title = book.bookName
         self.navigationController?.pushViewController(chapterVc, animated: true)
     }
@@ -192,7 +192,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     //MARK: - IRChapterListViewControllerDelagate
     
     func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int) {
-        let currentChapter = book.chapter(withIndex: chapterIdx)
+        let chapterIndex = book.findChapterIndexByTocReference(tocReference)
+        let currentChapter = book.chapter(withIndex: chapterIndex)
         self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: 0))
         
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
@@ -454,7 +455,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
             pageIndex += 1;
             pageModel = currentChapter.page(withIndex: pageIndex)
         } else {
-            if chapterIndex + 1 < self.book.originalChapterList.count {
+            if chapterIndex + 1 < self.book.chapterCount {
                 chapterIndex += 1;
                 currentChapter = book.chapter(withIndex: chapterIndex)
                 pageModel = currentChapter.page(withIndex: 0)

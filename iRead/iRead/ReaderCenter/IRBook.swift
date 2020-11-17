@@ -5,6 +5,7 @@
 //  Created by zzyong on 2020/10/18.
 //  Copyright © 2020 zzyong. All rights reserved.
 //
+// EPUB Doc：https://www.w3.org/publishing/epub3/epub-packages.html#sec-introduction
 
 import IRCommonLib
 
@@ -33,7 +34,7 @@ class IRBook: NSObject {
     var parseQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "book_parse_queue"
-        queue.qualityOfService = .background
+        queue.qualityOfService = .default
         return queue
     }()
     
@@ -45,9 +46,9 @@ class IRBook: NSObject {
     }
     
     /// 未解析的章节列表
-    var originalChapterList: [FRTocReference] {
+    var flatChapterList: [FRTocReference] {
         get {
-            return bookMeta.tableOfContents
+            return bookMeta.flatTableOfContents
         }
     }
     
@@ -64,7 +65,7 @@ class IRBook: NSObject {
         if let coverUrl = bookMeta.coverImage?.fullHref {
             coverImage = UIImage.init(contentsOfFile: coverUrl)
         }
-        chapterCount = bookMeta.tableOfContents.count
+        chapterCount = bookMeta.spine.spineReferences.count
     }
     
     convenience init(_ bookMeta: FRBook) {
@@ -80,7 +81,6 @@ class IRBook: NSObject {
             chapter.pageOffset = pageOffset
             pageOffset += chapter.pageList.count
             self.chapterList.append(chapter)
-            IRDebugLog(chapter.title)
         }
         self.pageCount = pageCount
         isFinishParse = true
@@ -88,12 +88,23 @@ class IRBook: NSObject {
         IRDebugLog("book parse finish")
     }
     
+    func findChapterIndexByTocReference(_ reference: FRTocReference) -> Int {
+        var chapterIndex = 0
+        for item in bookMeta.spine.spineReferences {
+            if let resource = reference.resource, item.resource == resource {
+                return chapterIndex
+            }
+            chapterIndex += 1
+        }
+        return chapterIndex
+    }
+    
     func chapter(withIndex index: Int) -> IRBookChapter {
         
         if isFinishParse {
             return chapterList[index]
         } else {
-            return IRBookChapter.init(withTocRefrence: bookMeta.tableOfContents[index], chapterIndex: index)
+            return IRBookChapter.init(withTocRefrence: self.tocReference(withIndex: index), chapterIndex: index)
         }
     }
     
@@ -109,6 +120,11 @@ class IRBook: NSObject {
         }
         
         return chapter
+    }
+    
+    func tocReference(withIndex index: Int) -> FRTocReference {
+        let spine = bookMeta.spine.spineReferences[index]
+        return bookMeta.tableOfContentsMap[spine.resource.href] ?? FRTocReference.init(title: "", resource: spine.resource)
     }
     
     func parseBookMeta() {
@@ -137,7 +153,7 @@ class IRBook: NSObject {
                     } else if chapter.textSizeMultiplier != IRReaderConfig.textSizeMultiplier {
                         chapter.updateTextSizeMultiplier(IRReaderConfig.textSizeMultiplier)
                     }
-                    IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
+                    IRDebugLog(" \(Thread.current) \(chapter.title) pageCount: \(chapter.pageList.count)")
                     DispatchQueue.main.async {
                         if currentQueueId != self.parseQueueId { return }
                         pageCount += chapter.pageList.count
@@ -151,11 +167,11 @@ class IRBook: NSObject {
                 }
             }
         } else {
-            for tocReference: FRTocReference in bookMeta.tableOfContents {
+            for (index, spine) in bookMeta.spine.spineReferences.enumerated() {
                 parseQueue.addOperation {
-                    let index = self.bookMeta.tableOfContents.firstIndex(of: tocReference)!
+                    let tocReference: FRTocReference = self.bookMeta.tableOfContentsMap[spine.resource.href] ?? FRTocReference.init(title: "", resource: spine.resource)
                     let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
-                    IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
+                    IRDebugLog(" \(Thread.current) \(chapter.title) pageCount: \(chapter.pageList.count)")
                     DispatchQueue.main.async {
                         if currentQueueId != self.parseQueueId { return }
                         pageCount += chapter.pageList.count

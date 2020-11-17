@@ -18,6 +18,7 @@
 		8136A2D92536D1D8005C1646 /* IRFontSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */; };
 		8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */; };
 		8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */; };
+		8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4A8256404E7007BDDA2 /* IRWebServer.swift */; };
 		816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816DFBB02404D39B0030E55B /* AppDelegate.swift */; };
 		816DFBBA2404D3A00030E55B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBB92404D3A00030E55B /* Assets.xcassets */; };
 		816DFBBD2404D3A00030E55B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBBB2404D3A00030E55B /* LaunchScreen.storyboard */; };
@@ -82,6 +83,7 @@
 		8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorSettingView.swift; sourceTree = "<group>"; };
 		8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBrightnessSettingView.swift; sourceTree = "<group>"; };
 		813C380B2464134E002578FD /* iRead-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iRead-Bridging-Header.h"; sourceTree = "<group>"; };
+		8162E4A8256404E7007BDDA2 /* IRWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWebServer.swift; sourceTree = "<group>"; };
 		816DFBAD2404D39B0030E55B /* iRead.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRead.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816DFBB02404D39B0030E55B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		816DFBB92404D3A00030E55B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -195,6 +197,14 @@
 			path = IRReadSettingView;
 			sourceTree = "<group>";
 		};
+		8162E4A7256404BF007BDDA2 /* IRWebServer */ = {
+			isa = PBXGroup;
+			children = (
+				8162E4A8256404E7007BDDA2 /* IRWebServer.swift */,
+			);
+			path = IRWebServer;
+			sourceTree = "<group>";
+		};
 		816DFBA42404D39B0030E55B = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +308,7 @@
 		8193A44525480A3300501F8F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				8162E4A7256404BF007BDDA2 /* IRWebServer */,
 				8193A44C25480AAB00501F8F /* IRDBManager */,
 			);
 			path = Common;
@@ -566,6 +577,7 @@
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,
 				81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */,
+				8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */,
 				8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */,
 				81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */,
 				8136A28A25369C33005C1646 /* IRReadSettingView.swift in Sources */,

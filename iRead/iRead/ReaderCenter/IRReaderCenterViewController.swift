@@ -5,10 +5,11 @@
 //  Created by zzyong on 2020/9/28.
 //  Copyright © 2020 zzyong. All rights reserved.
 //
+// Protocol Conformance: https://github.com/raywenderlich/swift-style-guide#protocol-conformance
 
 import IRCommonLib
 
-class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDataSource, UIPageViewControllerDelegate, IRReadNavigationBarDelegate, IRReadSettingViewDelegate, UIGestureRecognizerDelegate, IRChapterListViewControllerDelagate, IRBookParseDelegate, IRReadBottomBarDelegate {
+class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDelegate {
     
     var shouldHideStatusBar = true
     var book: IRBook!
@@ -80,240 +81,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
         super.viewDidLayoutSubviews()
         pageViewController.view.frame = self.view.bounds
     }
-    
-    //MARK: - IRReadBottomBarDelegate
-    
-    func readBottomBar(_: IRReadBottomBar, didChangePageIndex pageIndex: Int) {
-        
-        if chapterTipView == nil {
-            chapterTipView = IRChapterTipView()
-            chapterTipView!.isUserInteractionEnabled = false
-            let height = IRChapterTipView.viewHeight
-            let width = IRReaderConfig.pageSzie.width
-            let x = (self.readNavigationContentView!.width - width) / 2.0
-            let y = self.readBottomBar.frame.minY - height - 10
-            chapterTipView!.frame = CGRect.init(x: x, y: y, width: width, height: height)
-            self.readNavigationContentView!.addSubview(chapterTipView!)
-        }
-        chapterTipView!.isHidden = false
-        let chapter = book.chapter(withPageIndex: pageIndex)
-        chapterTipView!.update(title: chapter.title, pageIndex: pageIndex)
-    }
-    
-    func readBottomBar(_: IRReadBottomBar, didEndChangePageIndex pageIndex: Int) {
-        
-        self.chapterTipView?.isHidden = true
-        let chapter = book.chapter(withPageIndex: pageIndex)
-        let pageModel = chapter.page(withIndex: pageIndex - chapter.pageOffset! - 1)
-        self.setupPageViewControllerWithPageModel(pageModel)
-    }
-    
-    //MARK: - IRBookParseDelegate
-    
-    func bookBeginParse(_ book: IRBook) {
-        if self.readNavigationContentView != nil {
-            readBottomBar.isParseFinish = false
-        }
-    }
-    
-    func book(_ book: IRBook, currentParseProgress progress: Float) {
-        
-        if self.readNavigationContentView != nil {
-            readBottomBar.parseProgress = progress
-        }
-        IRDebugLog(progress)
-    }
-    
-    func bookDidFinishParse(_ book: IRBook) {
-        
-        if let currentPage = self.currentReadingVC?.pageModel {
-            let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
-            self.currentReadingVC.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
-        }
-        
-        if let viewControllers = self.pageViewController?.viewControllers {
-            for vc in viewControllers {
-                if !(vc is IRReadPageViewController) {
-                    continue
-                }
-                let pageVc: IRReadPageViewController = vc as! IRReadPageViewController
-                if let currentPage = pageVc.pageModel {
-                    let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
-                    pageVc.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
-                }
-            }
-        }
-    
-        if self.readNavigationContentView != nil {
-            readBottomBar.isParseFinish = true
-            readBottomBar.curentPageIdx = self.currentReadingVC.pageModel?.displayPageIdx ?? 0
-            readBottomBar.bookPageCount = book.pageCount
-        }
-    }
-    
-    //MARK: - IRReadNavigationBarDelegate
-    
-    func readNavigationBar(didClickBack bar: IRReadNavigationBar) {
-        
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    func readNavigationBar(didClickChapterList bar: IRReadNavigationBar) {
-        let chapterVc = IRChapterListViewController()
-        chapterVc.delegate = self
-        chapterVc.chapterList = book.flatChapterList
-        chapterVc.title = book.bookName
-        self.navigationController?.pushViewController(chapterVc, animated: true)
-    }
-    
-    func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar) {
-        
-        if let readSettingView = self.readSettingView {
-            readSettingView.presentPointing(at: bar.readSetting, in: self.view, animated: true)
-        } else {
-            let readSettingView = IRReadSettingView()
-            readSettingView.deleage = self
-            readSettingView.frame = CGRect.init(origin: CGPoint.zero, size: IRReadSettingView.viewSize)
-            let popTipView = CMPopTipView.init(customView: readSettingView)
-            popTipView?.has3DStyle = false
-            popTipView?.animation = .slide
-            popTipView?.backgroundColor = readSettingView.backgroundColor
-            popTipView?.borderColor = IRSeparatorColor
-            popTipView?.sidePadding = 15
-            popTipView?.bubblePaddingX = -10
-            popTipView?.bubblePaddingY = -10
-            popTipView?.disableTapToDismiss = true
-            popTipView?.dismissTapAnywhere = true
-            popTipView?.presentPointing(at: bar.readSetting, in: self.view, animated: true)
-            self.readSettingView = popTipView;
-        }
-    }
-    
-    //MARK: - IRChapterListViewControllerDelagate
-    
-    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int) {
-        let chapterIndex = book.findChapterIndexByTocReference(tocReference)
-        let currentChapter = book.chapter(withIndex: chapterIndex)
-        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: 0))
-        
-        self.shouldHideStatusBar = !self.shouldHideStatusBar;
-        self.updateReadNavigationBarDispalyState(animated: false)
-    }
-    
-    //MARK: - IRReadSettingViewDelegate
-    
-    func readSettingView(_ view: IRReadSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
-        let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
-        let currentChapter = book.chapter(withIndex: chapterIndex)
-        currentChapter.updateTextSizeMultiplier(textSizeMultiplier)
-        let pageModel = self.currentReadingVC.pageModel!
-        let pageCount = currentChapter.pageList.count
-        let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
-        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
-        book.parseBookMeta()
-    }
-    
-    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
-        self.setupPageViewControllerWithPageModel(self.currentReadingVC.pageModel)
-    }
-    
-    func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel) {
-        self.readSettingView?.backgroundColor = view.backgroundColor
-        self.readSettingView?.setNeedsDisplay()
-        
-        self.view.backgroundColor = IRReaderConfig.pageColor
-        self.currentReadingVC.updateThemeColor()
-        self.readNavigationBar.updateThemeColor()
-        self.readBottomBar.updateThemeColor()
-        self.chapterTipView?.updateThemeColor()
-        
-        let pageModel = self.currentReadingVC.pageModel
-        pageModel?.updateTextColor(IRReaderConfig.textColor)
-        self.currentReadingVC.pageModel = pageModel
-        
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    func readSettingView(_ view: IRReadSettingView, didSelectFontName fontName: String) {
-        
-        let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
-        let currentChapter = book.chapter(withIndex: chapterIndex)
-        currentChapter.updateTextFontName(fontName)
-        let pageModel = self.currentReadingVC.pageModel!
-        let pageCount = currentChapter.pageList.count
-        let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
-        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
-        book.parseBookMeta()
-    }
-    
-    //MARK: - UIPageViewControllerDelegate
-    
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        
-        // 隐藏阅读导航栏
-        if !self.shouldHideStatusBar {
-            self.shouldHideStatusBar = true
-            self.updateReadNavigationBarDispalyState(animated: true)
-        }
-        
-        guard let nextVc = pendingViewControllers.first else { return }
-        if nextVc.isKind(of: IRReadPageViewController.self) {
-            self.currentReadingVC = nextVc as? IRReadPageViewController
-        }
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        if completed {
-            return
-        }
-        guard let preVc = previousViewControllers.first else { return }
-        if preVc.isKind(of: IRReadPageViewController.self) {
-            self.currentReadingVC = preVc as? IRReadPageViewController
-        }
-    }
-    
-    //MARK: - UIPageViewControllerDataSource
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
-        if pageViewController.transitionStyle == .pageCurl &&
-           viewController.isKind(of: IRPageBackViewController.self) {
-            return beforePageVC
-        }
-        
-        guard let prePage = self.previousPageModel(withReadVC: self.currentReadingVC) else {
-            return nil
-        }
-        
-        IRDebugLog("page:\(prePage.pageIdx) chapter: \(prePage.chapterIdx)")
-        let preVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
-        preVc.pageModel = prePage
-        if pageViewController.transitionStyle == .pageCurl {
-            beforePageVC = preVc
-            return IRPageBackViewController.pageBackViewController(WithPageView: preVc.view)
-        }
-        
-        return preVc
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
-        if pageViewController.transitionStyle == .pageCurl &&
-           viewController.isKind(of: IRReadPageViewController.self) {
-            return IRPageBackViewController.pageBackViewController(WithPageView: viewController.view)
-        }
-        
-        guard let nextPage = self.nextPageModel(withReadVC: self.currentReadingVC) else {
-            return nil
-        }
-        
-        IRDebugLog("page:\(nextPage.pageIdx) chapter: \(nextPage.chapterIdx)")
-        let nextVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
-        nextVc.pageModel = nextPage
-        return nextVc
-    }
-    
     
     //MARK: - Private
     
@@ -501,5 +268,250 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIPageViewControllerDa
     @objc func didNavigateTapGestureClick(tapGesture: UITapGestureRecognizer) {
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.updateReadNavigationBarDispalyState(animated: true)
+    }
+}
+
+//MARK: - IRChapterListViewControllerDelagate
+extension IRReaderCenterViewController: IRChapterListViewControllerDelagate {
+    
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int) {
+        let chapterIndex = book.findChapterIndexByTocReference(tocReference)
+        let currentChapter = book.chapter(withIndex: chapterIndex)
+        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: 0))
+        
+        self.shouldHideStatusBar = !self.shouldHideStatusBar;
+        self.updateReadNavigationBarDispalyState(animated: false)
+    }
+}
+
+//MARK: - IRBookParseDelegate
+extension IRReaderCenterViewController: IRBookParseDelegate {
+
+    func bookBeginParse(_ book: IRBook) {
+        if self.readNavigationContentView != nil {
+            readBottomBar.isParseFinish = false
+        }
+    }
+    
+    func book(_ book: IRBook, currentParseProgress progress: Float) {
+        
+        if self.readNavigationContentView != nil {
+            readBottomBar.parseProgress = progress
+        }
+        IRDebugLog(progress)
+    }
+    
+    func bookDidFinishParse(_ book: IRBook) {
+        
+        if let currentPage = self.currentReadingVC?.pageModel {
+            let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
+            self.currentReadingVC.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
+        }
+        
+        if let viewControllers = self.pageViewController?.viewControllers {
+            for vc in viewControllers {
+                if !(vc is IRReadPageViewController) {
+                    continue
+                }
+                let pageVc: IRReadPageViewController = vc as! IRReadPageViewController
+                if let currentPage = pageVc.pageModel {
+                    let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
+                    pageVc.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
+                }
+            }
+        }
+    
+        if self.readNavigationContentView != nil {
+            readBottomBar.isParseFinish = true
+            readBottomBar.curentPageIdx = self.currentReadingVC.pageModel?.displayPageIdx ?? 0
+            readBottomBar.bookPageCount = book.pageCount
+        }
+    }
+}
+
+//MARK: - IRReadNavigation
+extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBottomBarDelegate {
+    
+    //MARK: - IRReadNavigationBarDelegate
+    
+    func readNavigationBar(didClickBack bar: IRReadNavigationBar) {
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func readNavigationBar(didClickChapterList bar: IRReadNavigationBar) {
+        let chapterVc = IRChapterListViewController()
+        chapterVc.delegate = self
+        chapterVc.chapterList = book.flatChapterList
+        chapterVc.title = book.bookName
+        self.navigationController?.pushViewController(chapterVc, animated: true)
+    }
+    
+    func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar) {
+        
+        if let readSettingView = self.readSettingView {
+            readSettingView.presentPointing(at: bar.readSetting, in: self.view, animated: true)
+        } else {
+            let readSettingView = IRReadSettingView()
+            readSettingView.deleage = self
+            readSettingView.frame = CGRect.init(origin: CGPoint.zero, size: IRReadSettingView.viewSize)
+            let popTipView = CMPopTipView.init(customView: readSettingView)
+            popTipView?.has3DStyle = false
+            popTipView?.animation = .slide
+            popTipView?.backgroundColor = readSettingView.backgroundColor
+            popTipView?.borderColor = IRSeparatorColor
+            popTipView?.sidePadding = 15
+            popTipView?.bubblePaddingX = -10
+            popTipView?.bubblePaddingY = -10
+            popTipView?.disableTapToDismiss = true
+            popTipView?.dismissTapAnywhere = true
+            popTipView?.presentPointing(at: bar.readSetting, in: self.view, animated: true)
+            self.readSettingView = popTipView;
+        }
+    }
+    
+    //MARK: - IRReadBottomBarDelegate
+    
+    func readBottomBar(_: IRReadBottomBar, didChangePageIndex pageIndex: Int) {
+        
+        if chapterTipView == nil {
+            chapterTipView = IRChapterTipView()
+            chapterTipView!.isUserInteractionEnabled = false
+            let height = IRChapterTipView.viewHeight
+            let width = IRReaderConfig.pageSzie.width
+            let x = (self.readNavigationContentView!.width - width) / 2.0
+            let y = self.readBottomBar.frame.minY - height - 10
+            chapterTipView!.frame = CGRect.init(x: x, y: y, width: width, height: height)
+            self.readNavigationContentView!.addSubview(chapterTipView!)
+        }
+        chapterTipView!.isHidden = false
+        let chapter = book.chapter(withPageIndex: pageIndex)
+        chapterTipView!.update(title: chapter.title, pageIndex: pageIndex)
+    }
+    
+    func readBottomBar(_: IRReadBottomBar, didEndChangePageIndex pageIndex: Int) {
+        
+        self.chapterTipView?.isHidden = true
+        let chapter = book.chapter(withPageIndex: pageIndex)
+        let pageModel = chapter.page(withIndex: pageIndex - chapter.pageOffset! - 1)
+        self.setupPageViewControllerWithPageModel(pageModel)
+    }
+}
+
+//MARK: - UIPageViewController
+extension IRReaderCenterViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    
+    //MARK: - UIPageViewControllerDelegate
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        
+        // 隐藏阅读导航栏
+        if !self.shouldHideStatusBar {
+            self.shouldHideStatusBar = true
+            self.updateReadNavigationBarDispalyState(animated: true)
+        }
+        
+        guard let nextVc = pendingViewControllers.first else { return }
+        if nextVc.isKind(of: IRReadPageViewController.self) {
+            self.currentReadingVC = nextVc as? IRReadPageViewController
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        if completed {
+            return
+        }
+        guard let preVc = previousViewControllers.first else { return }
+        if preVc.isKind(of: IRReadPageViewController.self) {
+            self.currentReadingVC = preVc as? IRReadPageViewController
+        }
+    }
+    
+    //MARK: - UIPageViewControllerDataSource
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        
+        if pageViewController.transitionStyle == .pageCurl &&
+           viewController.isKind(of: IRPageBackViewController.self) {
+            return beforePageVC
+        }
+        
+        guard let prePage = self.previousPageModel(withReadVC: self.currentReadingVC) else {
+            return nil
+        }
+        
+        IRDebugLog("page:\(prePage.pageIdx) chapter: \(prePage.chapterIdx)")
+        let preVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+        preVc.pageModel = prePage
+        if pageViewController.transitionStyle == .pageCurl {
+            beforePageVC = preVc
+            return IRPageBackViewController.pageBackViewController(WithPageView: preVc.view)
+        }
+        
+        return preVc
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+
+        if pageViewController.transitionStyle == .pageCurl &&
+           viewController.isKind(of: IRReadPageViewController.self) {
+            return IRPageBackViewController.pageBackViewController(WithPageView: viewController.view)
+        }
+        
+        guard let nextPage = self.nextPageModel(withReadVC: self.currentReadingVC) else {
+            return nil
+        }
+        
+        IRDebugLog("page:\(nextPage.pageIdx) chapter: \(nextPage.chapterIdx)")
+        let nextVc = IRReadPageViewController.init(withPageSize: IRReaderConfig.pageSzie)
+        nextVc.pageModel = nextPage
+        return nextVc
+    }
+}
+
+//MARK: - IRReadSettingViewDelegate
+extension IRReaderCenterViewController: IRReadSettingViewDelegate {
+    
+    func readSettingView(_ view: IRReadSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
+        let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
+        let currentChapter = book.chapter(withIndex: chapterIndex)
+        currentChapter.updateTextSizeMultiplier(textSizeMultiplier)
+        let pageModel = self.currentReadingVC.pageModel!
+        let pageCount = currentChapter.pageList.count
+        let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
+        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
+        book.parseBookMeta()
+    }
+    
+    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
+        self.setupPageViewControllerWithPageModel(self.currentReadingVC.pageModel)
+    }
+    
+    func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel) {
+        self.readSettingView?.backgroundColor = view.backgroundColor
+        self.readSettingView?.setNeedsDisplay()
+        
+        self.view.backgroundColor = IRReaderConfig.pageColor
+        self.currentReadingVC.updateThemeColor()
+        self.readNavigationBar.updateThemeColor()
+        self.readBottomBar.updateThemeColor()
+        self.chapterTipView?.updateThemeColor()
+        
+        let pageModel = self.currentReadingVC.pageModel
+        pageModel?.updateTextColor(IRReaderConfig.textColor)
+        self.currentReadingVC.pageModel = pageModel
+        
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func readSettingView(_ view: IRReadSettingView, didSelectFontName fontName: String) {
+        
+        let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
+        let currentChapter = book.chapter(withIndex: chapterIndex)
+        currentChapter.updateTextFontName(fontName)
+        let pageModel = self.currentReadingVC.pageModel!
+        let pageCount = currentChapter.pageList.count
+        let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
+        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
+        book.parseBookMeta()
     }
 }

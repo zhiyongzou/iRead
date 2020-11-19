@@ -48,11 +48,15 @@ class IRBookChapter: NSObject {
         }
         
         self.htmlData = htmlData
-        let htmlString = self.htmlAttributedString(withData: htmlData)
+        let htmlString = self.htmlAttributedString(with: htmlData)
         self.pagination(withHtmlAttributedText: htmlString)
     }
     
-    func page(withIndex index: Int) -> IRBookPage {
+    func page(at index: Int) -> IRBookPage? {
+        
+        if index >= pageList.count {
+            return pageList.first
+        }
         
         if pageOffset != nil {
             let pageModel = pageList[index]
@@ -65,7 +69,7 @@ class IRBookChapter: NSObject {
         }
     }
     
-    func htmlAttributedString(withData htmlData: Data) -> NSMutableAttributedString {
+    func htmlAttributedString(with htmlData: Data) -> NSMutableAttributedString {
         
         guard let baseUrl = self.baseUrl else { return NSMutableAttributedString() }
         let options: [String : Any] = [
@@ -110,7 +114,7 @@ class IRBookChapter: NSObject {
         guard let htmlData = self.htmlData else {
             return
         }
-        let htmlString = self.htmlAttributedString(withData: htmlData)
+        let htmlString = self.htmlAttributedString(with: htmlData)
         let tempHtmlString = htmlString.mutableCopy() as? NSMutableAttributedString
         tempHtmlString?.enumerateAttribute(.font, in: NSMakeRange(0, htmlString.length), options: [.longestEffectiveRangeNotRequired], using: { (value, range, stop) in
             if let value = value as? UIFont {
@@ -135,7 +139,7 @@ class IRBookChapter: NSObject {
         guard let htmlData = self.htmlData else {
             return
         }
-        let htmlString = self.htmlAttributedString(withData: htmlData)
+        let htmlString = self.htmlAttributedString(with: htmlData)
         self.pagination(withHtmlAttributedText: htmlString)
     }
     
@@ -144,7 +148,6 @@ class IRBookChapter: NSObject {
         if htmlString.length == 0 {
             // 空白章节
             let pageModel = IRBookPage.bookPage(withPageIdx: 0, chapterIdx: self.chapterIdx)
-            pageModel.content = htmlString
             pageModel.textColorHex = textColorHex
             self.pageList = [pageModel]
             return

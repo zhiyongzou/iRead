@@ -52,9 +52,12 @@ class IRBook: NSObject {
         }
     }
     
-    var bookName: String? {
+    var bookName: String {
         get {
-            bookMeta.title
+#if DEBUG
+            assert(bookMeta.title != nil, "Book name is nil")
+#endif
+            return bookMeta.title ?? ""
         }
     }
     
@@ -99,7 +102,7 @@ class IRBook: NSObject {
         return chapterIndex
     }
     
-    func chapter(withIndex index: Int) -> IRBookChapter {
+    func chapter(at index: Int) -> IRBookChapter {
         
         if isFinishParse {
             return chapterList[index]

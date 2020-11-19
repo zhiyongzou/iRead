@@ -18,6 +18,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     var currentReadingVC: IRReadPageViewController!
     /// 上一页
     var beforePageVC: IRReadPageViewController?
+    /// 阅读记录
+    var readingRecord: IRReadingRecordModel!
     /// 阅读导航栏
     lazy var readNavigationBar = IRReadNavigationBar()
     lazy var readBottomBar = IRReadBottomBar()
@@ -37,11 +39,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         book.parseBookMeta()
     }
     
-#if DEBUG
     deinit {
+        self.saveReadingRecord()
         IRDebugLog("")
     }
-#endif
     
     //MARK: - Override
     
@@ -49,8 +50,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         super.viewDidLoad()
         
         self.view.backgroundColor = IRReaderConfig.pageColor
-        self.setupPageViewControllerWithPageModel(nil)
         self.addNavigateTapGesture()
+        self.setupReadingRecord()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -178,8 +179,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         }
         
         if pageModel == nil {
-            let currentChapter = book.chapter(withIndex: 0)
-            currentReadingVC.pageModel = currentChapter.page(withIndex: 0)
+            let currentChapter = book.chapter(at: 0)
+            currentReadingVC.pageModel = currentChapter.page(at: 0)
         } else {
             currentReadingVC.pageModel = pageModel
         }
@@ -193,16 +194,16 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         
         guard var pageIndex = readVc.pageModel?.pageIdx else { return pageModel }
         guard var chapterIndex = readVc.pageModel?.chapterIdx else { return pageModel }
-        var currentChapter = book.chapter(withIndex: chapterIndex)
+        var currentChapter = book.chapter(at: chapterIndex)
 
         if pageIndex > 0 {
             pageIndex -= 1;
-            pageModel = currentChapter.page(withIndex: pageIndex)
+            pageModel = currentChapter.page(at: pageIndex)
         } else {
             if chapterIndex > 0 {
                 chapterIndex -= 1;
-                currentChapter = book.chapter(withIndex: chapterIndex)
-                pageModel = currentChapter.page(withIndex: currentChapter.pageList.count - 1)
+                currentChapter = book.chapter(at: chapterIndex)
+                pageModel = currentChapter.page(at: currentChapter.pageList.count - 1)
             }
         }
         
@@ -215,21 +216,48 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         
         guard var pageIndex = readVc.pageModel?.pageIdx else { return pageModel }
         guard var chapterIndex = readVc.pageModel?.chapterIdx else { return pageModel }
-        var currentChapter = book.chapter(withIndex: chapterIndex)
+        var currentChapter = book.chapter(at: chapterIndex)
 
         let pageCount = currentChapter.pageList.count
         if pageIndex + 1 < pageCount {
             pageIndex += 1;
-            pageModel = currentChapter.page(withIndex: pageIndex)
+            pageModel = currentChapter.page(at: pageIndex)
         } else {
             if chapterIndex + 1 < self.book.chapterCount {
                 chapterIndex += 1;
-                currentChapter = book.chapter(withIndex: chapterIndex)
-                pageModel = currentChapter.page(withIndex: 0)
+                currentChapter = book.chapter(at: chapterIndex)
+                pageModel = currentChapter.page(at: 0)
             }
         }
         
         return pageModel
+    }
+    
+    func setupReadingRecord() {
+        readingRecord = IRReadingRecord.readingRecord(with: book.bookName)
+        let currentChapter = book.chapter(at: readingRecord.chapterIdx)
+        var pageModel = currentChapter.page(at: readingRecord.pageIdx)
+
+        if pageModel?.range != nil {
+            if !NSEqualRanges(pageModel!.range, readingRecord.textRange) {
+                for item in currentChapter.pageList {
+                    if item.range.location + item.range.length > readingRecord.textRange.location {
+                        pageModel = item
+                        break
+                    }
+                }
+            }
+        }
+        self.setupPageViewControllerWithPageModel(pageModel)
+    }
+    
+    func saveReadingRecord() {
+        guard let pageModel = currentReadingVC.pageModel else { return }
+        if readingRecord.chapterIdx == pageModel.chapterIdx && readingRecord.pageIdx == pageModel.pageIdx {
+            return
+        }
+        let readingRecord = IRReadingRecordModel(pageModel.chapterIdx, pageModel.pageIdx, pageModel.range)
+        IRReadingRecord.setReadingRecord(record: readingRecord, bookName: book.bookName)
     }
     
     //MARK: - Gesture
@@ -276,8 +304,8 @@ extension IRReaderCenterViewController: IRChapterListViewControllerDelagate {
     
     func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int) {
         let chapterIndex = book.findChapterIndexByTocReference(tocReference)
-        let currentChapter = book.chapter(withIndex: chapterIndex)
-        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: 0))
+        let currentChapter = book.chapter(at: chapterIndex)
+        self.setupPageViewControllerWithPageModel(currentChapter.page(at: 0))
         
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.updateReadNavigationBarDispalyState(animated: false)
@@ -304,8 +332,8 @@ extension IRReaderCenterViewController: IRBookParseDelegate {
     func bookDidFinishParse(_ book: IRBook) {
         
         if let currentPage = self.currentReadingVC?.pageModel {
-            let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
-            self.currentReadingVC.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
+            let currentChapter = book.chapter(at: currentPage.chapterIdx)
+            self.currentReadingVC.pageModel = currentChapter.page(at: currentPage.pageIdx)
         }
         
         if let viewControllers = self.pageViewController?.viewControllers {
@@ -315,8 +343,8 @@ extension IRReaderCenterViewController: IRBookParseDelegate {
                 }
                 let pageVc: IRReadPageViewController = vc as! IRReadPageViewController
                 if let currentPage = pageVc.pageModel {
-                    let currentChapter = book.chapter(withIndex: currentPage.chapterIdx)
-                    pageVc.pageModel = currentChapter.page(withIndex: currentPage.pageIdx)
+                    let currentChapter = book.chapter(at: currentPage.chapterIdx)
+                    pageVc.pageModel = currentChapter.page(at: currentPage.pageIdx)
                 }
             }
         }
@@ -393,7 +421,7 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         
         self.chapterTipView?.isHidden = true
         let chapter = book.chapter(withPageIndex: pageIndex)
-        let pageModel = chapter.page(withIndex: pageIndex - chapter.pageOffset! - 1)
+        let pageModel = chapter.page(at: pageIndex - chapter.pageOffset! - 1)
         self.setupPageViewControllerWithPageModel(pageModel)
     }
 }
@@ -473,12 +501,12 @@ extension IRReaderCenterViewController: IRReadSettingViewDelegate {
     
     func readSettingView(_ view: IRReadSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
         let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
-        let currentChapter = book.chapter(withIndex: chapterIndex)
+        let currentChapter = book.chapter(at: chapterIndex)
         currentChapter.updateTextSizeMultiplier(textSizeMultiplier)
         let pageModel = self.currentReadingVC.pageModel!
         let pageCount = currentChapter.pageList.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
-        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
+        self.setupPageViewControllerWithPageModel(currentChapter.page(at: pageIdx))
         book.parseBookMeta()
     }
     
@@ -506,12 +534,12 @@ extension IRReaderCenterViewController: IRReadSettingViewDelegate {
     func readSettingView(_ view: IRReadSettingView, didSelectFontName fontName: String) {
         
         let chapterIndex = self.currentReadingVC.pageModel!.chapterIdx
-        let currentChapter = book.chapter(withIndex: chapterIndex)
+        let currentChapter = book.chapter(at: chapterIndex)
         currentChapter.updateTextFontName(fontName)
         let pageModel = self.currentReadingVC.pageModel!
         let pageCount = currentChapter.pageList.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
-        self.setupPageViewControllerWithPageModel(currentChapter.page(withIndex: pageIdx))
+        self.setupPageViewControllerWithPageModel(currentChapter.page(at: pageIdx))
         book.parseBookMeta()
     }
 }

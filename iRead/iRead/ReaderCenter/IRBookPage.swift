@@ -12,7 +12,7 @@ class IRBookPage: NSObject {
     
     var textColorHex: String!
     lazy var range = NSMakeRange(0, 0)
-    var content: NSAttributedString!
+    lazy var content: NSAttributedString = NSAttributedString.init(string: "")
     var pageIdx: Int = 0
     var chapterIdx: Int = 0
     var displayPageIdx: Int?

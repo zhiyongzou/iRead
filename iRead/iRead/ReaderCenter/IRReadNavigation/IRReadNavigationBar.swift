@@ -15,6 +15,7 @@ protocol IRReadNavigationBarDelegate: AnyObject {
     func readNavigationBar(didClickBack bar: IRReadNavigationBar)
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar)
     func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar)
+    func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark: Bool)
 }
 
 class IRReadNavigationBar: UIView {
@@ -23,6 +24,7 @@ class IRReadNavigationBar: UIView {
     var backButton: UIButton!
     var chapterList: UIButton!
     var readSetting: UIButton!
+    var bookmark: UIButton!
     var bottomLine: UIView!
     weak var delegate: IRReadNavigationBarDelegate?
     
@@ -62,6 +64,17 @@ class IRReadNavigationBar: UIView {
             make.left.equalTo(backButton.snp.right)
         }
         
+        bookmark = UIButton.init(type: .custom)
+        bookmark.setImage(UIImage.init(named: "read_setting_bookmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        bookmark.setImage(UIImage.init(named: "bookmark"), for: .selected)
+        bookmark.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
+        self.addSubview(bookmark)
+        bookmark.snp.makeConstraints { (make) -> Void in
+            make.width.height.equalTo(itemHeight)
+            make.bottom.equalTo(self)
+            make.right.equalTo(self).offset(-10)
+        }
+        
         readSetting = UIButton.init(type: .custom)
         readSetting.setImage(UIImage.init(named: "bar_read_setting")?.withRenderingMode(.alwaysTemplate), for: .normal)
         readSetting.addTarget(self, action: #selector(didClickReadSettingButton), for: .touchUpInside)
@@ -69,7 +82,7 @@ class IRReadNavigationBar: UIView {
         readSetting.snp.makeConstraints { (make) -> Void in
             make.width.height.equalTo(itemHeight)
             make.bottom.equalTo(self)
-            make.right.equalTo(self).offset(-20)
+            make.right.equalTo(bookmark.snp.left)
         }
         
         bottomLine = UIView()
@@ -102,5 +115,10 @@ class IRReadNavigationBar: UIView {
     
     @objc func didClickReadSettingButton() {
         self.delegate?.readNavigationBar(didClickReadSetting: self)
+    }
+    
+    @objc func didClickBookmarkButton() {
+        bookmark.isSelected = !bookmark.isSelected
+        self.delegate?.readNavigationBar(self, didSelectBookmark: bookmark.isSelected)
     }
 }

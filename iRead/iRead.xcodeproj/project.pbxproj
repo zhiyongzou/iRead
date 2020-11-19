@@ -21,6 +21,8 @@
 		8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4A8256404E7007BDDA2 /* IRWebServer.swift */; };
 		8162E4B72565122E007BDDA2 /* IRReadingRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4B62565122E007BDDA2 /* IRReadingRecord.swift */; };
 		8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4C125654520007BDDA2 /* IRReadingRecordModel.swift */; };
+		8162E4D12566AF2F007BDDA2 /* IRBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4D02566AF2F007BDDA2 /* IRBookmark.swift */; };
+		8162E4D92566AF41007BDDA2 /* IRBookmarkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4D82566AF41007BDDA2 /* IRBookmarkModel.swift */; };
 		816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816DFBB02404D39B0030E55B /* AppDelegate.swift */; };
 		816DFBBA2404D3A00030E55B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBB92404D3A00030E55B /* Assets.xcassets */; };
 		816DFBBD2404D3A00030E55B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 816DFBBB2404D3A00030E55B /* LaunchScreen.storyboard */; };
@@ -88,6 +90,8 @@
 		8162E4A8256404E7007BDDA2 /* IRWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWebServer.swift; sourceTree = "<group>"; };
 		8162E4B62565122E007BDDA2 /* IRReadingRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadingRecord.swift; sourceTree = "<group>"; };
 		8162E4C125654520007BDDA2 /* IRReadingRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadingRecordModel.swift; sourceTree = "<group>"; };
+		8162E4D02566AF2F007BDDA2 /* IRBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookmark.swift; sourceTree = "<group>"; };
+		8162E4D82566AF41007BDDA2 /* IRBookmarkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookmarkModel.swift; sourceTree = "<group>"; };
 		816DFBAD2404D39B0030E55B /* iRead.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRead.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816DFBB02404D39B0030E55B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		816DFBB92404D3A00030E55B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -218,6 +222,15 @@
 			path = IRReadingRecord;
 			sourceTree = "<group>";
 		};
+		8162E4CF2566AF17007BDDA2 /* IRBookmark */ = {
+			isa = PBXGroup;
+			children = (
+				8162E4D02566AF2F007BDDA2 /* IRBookmark.swift */,
+				8162E4D82566AF41007BDDA2 /* IRBookmarkModel.swift */,
+			);
+			path = IRBookmark;
+			sourceTree = "<group>";
+		};
 		816DFBA42404D39B0030E55B = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +316,7 @@
 		8180406325206A5C00F31442 /* ReaderCenter */ = {
 			isa = PBXGroup;
 			children = (
+				8162E4CF2566AF17007BDDA2 /* IRBookmark */,
 				8162E4B5256511DF007BDDA2 /* IRReadingRecord */,
 				81CB1168254EEC7E0084E991 /* IRChapterTipView */,
 				8126CF6B2545884900C71415 /* IRChapterList */,
@@ -576,10 +590,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8162E4D12566AF2F007BDDA2 /* IRBookmark.swift in Sources */,
 				81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */,
 				818F99C3253BEDB800C47427 /* IRBook.swift in Sources */,
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
 				81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */,
+				8162E4D92566AF41007BDDA2 /* IRBookmarkModel.swift in Sources */,
 				81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */,
 				8133228F254BB01400820AA5 /* IRReadBottomBar.swift in Sources */,
 				812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */,

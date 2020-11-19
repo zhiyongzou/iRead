@@ -399,6 +399,10 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         }
     }
     
+    func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark: Bool) {
+        
+    }
+    
     //MARK: - IRReadBottomBarDelegate
     
     func readBottomBar(_: IRReadBottomBar, didChangePageIndex pageIndex: Int) {

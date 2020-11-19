@@ -38,11 +38,11 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         book.parseDelegate = self
         book.parseBookMeta()
     }
-    
+#if DEBUG
     deinit {
-        self.saveReadingRecord()
         IRDebugLog("")
     }
+#endif
     
     //MARK: - Override
     
@@ -64,6 +64,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.saveReadingRecord()
     }
 
     override var prefersStatusBarHidden: Bool {

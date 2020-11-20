@@ -20,6 +20,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     var beforePageVC: IRReadPageViewController?
     /// 阅读记录
     var readingRecord: IRReadingRecordModel!
+    /// 书签映射表
+    var bookmarkMap:[Int: IRBookmarkModel]?
+    /// 书签列表
+    var bookmarkList:[IRBookmarkModel]?
     /// 阅读导航栏
     lazy var readNavigationBar = IRReadNavigationBar()
     lazy var readBottomBar = IRReadBottomBar()
@@ -48,7 +52,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        bookmarkList = IRBookmark.loadBookmarkList(withBookName: book.bookName)
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.addNavigateTapGesture()
         self.setupReadingRecord()
@@ -96,9 +100,15 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         readBottomBar.bookPageCount = book.pageCount
         readBottomBar.curentPageIdx = self.currentReadingVC.pageModel?.displayPageIdx ?? 0
         
-        let endY: CGFloat = self.shouldHideStatusBar ? -readNavigationBar.height : 0
+        let endY: CGFloat = shouldHideStatusBar ? -readNavigationBar.height : 0
         let height = readNavigationContentView!.height
-        let bottomEndY: CGFloat = self.shouldHideStatusBar ? height : height - readBottomBar.height
+        let bottomEndY: CGFloat = shouldHideStatusBar ? height : height - readBottomBar.height
+        
+        if let pageModel = currentReadingVC.pageModel {
+            self.readNavigationBar.bookmark.isSelected = pageModel.isBookmark
+        } else {
+            self.readNavigationBar.bookmark.isSelected = false
+        }
         
         if animated {
             UIView.animate(withDuration: 0.25) {
@@ -110,9 +120,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             }
         } else {
             self.setNeedsStatusBarAppearanceUpdate()
-            self.readNavigationBar.y = endY
-            self.readBottomBar.y = bottomEndY
-            self.readNavigationContentView!.isHidden = self.shouldHideStatusBar
+            readNavigationBar.y = endY
+            readBottomBar.y = bottomEndY
+            readNavigationContentView!.isHidden = shouldHideStatusBar
         }
     }
     
@@ -399,8 +409,14 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         }
     }
     
-    func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark: Bool) {
-        
+    func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark isMark: Bool) {
+        if isMark {
+            guard let pageModel = currentReadingVC.pageModel else { return }
+            let bookmark = IRBookmarkModel.init(chapterIdx: pageModel.chapterIdx, chapterName: pageModel.chapterName, textLoction: pageModel.range.location)
+            IRBookmark.saveBookmark(bookmark, to: book.bookName)
+        } else {
+            
+        }
     }
     
     //MARK: - IRReadBottomBarDelegate

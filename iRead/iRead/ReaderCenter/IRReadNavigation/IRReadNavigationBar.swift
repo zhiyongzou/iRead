@@ -15,7 +15,7 @@ protocol IRReadNavigationBarDelegate: AnyObject {
     func readNavigationBar(didClickBack bar: IRReadNavigationBar)
     func readNavigationBar(didClickChapterList bar: IRReadNavigationBar)
     func readNavigationBar(didClickReadSetting bar: IRReadNavigationBar)
-    func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark: Bool)
+    func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark isMark: Bool)
 }
 
 class IRReadNavigationBar: UIView {

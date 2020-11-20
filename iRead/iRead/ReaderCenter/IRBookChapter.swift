@@ -20,7 +20,7 @@ class IRBookChapter: NSObject {
     /// 章节页列表
     lazy var pageList = [IRBookPage]()
     /// 章节标题
-    var title = ""
+    var title: String?
     /// 章节索引
     var chapterIdx: Int = 0
     /// 页码偏移
@@ -168,6 +168,7 @@ class IRBookChapter: NSObject {
             if textContent.count > 0 {
                 let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: self.chapterIdx)
                 pageModel.content = content
+                pageModel.chapterName = title
                 pageModel.range = visibleRange
                 pageModel.textColorHex = textColorHex
                 pageCount += 1;

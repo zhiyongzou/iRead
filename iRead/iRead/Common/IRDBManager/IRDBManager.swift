@@ -30,40 +30,21 @@ class IRDBManager: NSObject {
 
     static let shared: IRDBManager = IRDBManager()
     
-    lazy var fmdb: FMDatabase = {
-        var dbPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-        dbPath = dbPath?.appendingPathComponent("iread.sqlite")
+    lazy var fmdbQueue: FMDatabaseQueue? = {
+        var dbPath = IRDocumentDirectoryPath
+        dbPath = dbPath.appendingPathComponent("iread.sqlite")
         IRDebugLog(dbPath);
-        let fmdb = FMDatabase.init(path: dbPath)
-        return fmdb
+        let queue = FMDatabaseQueue.init(path: dbPath)
+        return queue
     }()
     
-    func open() -> Bool {
-        if fmdb.isOpen {
-            return true
-        }
-        if fmdb.open() {
-            IRDebugLog("Open database Success");
-            return true
-        } else {
-            print("Open database Fail")
-            return false
-        }
+    func close() {
+        fmdbQueue?.close()
     }
     
-    func close() -> Bool {
-        if !fmdb.isOpen {
-            return true
-        }
-        if fmdb.close() {
-            IRDebugLog("Close database Success")
-            return true
-        } else {
-            print("Close database Fail")
-            return false
-        }
-    }
-    
+    /**
+     database.executeUpdate("create table test(x text, y text, z text)", values: nil)
+     */
     func creatTable(_ tableName: String, values: [IRDBModel]) -> Bool {
         
         if values.count == 0 || tableName.count == 0 {
@@ -71,26 +52,43 @@ class IRDBManager: NSObject {
         }
         
         var valueString: String = ""
+        var primaryValue: String = ""
         for model in values {
             if valueString.count > 0 {
                 valueString.append(", ")
             }
             valueString.append("\(model.name) \(model.type.rawValue)")
+            if model.isPrimaryKey {
+                if primaryValue.count > 0 {
+                    primaryValue.append(", ")
+                }
+                primaryValue.append(model.name)
+            }
             if !model.nullable {
-                valueString.append("NOT NULL")
+                valueString.append(" NOT NULL")
             }
         }
-        
-        let sql = "CREATE TABLE IF NOT EXISTS \(tableName) (\(valueString))"
-        do {
-            try fmdb.executeUpdate(sql, values: nil)
-            return true
-        } catch {
-            print("failed: \(error.localizedDescription)")
-            return false
+        if primaryValue.count > 0 {
+            //Mutil PRIMARY KEY: https://stackoverflow.com/questions/734689/sqlite-primary-key-on-multiple-columns
+            valueString.append(", PRIMARY KEY(\(primaryValue))")
         }
+        let sql = "CREATE TABLE IF NOT EXISTS \(tableName) (\(valueString))"
+        
+        var success = false
+        fmdbQueue?.inDatabase({ (db) in
+            do {
+                try db.executeUpdate(sql, values: nil)
+                success = true
+            } catch {
+                IRDebugLog("failed: \(error.localizedDescription)")
+            }
+        })
+        return success
     }
     
+    /**
+     database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"]
+     */
     func insertValues(_ values: [IRDBModel], intoTable tableName: String) -> Bool {
         
         if values.count == 0 || tableName.count == 0 {
@@ -111,17 +109,22 @@ class IRDBManager: NSObject {
             tableValues.append(model.value ?? NSNull())
         }
         
-        let sql = "INSERT INTO \(tableName) (\(valueName)) VALUES (\(placeholder)"
-        
-        do {
-            try fmdb.executeUpdate(sql, values: tableValues)
-            return true
-        } catch {
-            print("failed: \(error.localizedDescription)")
-            return false
-        }
+        let sql = "INSERT INTO \(tableName) (\(valueName)) VALUES (\(placeholder))"
+        var success = false
+        fmdbQueue?.inDatabase({ (db) in
+            do {
+                try db.executeUpdate(sql, values: tableValues)
+                success = true
+            } catch {
+                IRDebugLog("failed: \(error.localizedDescription)")
+            }
+        })
+        return success
     }
     
+    /**
+     database.executeQuery("select x, y, z from test", values: nil)
+     */
     func selectValues(_ values: [IRDBModel]?, fromTable tableName: String) -> FMResultSet? {
         
         if tableName.count == 0 {
@@ -142,11 +145,14 @@ class IRDBManager: NSObject {
         }
         
         let sql = "SELECT \(valueName) FROM \(tableName)"
-        do {
-            return try fmdb.executeQuery(sql, values: nil)
-        } catch  {
-            print("failed: \(error.localizedDescription)")
-            return nil
-        }
+        var resultSet: FMResultSet?
+        fmdbQueue?.inDatabase({ (db) in
+            do {
+                resultSet = try db.executeQuery(sql, values: nil)
+            } catch {
+                IRDebugLog("failed: \(error.localizedDescription)")
+            }
+        })
+        return resultSet
     }
 }

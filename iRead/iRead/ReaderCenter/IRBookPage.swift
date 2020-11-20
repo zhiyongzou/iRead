@@ -15,7 +15,10 @@ class IRBookPage: NSObject {
     lazy var content: NSAttributedString = NSAttributedString.init(string: "")
     var pageIdx: Int = 0
     var chapterIdx: Int = 0
+    var chapterName: String?
     var displayPageIdx: Int?
+    var isBookmark = false
+    
     
     class func bookPage(withPageIdx pageIdx: Int, chapterIdx: Int) -> IRBookPage {
         let page = IRBookPage()

@@ -40,4 +40,8 @@ struct IRDBModel {
     
     /// 是否可 nil
     var nullable = true
+    
+    /// 是否主键
+    var isPrimaryKey = false
+    
 }

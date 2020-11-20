@@ -8,32 +8,36 @@
 
 import UIKit
 
-class IRBookmarkModel: NSObject {
+class IRBookmarkModel: NSObject, NSCoding {
 
-    lazy var chapterName: String = "未知"
-    lazy var markTime: TimeInterval = NSTimeIntervalSince1970
+    var markTime: TimeInterval = 0
+    var chapterName: String?
     var chapterIdx: Int = 0
-    var pageIdx: Int = 0
-    var textRange = NSMakeRange(0, 0)
+    /// 书签文本起始位置
+    var textLoction: Int = 0
     
-    func encode(with coder: NSCoder) {
-        coder.encode(chapterName, forKey: "chapterName")
-        coder.encode(markTime, forKey: "markTime")
-        coder.encode(chapterIdx, forKey: "chapterIdx")
-        coder.encode(pageIdx, forKey: "pageIdx")
-        coder.encode(textRange, forKey: "textRange")
+    init(chapterIdx: Int, chapterName: String?, textLoction: Int) {
+        super.init()
+        self.chapterIdx = chapterIdx
+        self.chapterName = chapterName
+        self.markTime = NSTimeIntervalSince1970
+        self.textLoction = textLoction
     }
     
     required init?(coder: NSCoder) {
         super.init()
         chapterIdx = coder.decodeInteger(forKey: "chapterIdx")
-        pageIdx =  coder.decodeInteger(forKey: "pageIdx")
         markTime = coder.decodeDouble(forKey: "markTime")
-        if let range = coder.decodeObject(forKey: "textRange") as? NSRange {
-            textRange = range
-        }
+        textLoction = coder.decodeInteger(forKey: "textLoction")
         if let name = coder.decodeObject(forKey: "chapterName") as? String {
             chapterName = name
         }
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(chapterName, forKey: "chapterName")
+        coder.encode(markTime, forKey: "markTime")
+        coder.encode(chapterIdx, forKey: "chapterIdx")
+        coder.encode(textLoction, forKey: "textLoction")
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import IRCommonLib
 
-class IRReadingRecord: NSObject {
+class IRReadingRecordManager: NSObject {
 
     static let directoryPath = "/ReadingRecord"
     

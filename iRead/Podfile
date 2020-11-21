@@ -10,7 +10,7 @@ workspace 'iRead.xcworkspace'
 
 # debug_pods
 def debug_pods
-  pod 'FLEX', :configurations => ['Debug']
+  pod 'FLEX', '~> 4.1.1', :configurations => ['Debug']
   pod 'EpubBooks', :git => 'https://github.com/zhiyongzou/EpubBooks.git', :branch => 'main', :configurations => ['Debug']
 end
 

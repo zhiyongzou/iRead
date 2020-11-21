@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IRBookmark: NSObject {
+class IRBookmarkManager: NSObject {
 
     static var tableCreatedFinishedMap = [String: Bool]()
     static let tableValues: [IRDBModel] = {
@@ -79,7 +79,7 @@ class IRBookmark: NSObject {
 }
 
 // MARK: Public
-extension IRBookmark {
+extension IRBookmarkManager {
     
     class func loadBookmarkList(withBookName name: String) -> [IRBookmarkModel] {
         let tableName = self.tableName(withBookName: name)

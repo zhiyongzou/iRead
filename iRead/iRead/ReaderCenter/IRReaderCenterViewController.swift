@@ -52,7 +52,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bookmarkList = IRBookmark.loadBookmarkList(withBookName: book.bookName)
+        bookmarkList = IRBookmarkManager.loadBookmarkList(withBookName: book.bookName)
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.addNavigateTapGesture()
         self.setupReadingRecord()
@@ -245,7 +245,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     }
     
     func setupReadingRecord() {
-        readingRecord = IRReadingRecord.readingRecord(with: book.bookName)
+        readingRecord = IRReadingRecordManager.readingRecord(with: book.bookName)
         let currentChapter = book.chapter(at: readingRecord.chapterIdx)
         var pageModel = currentChapter.page(at: readingRecord.pageIdx)
 
@@ -268,7 +268,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             return
         }
         let readingRecord = IRReadingRecordModel(pageModel.chapterIdx, pageModel.pageIdx, pageModel.range)
-        IRReadingRecord.setReadingRecord(record: readingRecord, bookName: book.bookName)
+        IRReadingRecordManager.setReadingRecord(record: readingRecord, bookName: book.bookName)
     }
     
     //MARK: - Gesture
@@ -413,7 +413,7 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         if isMark {
             guard let pageModel = currentReadingVC.pageModel else { return }
             let bookmark = IRBookmarkModel.init(chapterIdx: pageModel.chapterIdx, chapterName: pageModel.chapterName, textLoction: pageModel.range.location)
-            IRBookmark.saveBookmark(bookmark, to: book.bookName)
+            IRBookmarkManager.saveBookmark(bookmark, to: book.bookName)
         } else {
             
         }

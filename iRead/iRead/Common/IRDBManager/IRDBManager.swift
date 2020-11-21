@@ -83,6 +83,9 @@ class IRDBManager: NSObject {
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
+        defer {
+            self.close()
+        }
         return success
     }
     
@@ -119,6 +122,11 @@ class IRDBManager: NSObject {
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
+        
+        defer {
+            self.close()
+        }
+        
         return success
     }
     
@@ -153,6 +161,9 @@ class IRDBManager: NSObject {
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
+        defer {
+            self.close()
+        }
         return resultSet
     }
 }

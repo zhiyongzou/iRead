@@ -25,8 +25,6 @@ class IRBook: NSObject {
     var pageCount = 0
     var chapterCount = 0
     lazy var chapterList = [IRBookChapter]()
-    var currentReadChapter: IRBookChapter?
-    var cureentReadPage: IRBookPage?
     /// 当前队列解析id
     var parseQueueId = 0
     
@@ -57,7 +55,7 @@ class IRBook: NSObject {
 #if DEBUG
             assert(bookMeta.title != nil, "Book name is nil")
 #endif
-            return bookMeta.title ?? ""
+            return bookMeta.title ?? "无书名"
         }
     }
     
@@ -156,7 +154,7 @@ class IRBook: NSObject {
                     } else if chapter.textSizeMultiplier != IRReaderConfig.textSizeMultiplier {
                         chapter.updateTextSizeMultiplier(IRReaderConfig.textSizeMultiplier)
                     }
-                    IRDebugLog(" \(Thread.current) \(chapter.title) pageCount: \(chapter.pageList.count)")
+                    IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
                     DispatchQueue.main.async {
                         if currentQueueId != self.parseQueueId { return }
                         pageCount += chapter.pageList.count
@@ -174,7 +172,7 @@ class IRBook: NSObject {
                 parseQueue.addOperation {
                     let tocReference: FRTocReference = self.bookMeta.tableOfContentsMap[spine.resource.href] ?? FRTocReference.init(title: "", resource: spine.resource)
                     let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
-                    IRDebugLog(" \(Thread.current) \(chapter.title) pageCount: \(chapter.pageList.count)")
+                    IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
                     DispatchQueue.main.async {
                         if currentQueueId != self.parseQueueId { return }
                         pageCount += chapter.pageList.count

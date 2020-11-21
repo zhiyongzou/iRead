@@ -24,8 +24,6 @@ SQLite 命令
 
 import IRCommonLib
 
-let kIreadBookTable = "iread_book_table"
-
 class IRDBManager: NSObject {
 
     static let shared: IRDBManager = IRDBManager()
@@ -83,9 +81,6 @@ class IRDBManager: NSObject {
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
-        defer {
-            self.close()
-        }
         return success
     }
     
@@ -122,11 +117,6 @@ class IRDBManager: NSObject {
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
-        
-        defer {
-            self.close()
-        }
-        
         return success
     }
     
@@ -161,9 +151,6 @@ class IRDBManager: NSObject {
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
-        defer {
-            self.close()
-        }
         return resultSet
     }
 }

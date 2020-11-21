@@ -41,3 +41,9 @@ class IRBookmarkModel: NSObject, NSCoding {
         coder.encode(textLoction, forKey: "textLoction")
     }
 }
+
+// MARK: Equatable
+
+func ==(lhs: IRBookmarkModel, rhs: IRBookmarkModel) -> Bool {
+    return lhs.chapterIdx == rhs.chapterIdx && lhs.textLoction == rhs.textLoction
+}

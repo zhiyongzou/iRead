@@ -20,10 +20,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     var beforePageVC: IRReadPageViewController?
     /// 阅读记录
     var readingRecord: IRReadingRecordModel!
-    /// 书签映射表
-    var bookmarkMap:[Int: IRBookmarkModel]?
-    /// 书签列表
-    var bookmarkList:[IRBookmarkModel]?
     /// 阅读导航栏
     lazy var readNavigationBar = IRReadNavigationBar()
     lazy var readBottomBar = IRReadBottomBar()
@@ -52,7 +48,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bookmarkList = IRBookmarkManager.loadBookmarkList(withBookName: book.bookName)
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.addNavigateTapGesture()
         self.setupReadingRecord()
@@ -96,6 +91,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             readNavigationContentView!.isHidden = false
         }
         
+        readNavigationBar.bookmark.isSelected = book.isBookmark(withPage: currentReadingVC.pageModel)
         readBottomBar.isParseFinish = book.isFinishParse
         readBottomBar.bookPageCount = book.pageCount
         readBottomBar.curentPageIdx = self.currentReadingVC.pageModel?.displayPageIdx ?? 0
@@ -103,12 +99,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         let endY: CGFloat = shouldHideStatusBar ? -readNavigationBar.height : 0
         let height = readNavigationContentView!.height
         let bottomEndY: CGFloat = shouldHideStatusBar ? height : height - readBottomBar.height
-        
-        if let pageModel = currentReadingVC.pageModel {
-            self.readNavigationBar.bookmark.isSelected = pageModel.isBookmark
-        } else {
-            self.readNavigationBar.bookmark.isSelected = false
-        }
         
         if animated {
             UIView.animate(withDuration: 0.25) {
@@ -326,6 +316,13 @@ extension IRReaderCenterViewController: IRChapterListViewControllerDelagate {
 //MARK: - IRBookParseDelegate
 extension IRReaderCenterViewController: IRBookParseDelegate {
 
+    func book(_ book: IRBook, didFinishLoadBookmarkList list: [IRBookmarkModel]) {
+        if shouldHideStatusBar {
+            return
+        }
+        readNavigationBar.bookmark.isSelected = book.isBookmark(withPage: currentReadingVC.pageModel)
+    }
+    
     func bookBeginParse(_ book: IRBook) {
         if self.readNavigationContentView != nil {
             readBottomBar.isParseFinish = false
@@ -410,12 +407,12 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
     }
     
     func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark isMark: Bool) {
+        guard let pageModel = currentReadingVC.pageModel else { return }
+        let bookmark = IRBookmarkModel.init(chapterIdx: pageModel.chapterIdx, chapterName: pageModel.chapterName, textLoction: pageModel.range.location)
         if isMark {
-            guard let pageModel = currentReadingVC.pageModel else { return }
-            let bookmark = IRBookmarkModel.init(chapterIdx: pageModel.chapterIdx, chapterName: pageModel.chapterName, textLoction: pageModel.range.location)
-            IRBookmarkManager.saveBookmark(bookmark, to: book.bookName)
+            book.saveBookmark(bookmark)
         } else {
-            
+            book.removeBookmark(bookmark)
         }
     }
     

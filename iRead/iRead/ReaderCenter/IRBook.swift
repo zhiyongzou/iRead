@@ -14,6 +14,7 @@ protocol IRBookParseDelegate: AnyObject {
     func bookBeginParse(_ book: IRBook)
     func book(_ book: IRBook, currentParseProgress progress: Float)
     func bookDidFinishParse(_ book: IRBook)
+    func book(_ book: IRBook, didFinishLoadBookmarkList list: [IRBookmarkModel])
 }
 
 class IRBook: NSObject {
@@ -27,7 +28,8 @@ class IRBook: NSObject {
     lazy var chapterList = [IRBookChapter]()
     /// 当前队列解析id
     var parseQueueId = 0
-    
+    /// 书签列表
+    var bookmarkList = [IRBookmarkModel]()
     
     var parseQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -63,6 +65,7 @@ class IRBook: NSObject {
         self.bookMeta = bookMeta
         super.init()
         
+        self.loadBookmarkList()
         if let coverUrl = bookMeta.coverImage?.fullHref {
             coverImage = UIImage.init(contentsOfFile: coverUrl)
         }
@@ -71,22 +74,6 @@ class IRBook: NSObject {
     
     convenience init(_ bookMeta: FRBook) {
         self.init(withBookMeta: bookMeta)
-    }
-    
-    func didFinishParse(chapterList: [AnyObject], pageCount: Int) {
-        
-        self.chapterList.removeAll()
-        var pageOffset = 0
-        for item in chapterList {
-            let chapter = item as! IRBookChapter
-            chapter.pageOffset = pageOffset
-            pageOffset += chapter.pageList.count
-            self.chapterList.append(chapter)
-        }
-        self.pageCount = pageCount
-        isFinishParse = true
-        self.parseDelegate?.bookDidFinishParse(self)
-        IRDebugLog("book parse finish")
     }
     
     func findChapterIndexByTocReference(_ reference: FRTocReference) -> Int {
@@ -127,9 +114,85 @@ class IRBook: NSObject {
         let spine = bookMeta.spine.spineReferences[index]
         return bookMeta.tableOfContentsMap[spine.resource.href] ?? FRTocReference.init(title: "", resource: spine.resource)
     }
+}
+
+//MARK: Bookmark
+extension IRBook {
+    
+    func saveBookmark(_ bookmark: IRBookmarkModel) {
+        bookmarkList.append(bookmark)
+        IRBookmarkManager.saveBookmark(bookmark, to: bookName)
+    }
+    
+    func removeBookmark(_ bookmark: IRBookmarkModel) {
+        var removeIdx: Int?
+        for (index, item) in bookmarkList.enumerated() {
+            if bookmark.chapterIdx == item.chapterIdx && bookmark.textLoction == item.textLoction {
+                removeIdx = index
+                break
+            }
+        }
+        if let removeIdx = removeIdx {
+            bookmarkList.remove(at: removeIdx)
+        }
+    }
+    
+    func loadBookmarkList() {
+        parseQueue.addOperation {
+            let list = IRBookmarkManager.loadBookmarkList(withBookName: self.bookName)
+            DispatchQueue.main.async {
+                self.handleBookmarkList(list)
+            }
+        }
+    }
+    
+    func handleBookmarkList(_ list: [IRBookmarkModel]) {
+        bookmarkList = list
+        self.parseDelegate?.book(self, didFinishLoadBookmarkList: list)
+        IRDebugLog("finish")
+    }
+    
+    func isBookmark(withPage page: IRBookPage?) -> Bool {
+        
+        guard let pageModel = page else { return false }
+        
+        var isBookmark = false
+        for bookmark in bookmarkList {
+            if bookmark.chapterIdx != pageModel.chapterIdx {
+                continue
+            }
+            if bookmark.textLoction == pageModel.range.location {
+                isBookmark = true
+                break
+            }
+            if bookmark.textLoction > pageModel.range.location && bookmark.textLoction <= pageModel.range.location + pageModel.range.length  {
+                isBookmark = true
+                break
+            }
+        }
+        return isBookmark
+    }
+}
+
+//MARK: Parse
+extension IRBook {
+    
+    func didFinishParse(chapterList: [AnyObject], pageCount: Int) {
+        self.chapterList.removeAll()
+        var pageOffset = 0
+        for item in chapterList {
+            let chapter = item as! IRBookChapter
+            chapter.pageOffset = pageOffset
+            pageOffset += chapter.pageList.count
+            self.chapterList.append(chapter)
+        }
+        self.pageCount = pageCount
+        isFinishParse = true
+        self.parseDelegate?.bookDidFinishParse(self)
+        IRDebugLog("book parse finish")
+    }
     
     func parseBookMeta() {
-        
         parseQueueId += 1
         parseQueue.cancelAllOperations()
         isFinishParse = false

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IRCommonLib
 
 class IRBookmarkManager: NSObject {
 
@@ -35,7 +36,7 @@ class IRBookmarkManager: NSObject {
         if success {
             tableCreatedFinishedMap[name] = true
         } else {
-            print("Bookmark table creat failed")
+            IRDebugLog("Bookmark table creat failed")
         }
     }
     
@@ -45,8 +46,11 @@ class IRBookmarkManager: NSObject {
         self.creatBookmarkTable(withName: tableName)
         let success = IRDBManager.shared.insertValues(self.tableValues(withMark: mark), intoTable: tableName)
         if !success {
-            print("Insert failed")
+            IRDebugLog("Insert failed")
+        } else {
+            IRDebugLog("Insert succeed")
         }
+        IRDBManager.shared.close()
     }
     
     class func tableName(withBookName name: String) -> String {
@@ -58,7 +62,7 @@ class IRBookmarkManager: NSObject {
     class func deleteBookmark(_ mark: IRBookmarkModel, to bookName: String) -> Void {
         let tableName = self.tableName(withBookName: bookName)
         self.creatBookmarkTable(withName: tableName)
-        
+        IRDBManager.shared.close()
     }
     
     class func tableValues(withMark bookmark: IRBookmarkModel) -> [IRDBModel] {
@@ -98,7 +102,9 @@ extension IRBookmarkManager {
             bookmark.markTime = markTime
             bookmarkList.append(bookmark)
         }
-        
+        defer {
+            IRDBManager.shared.close()
+        }
         return bookmarkList
     }
 }

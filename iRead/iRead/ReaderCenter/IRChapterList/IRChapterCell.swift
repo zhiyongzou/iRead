@@ -1,5 +1,5 @@
 //
-//  IRChapterListCell.swift
+//  IRChapterCell.swift
 //  iRead
 //
 //  Created by zzyong on 2020/10/26.
@@ -9,9 +9,8 @@
 import IRCommonLib
 import SnapKit
 
-class IRChapterListCell: UICollectionViewCell {
+class IRChapterCell: UICollectionViewCell {
     
-    let spacing = 20
     var titleLabel = UILabel()
     var separatorLine = UIView()
     
@@ -47,6 +46,7 @@ class IRChapterListCell: UICollectionViewCell {
     
     private func setupSubviews() {
         
+        let spacing = 20
         titleLabel.textColor = IRReaderConfig.textColor
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.systemFont(ofSize: 15)

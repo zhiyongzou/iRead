@@ -12,6 +12,12 @@ open class IRBaseViewcontroller: UIViewController {
     
     open var backButtonItem: UIBarButtonItem?
     
+    #if DEBUG
+    deinit {
+        IRDebugLog(self)
+    }
+    #endif
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         IRDebugLog(self)

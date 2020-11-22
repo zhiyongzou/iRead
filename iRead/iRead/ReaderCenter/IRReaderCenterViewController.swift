@@ -38,11 +38,6 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         book.parseDelegate = self
         book.parseBookMeta()
     }
-#if DEBUG
-    deinit {
-        IRDebugLog("")
-    }
-#endif
     
     //MARK: - Override
     
@@ -379,6 +374,7 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         let chapterVc = IRChapterListViewController()
         chapterVc.delegate = self
         chapterVc.chapterList = book.flatChapterList
+        chapterVc.bookmarkList = book.bookmarkList
         chapterVc.title = book.bookName
         self.navigationController?.pushViewController(chapterVc, animated: true)
     }

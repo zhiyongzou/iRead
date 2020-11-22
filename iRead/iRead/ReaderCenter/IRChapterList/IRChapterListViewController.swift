@@ -12,13 +12,22 @@ protocol IRChapterListViewControllerDelagate: AnyObject {
     func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int)
 }
 
+enum IRSegmentType: String {
+    /// 目录
+    case chapter = "目录"
+    /// 书签
+    case bookmark = "书签"
+}
+
 class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
     
     weak var delegate: IRChapterListViewControllerDelagate?
     
     var collectionView: UICollectionView!
+    var segmentType = IRSegmentType.chapter
     
     lazy var chapterList = [FRTocReference]()
+    lazy var bookmarkList = [IRBookmarkModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +45,12 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         self.navigationController?.navigationBar.barStyle = IRReaderConfig.barStyle
         self.navigationController?.navigationBar.barTintColor = IRReaderConfig.pageColor
         self.backButtonItem?.tintColor = IRReaderConfig.textColor
+        
+        let segment = UISegmentedControl.init(items: [IRSegmentType.chapter.rawValue, IRSegmentType.bookmark.rawValue])
+        segment.width = 160
+        segment.addTarget(self, action: #selector(segmentValueDidChange(_:)), for: .valueChanged)
+        segment.selectedSegmentIndex = 0
+        self.navigationItem.titleView = segment
     }
     
     private func setupCollectionView() {
@@ -47,25 +62,48 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         collectionView.delegate = self
         collectionView.backgroundColor = IRReaderConfig.pageColor
         collectionView.alwaysBounceVertical = true
-        collectionView.register(IRChapterListCell.self, forCellWithReuseIdentifier: "IRChapterListCell")
+        collectionView.register(IRChapterCell.self, forCellWithReuseIdentifier: "IRChapterCell")
+        collectionView.register(IRBookmarkCell.self, forCellWithReuseIdentifier: "IRBookmarkCell")
         self.view.addSubview(collectionView)
+    }
+    
+    @objc func segmentValueDidChange(_ segment: UISegmentedControl) {
+        if segment.selectedSegmentIndex == 0 {
+            segmentType = .chapter
+        } else {
+            segmentType = .bookmark
+        }
+        collectionView.reloadData()
     }
     
     // MARK: - UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return chapterList.count
+        if segmentType == .chapter {
+            return chapterList.count
+        } else {
+            return bookmarkList.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let chapterCell: IRChapterListCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterListCell", for: indexPath) as! IRChapterListCell
-        chapterCell.tocReference = chapterList[indexPath.item]
-        return chapterCell
+        if segmentType == .chapter {
+            let chapterCell: IRChapterCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterCell", for: indexPath) as! IRChapterCell
+            chapterCell.tocReference = chapterList[indexPath.item]
+            return chapterCell
+        } else {
+            let bookmarkCell: IRBookmarkCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRBookmarkCell", for: indexPath) as! IRBookmarkCell
+            bookmarkCell.bookmarkModel = bookmarkList[indexPath.item]
+            return bookmarkCell
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize.init(width: collectionView.width, height: 45)
+        if segmentType == .chapter {
+            return CGSize.init(width: collectionView.width, height: 45)
+        } else {
+            return CGSize.init(width: collectionView.width, height: 55)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -73,7 +111,11 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item], chapterIdx: indexPath.item)
-        self.navigationController?.popViewController(animated: true)
+        if segmentType == .chapter {
+            self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item], chapterIdx: indexPath.item)
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            
+        }
     }
 }

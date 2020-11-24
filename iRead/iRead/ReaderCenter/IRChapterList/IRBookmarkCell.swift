@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IRCommonLib
 
 class IRBookmarkCell: UICollectionViewCell {
     
@@ -38,7 +39,7 @@ class IRBookmarkCell: UICollectionViewCell {
     var bookmarkModel: IRBookmarkModel? {
         didSet {
             titleLabel.text = bookmarkModel?.chapterName
-            timeLabel.text = "刚刚"
+            timeLabel.text = String.formateTimeIntervalToString1(timeInterval: bookmarkModel?.markTime ?? NSTimeIntervalSince1970)
             contentLabel.text = bookmarkModel?.content
         }
     }

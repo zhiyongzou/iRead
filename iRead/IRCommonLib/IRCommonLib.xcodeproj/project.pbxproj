@@ -29,6 +29,7 @@
 		81B7E1DD251CC1A700E84A37 /* IRCommonUtilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1DC251CC1A700E84A37 /* IRCommonUtilites.swift */; };
 		81B7E1EA251DE9BA00E84A37 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */; };
 		81B7E1EC251DF19B00E84A37 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1EB251DF19B00E84A37 /* UIView+Extensions.swift */; };
+		81FBDC17256D3E59009D7D02 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBDC16256D3E59009D7D02 /* String+Extensions.swift */; };
 		FBE70650D5F2AE09ED30DD8E /* libPods-IRCommonLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 072262DF21BB150A2B7FB129 /* libPods-IRCommonLib.a */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		81B7E1DC251CC1A700E84A37 /* IRCommonUtilites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRCommonUtilites.swift; sourceTree = "<group>"; };
 		81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		81B7E1EB251DF19B00E84A37 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		81FBDC16256D3E59009D7D02 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		CC337FB72E99D1FB08BB4EAF /* Pods-IRCommonLib.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRCommonLib.release.xcconfig"; path = "Target Support Files/Pods-IRCommonLib/Pods-IRCommonLib.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,6 +180,7 @@
 				8162E45225637223007BDDA2 /* UIControl+Extensions.swift */,
 				81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */,
 				81B7E1EB251DF19B00E84A37 /* UIView+Extensions.swift */,
+				81FBDC16256D3E59009D7D02 /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81FBDC17256D3E59009D7D02 /* String+Extensions.swift in Sources */,
 				817A2BFC247E6914007C5EF7 /* FRMetadata.swift in Sources */,
 				817A2BFB247E6914007C5EF7 /* FRSmilElement.swift in Sources */,
 				812E49722531A1FB0082D902 /* IRPageViewController.swift in Sources */,

@@ -13,12 +13,18 @@ class IRChapterCell: UICollectionViewCell {
     
     var titleLabel = UILabel()
     var separatorLine = UIView()
+    var isSection = false
     
     var tocReference :FRTocReference! {
         didSet {
             titleLabel.text = tocReference.title
-            let isSection = tocReference.children.count > 0
-            self.backgroundColor = isSection ? IRReaderConfig.separatorColor : UIColor.clear
+            isSection = tocReference.children.count > 0
+            if isSection {
+                titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+            } else {
+                titleLabel.font = UIFont.systemFont(ofSize: 15)
+            }
+            self.setNeedsLayout()
         }
     }
     
@@ -42,25 +48,32 @@ class IRChapterCell: UICollectionViewCell {
         }
     }
     
+    override var isSelected: Bool {
+        didSet {
+            titleLabel.textColor = isSelected ? UIColor.rgba(255, 156, 0, 1) : IRReaderConfig.textColor
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let spacing: CGFloat = 20
+        let titleX: CGFloat = isSection ? 10 : spacing
+        titleLabel.frame = CGRect.init(x: titleX, y: 0, width: contentView.width - titleX - spacing, height: contentView.height)
+    }
+    
     // MARK: - Private
     
     private func setupSubviews() {
         
-        let spacing = 20
-        titleLabel.textColor = IRReaderConfig.textColor
         titleLabel.textAlignment = .left
-        titleLabel.font = UIFont.systemFont(ofSize: 15)
+        titleLabel.textColor = IRReaderConfig.textColor
         contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(contentView.snp.left).offset(spacing)
-            make.right.equalTo(contentView.snp.right).offset(-spacing)
-            make.centerY.equalTo(contentView)
-        }
         
         contentView.addSubview(separatorLine)
         separatorLine.backgroundColor = IRReaderConfig.separatorColor
         separatorLine.snp.makeConstraints { (make) -> Void in
-            make.left.right.bottom.equalTo(contentView)
+            make.left.right.equalTo(titleLabel)
+            make.bottom.equalTo(contentView)
             make.height.equalTo(1)
         }
     }

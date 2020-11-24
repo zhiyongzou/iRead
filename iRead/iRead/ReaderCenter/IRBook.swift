@@ -25,6 +25,9 @@ class IRBook: NSObject {
     var isFinishParse = false
     var pageCount = 0
     var chapterCount = 0
+    /// 章节目录偏移: spine.count - chapterlist.count
+    var chapterOffset = 0
+    
     lazy var chapterList = [IRBookChapter]()
     /// 当前队列解析id
     var parseQueueId = 0
@@ -70,6 +73,7 @@ class IRBook: NSObject {
             coverImage = UIImage.init(contentsOfFile: coverUrl)
         }
         chapterCount = bookMeta.spine.spineReferences.count
+        chapterOffset = chapterCount - bookMeta.flatTableOfContents.count
     }
     
     convenience init(_ bookMeta: FRBook) {

@@ -166,25 +166,25 @@ class IRReaderConfig: NSObject {
         
         if pageColorHex == IRReadPageColorHex.HexF8F8F8.rawValue {
             textColorHex = "333333"
-            separatorColor = UIColor.init(white: 0, alpha: 0.05)
+            separatorColor = UIColor.init(white: 0, alpha: 0.08)
             bgColor = UIColor.hexColor("FFFFFF")
             statusBarStyle = .default
             barStyle = .default
         } else if pageColorHex == IRReadPageColorHex.HexE9E6D7.rawValue {
             textColorHex = "4C3824"
-            separatorColor = UIColor.init(white: 0, alpha: 0.05)
+            separatorColor = UIColor.init(white: 0, alpha: 0.08)
             bgColor = UIColor.hexColor("FDF9EA")
             statusBarStyle = .default
             barStyle = .default
         } else if pageColorHex == IRReadPageColorHex.Hex373737.rawValue {
             textColorHex = "DDDDDD"
-            separatorColor = UIColor.init(white: 1, alpha: 0.05)
+            separatorColor = UIColor.init(white: 1, alpha: 0.08)
             bgColor = UIColor.hexColor("454545")
             statusBarStyle = .lightContent
             barStyle = .black
         } else  {
             textColorHex = "AAAAAA"
-            separatorColor = UIColor.init(white: 1, alpha: 0.05)
+            separatorColor = UIColor.init(white: 1, alpha: 0.08)
             bgColor = UIColor.hexColor("282828")
             statusBarStyle = .lightContent
             barStyle = .black

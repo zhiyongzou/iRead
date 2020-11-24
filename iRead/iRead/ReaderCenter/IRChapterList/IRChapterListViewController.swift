@@ -9,7 +9,8 @@
 import IRCommonLib
 
 protocol IRChapterListViewControllerDelagate: AnyObject {
-    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int)
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference)
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectBookmark bookmark: IRBookmarkModel)
 }
 
 enum IRSegmentType: String {
@@ -25,7 +26,7 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     
     var collectionView: UICollectionView!
     var segmentType = IRSegmentType.chapter
-    
+    var currentChapterIdx: Int?
     lazy var chapterList = [FRTocReference]()
     lazy var bookmarkList = [IRBookmarkModel]()
 
@@ -35,6 +36,7 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         self.setupCollectionView()
         self.setupNavigationBar()
     }
+    
     
     // MARK: - Private
     
@@ -90,6 +92,9 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         if segmentType == .chapter {
             let chapterCell: IRChapterCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterCell", for: indexPath) as! IRChapterCell
             chapterCell.tocReference = chapterList[indexPath.item]
+            if let currentChapterIdx = currentChapterIdx {
+                chapterCell.isSelected = indexPath.item == currentChapterIdx
+            }
             return chapterCell
         } else {
             let bookmarkCell: IRBookmarkCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRBookmarkCell", for: indexPath) as! IRBookmarkCell
@@ -100,9 +105,9 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if segmentType == .chapter {
-            return CGSize.init(width: collectionView.width, height: 45)
+            return CGSize.init(width: collectionView.width, height: 50)
         } else {
-            return CGSize.init(width: collectionView.width, height: 55)
+            return CGSize.init(width: collectionView.width, height: 80)
         }
     }
     
@@ -112,10 +117,10 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if segmentType == .chapter {
-            self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item], chapterIdx: indexPath.item)
-            self.navigationController?.popViewController(animated: true)
+            self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item])
         } else {
-            
+            self.delegate?.chapterListViewController(self, didSelectBookmark: bookmarkList[indexPath.item])
         }
+        self.navigationController?.popViewController(animated: true)
     }
 }

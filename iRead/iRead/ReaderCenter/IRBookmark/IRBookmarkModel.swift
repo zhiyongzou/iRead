@@ -10,7 +10,6 @@ import UIKit
 
 class IRBookmarkModel: NSObject {
 
-    let contentLength = 25
     var markTime: TimeInterval = 0
     var chapterName: String?
     var content: String?

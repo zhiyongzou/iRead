@@ -69,6 +69,22 @@ class IRBookChapter: NSObject {
         }
     }
     
+    func page(in loction: Int) -> IRBookPage? {
+        var pageModel: IRBookPage?
+        for item in pageList {
+            if loction >= item.range.location && loction < item.range.location + item.range.length {
+                pageModel = item
+                break
+            }
+        }
+        
+        if pageModel == nil {
+            pageModel = pageList.first
+        }
+        
+        return pageModel
+    }
+    
     func htmlAttributedString(with htmlData: Data) -> NSMutableAttributedString {
         
         guard let baseUrl = self.baseUrl else { return NSMutableAttributedString() }

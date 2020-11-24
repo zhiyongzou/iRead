@@ -86,7 +86,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             readNavigationContentView!.isHidden = false
         }
         
-        readNavigationBar.bookmark.isSelected = book.isBookmark(withPage: currentReadingVC.pageModel)
+        self.updateBookmarkState()
         readBottomBar.isParseFinish = book.isFinishParse
         readBottomBar.bookPageCount = book.pageCount
         readBottomBar.curentPageIdx = self.currentReadingVC.pageModel?.displayPageIdx ?? 0
@@ -109,6 +109,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             readBottomBar.y = bottomEndY
             readNavigationContentView!.isHidden = shouldHideStatusBar
         }
+    }
+    
+    func updateBookmarkState() {
+        readNavigationBar.bookmark.isSelected = book.isBookmark(withPage: currentReadingVC.pageModel)
     }
     
     func addNavigationContentViewIfNeeded() {
@@ -298,10 +302,18 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
 //MARK: - IRChapterListViewControllerDelagate
 extension IRReaderCenterViewController: IRChapterListViewControllerDelagate {
     
-    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference, chapterIdx: Int) {
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference) {
         let chapterIndex = book.findChapterIndexByTocReference(tocReference)
         let currentChapter = book.chapter(at: chapterIndex)
         self.setupPageViewControllerWithPageModel(currentChapter.page(at: 0))
+        
+        self.shouldHideStatusBar = !self.shouldHideStatusBar;
+        self.updateReadNavigationBarDispalyState(animated: false)
+    }
+    
+    func chapterListViewController(_ vc: IRChapterListViewController, didSelectBookmark bookmark: IRBookmarkModel) {
+        let currentChapter = book.chapter(at: bookmark.chapterIdx)
+        self.setupPageViewControllerWithPageModel(currentChapter.page(in: bookmark.textLoction))
         
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.updateReadNavigationBarDispalyState(animated: false)
@@ -375,6 +387,9 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         chapterVc.delegate = self
         chapterVc.chapterList = book.flatChapterList
         chapterVc.bookmarkList = book.bookmarkList
+        if let chapterIdx = currentReadingVC.pageModel?.chapterIdx {
+            chapterVc.currentChapterIdx = chapterIdx - book.chapterOffset
+        }
         chapterVc.title = book.bookName
         self.navigationController?.pushViewController(chapterVc, animated: true)
     }
@@ -405,7 +420,15 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
     func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark isMark: Bool) {
         guard let pageModel = currentReadingVC.pageModel else { return }
         let bookmark = IRBookmarkModel.init(chapterIdx: pageModel.chapterIdx, chapterName: pageModel.chapterName, textLoction: pageModel.range.location)
-        bookmark.content = String(pageModel.content.string.prefix(bookmark.contentLength)).replacingOccurrences(of: "\n", with: "")
+        if book.isChinese {
+            bookmark.content = String(pageModel.content.string.prefix(25)).replacingOccurrences(of: "\n", with: "")
+        } else {
+            var content = String(pageModel.content.string.prefix(50)).replacingOccurrences(of: "\n", with: "")
+            let index = content.lastIndex(of: " ") ?? content.endIndex
+            content = String(content[..<index])
+            bookmark.content = content
+        }
+        
         if isMark {
             book.saveBookmark(bookmark)
         } else {
@@ -522,6 +545,7 @@ extension IRReaderCenterViewController: IRReadSettingViewDelegate {
         let pageCount = currentChapter.pageList.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
         self.setupPageViewControllerWithPageModel(currentChapter.page(at: pageIdx))
+        self.updateBookmarkState()
         book.parseBookMeta()
     }
     
@@ -555,6 +579,7 @@ extension IRReaderCenterViewController: IRReadSettingViewDelegate {
         let pageCount = currentChapter.pageList.count
         let pageIdx = pageModel.pageIdx < pageCount ? pageModel.pageIdx : pageCount - 1
         self.setupPageViewControllerWithPageModel(currentChapter.page(at: pageIdx))
+        self.updateBookmarkState()
         book.parseBookMeta()
     }
 }

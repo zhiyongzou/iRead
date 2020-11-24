@@ -405,10 +405,11 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
     func readNavigationBar(_ bar: IRReadNavigationBar, didSelectBookmark isMark: Bool) {
         guard let pageModel = currentReadingVC.pageModel else { return }
         let bookmark = IRBookmarkModel.init(chapterIdx: pageModel.chapterIdx, chapterName: pageModel.chapterName, textLoction: pageModel.range.location)
+        bookmark.content = String(pageModel.content.string.prefix(bookmark.contentLength)).replacingOccurrences(of: "\n", with: "")
         if isMark {
             book.saveBookmark(bookmark)
         } else {
-            book.removeBookmark(bookmark)
+            book.removeBookmark(bookmark, chapterIdx: pageModel.chapterIdx, textRange: pageModel.range)
         }
     }
     

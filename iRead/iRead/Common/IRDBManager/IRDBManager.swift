@@ -11,6 +11,7 @@
 ORM: Object Relational Mapping(对象关系映射)
 FMDB: https://github.com/ccgus/fmdb
 SQLite 可视化工具： https://github.com/sqlitebrowser/sqlitebrowser
+Frequently Asked Questions：https://www.sqlite.org/faq.html
   
 SQLite 命令
     CREATE    |  创建一个新的表，一个表的视图，或者数据库中的其他对象。
@@ -23,6 +24,26 @@ SQLite 命令
 */
 
 import IRCommonLib
+
+/**
+ SQLite 存储类型
+ */
+enum IRDBType: String {
+    /// 值是一个 NULL 值
+    case NULL    = "NULL"
+    
+    /// 值是一个带符号的整数，根据值的大小存储在 1、2、3、4、6 或 8 字节中
+    case INTEGER = "INTEGER"
+    
+    /// 值是一个浮点值，存储为 8 字节的 IEEE 浮点数字。
+    case REAL    = "REAL"
+    
+    /// 值是一个文本字符串，使用数据库编码（UTF-8、UTF-16BE 或 UTF-16LE）存储。
+    case TEXT    = "TEXT"
+    
+    /// 值是一个 blob 数据，完全根据它的输入存储。
+    case BLOB    = "BLOB"
+}
 
 class IRDBManager: NSObject {
 
@@ -41,108 +62,12 @@ class IRDBManager: NSObject {
     }
     
     /**
-     database.executeUpdate("create table test(x text, y text, z text)", values: nil)
+     适用于 SELECT 语句
+     1. executeQuery("SELECT x, y, z FROM test", values: nil)
+     2. 获取所有可用的字段: SELECT * FROM table_name
      */
-    func creatTable(_ tableName: String, values: [IRDBModel]) -> Bool {
+    func executeQuery(_ sql: String, values: [Any]?) -> FMResultSet? {
         
-        if values.count == 0 || tableName.count == 0 {
-            return false
-        }
-        
-        var valueString: String = ""
-        var primaryValue: String = ""
-        for model in values {
-            if valueString.count > 0 {
-                valueString.append(", ")
-            }
-            valueString.append("\(model.name) \(model.type.rawValue)")
-            if model.isPrimaryKey {
-                if primaryValue.count > 0 {
-                    primaryValue.append(", ")
-                }
-                primaryValue.append(model.name)
-            }
-            if !model.nullable {
-                valueString.append(" NOT NULL")
-            }
-        }
-        if primaryValue.count > 0 {
-            //Mutil PRIMARY KEY: https://stackoverflow.com/questions/734689/sqlite-primary-key-on-multiple-columns
-            valueString.append(", PRIMARY KEY(\(primaryValue))")
-        }
-        let sql = "CREATE TABLE IF NOT EXISTS \(tableName) (\(valueString))"
-        
-        var success = false
-        fmdbQueue?.inDatabase({ (db) in
-            do {
-                try db.executeUpdate(sql, values: nil)
-                success = true
-            } catch {
-                IRDebugLog("failed: \(error.localizedDescription)")
-            }
-        })
-        return success
-    }
-    
-    /**
-     database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"]
-     */
-    func insertValues(_ values: [IRDBModel], intoTable tableName: String) -> Bool {
-        
-        if values.count == 0 || tableName.count == 0 {
-            return false
-        }
-        
-        var valueName = ""
-        var placeholder = ""
-        var tableValues = [Any]()
-        
-        for model in values {
-            if valueName.count > 0 {
-                valueName.append(", ")
-                placeholder.append(", ")
-            }
-            valueName.append("\(model.name)")
-            placeholder.append("?")
-            tableValues.append(model.value ?? NSNull())
-        }
-        
-        let sql = "INSERT INTO \(tableName) (\(valueName)) VALUES (\(placeholder))"
-        var success = false
-        fmdbQueue?.inDatabase({ (db) in
-            do {
-                try db.executeUpdate(sql, values: tableValues)
-                success = true
-            } catch {
-                IRDebugLog("failed: \(error.localizedDescription)")
-            }
-        })
-        return success
-    }
-    
-    /**
-     database.executeQuery("select x, y, z from test", values: nil)
-     */
-    func selectValues(_ values: [IRDBModel]?, fromTable tableName: String) -> FMResultSet? {
-        
-        if tableName.count == 0 {
-            return nil
-        }
-        
-        var valueName = ""
-        if let values = values {
-            for model in values {
-                if valueName.count > 0 {
-                    valueName.append(", ")
-                }
-                valueName.append("\(model.name)")
-            }
-        } else {
-            // 获取所有可用的字段: SELECT * FROM table_name
-            valueName = "*"
-        }
-        
-        let sql = "SELECT \(valueName) FROM \(tableName)"
         var resultSet: FMResultSet?
         fmdbQueue?.inDatabase({ (db) in
             do {
@@ -152,5 +77,24 @@ class IRDBManager: NSObject {
             }
         })
         return resultSet
+    }
+    
+    /**
+     适用于除 SELECT 的其他语句
+     1. executeUpdate("create table test(x text, y text, z text)", values: nil)
+     2. executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"]
+     */
+    func executeUpdate(_ sql: String, values: [Any]?) -> Bool {
+        
+        var success = false
+        fmdbQueue?.inDatabase({ (db) in
+            do {
+                try db.executeUpdate(sql, values: values)
+                success = true
+            } catch {
+                IRDebugLog("failed: \(error.localizedDescription)")
+            }
+        })
+        return success
     }
 }

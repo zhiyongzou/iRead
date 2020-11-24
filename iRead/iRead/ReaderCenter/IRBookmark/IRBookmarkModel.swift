@@ -8,10 +8,12 @@
 
 import UIKit
 
-class IRBookmarkModel: NSObject, NSCoding {
+class IRBookmarkModel: NSObject {
 
+    let contentLength = 25
     var markTime: TimeInterval = 0
     var chapterName: String?
+    var content: String?
     var chapterIdx: Int = 0
     /// 书签文本起始位置
     var textLoction: Int = 0
@@ -20,30 +22,8 @@ class IRBookmarkModel: NSObject, NSCoding {
         super.init()
         self.chapterIdx = chapterIdx
         self.chapterName = chapterName
-        self.markTime = NSTimeIntervalSince1970
+        self.markTime = Date().timeIntervalSince1970
         self.textLoction = textLoction
     }
-    
-    required init?(coder: NSCoder) {
-        super.init()
-        chapterIdx = coder.decodeInteger(forKey: "chapterIdx")
-        markTime = coder.decodeDouble(forKey: "markTime")
-        textLoction = coder.decodeInteger(forKey: "textLoction")
-        if let name = coder.decodeObject(forKey: "chapterName") as? String {
-            chapterName = name
-        }
-    }
-    
-    func encode(with coder: NSCoder) {
-        coder.encode(chapterName, forKey: "chapterName")
-        coder.encode(markTime, forKey: "markTime")
-        coder.encode(chapterIdx, forKey: "chapterIdx")
-        coder.encode(textLoction, forKey: "textLoction")
-    }
 }
 
-// MARK: Equatable
-
-func ==(lhs: IRBookmarkModel, rhs: IRBookmarkModel) -> Bool {
-    return lhs.chapterIdx == rhs.chapterIdx && lhs.textLoction == rhs.textLoction
-}

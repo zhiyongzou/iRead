@@ -121,20 +121,22 @@ extension IRBook {
     
     func saveBookmark(_ bookmark: IRBookmarkModel) {
         bookmarkList.append(bookmark)
-        IRBookmarkManager.saveBookmark(bookmark, to: bookName)
+        IRBookmarkManager.insertBookmark(bookmark, into: bookName)
     }
     
-    func removeBookmark(_ bookmark: IRBookmarkModel) {
-        var removeIdx: Int?
-        for (index, item) in bookmarkList.enumerated() {
-            if bookmark.chapterIdx == item.chapterIdx && bookmark.textLoction == item.textLoction {
-                removeIdx = index
-                break
+    func removeBookmark(_ bookmark: IRBookmarkModel, chapterIdx: Int, textRange: NSRange) {
+        
+        var tempBookmarkList = [IRBookmarkModel]()
+        for item in bookmarkList {
+            if  bookmark.chapterIdx == item.chapterIdx &&
+                item.textLoction >= textRange.location &&
+                item.textLoction <  textRange.location + textRange.length {
+                continue
             }
+            tempBookmarkList.append(item)
         }
-        if let removeIdx = removeIdx {
-            bookmarkList.remove(at: removeIdx)
-        }
+        bookmarkList = tempBookmarkList
+        IRBookmarkManager.deleteBookmark(from: bookName, chapterIdx: chapterIdx, textRange: textRange)
     }
     
     func loadBookmarkList() {
@@ -165,7 +167,7 @@ extension IRBook {
                 isBookmark = true
                 break
             }
-            if bookmark.textLoction > pageModel.range.location && bookmark.textLoction <= pageModel.range.location + pageModel.range.length  {
+            if bookmark.textLoction >= pageModel.range.location && bookmark.textLoction < pageModel.range.location + pageModel.range.length  {
                 isBookmark = true
                 break
             }

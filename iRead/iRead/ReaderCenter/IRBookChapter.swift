@@ -174,7 +174,7 @@ class IRBookChapter: NSObject {
         var layoutFrame = textLayout?.layoutFrame(with: textRect, range: NSMakeRange(0, htmlString.length))
         var visibleRange: NSRange! = layoutFrame?.visibleStringRange()
         var pageOffset = visibleRange.location + visibleRange.length
-        var pageCount: Int = 1
+        var pageCount: Int = 0
         var pageList = [IRBookPage]()
         while pageOffset <= htmlString.length && pageOffset != 0 {
             
@@ -182,7 +182,7 @@ class IRBookChapter: NSObject {
             let textContent = content.string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             // 空白页判断
             if textContent.count > 0 {
-                let pageModel = IRBookPage.bookPage(withPageIdx: pageCount - 1, chapterIdx: self.chapterIdx)
+                let pageModel = IRBookPage.bookPage(withPageIdx: pageCount, chapterIdx: self.chapterIdx)
                 pageModel.content = content
                 pageModel.chapterName = title
                 pageModel.range = visibleRange

@@ -13,6 +13,7 @@ class IRBookmarkCell: UICollectionViewCell {
     
     var titleLabel = UILabel()
     var timeLabel = UILabel()
+    var timeIcon = UIImageView()
     var contentLabel = UILabel()
     var separatorLine = UIView()
     
@@ -38,7 +39,11 @@ class IRBookmarkCell: UICollectionViewCell {
     
     var bookmarkModel: IRBookmarkModel? {
         didSet {
-            titleLabel.text = bookmarkModel?.chapterName
+            var title = bookmarkModel?.chapterName
+            if title?.count == 0 {
+                title = "第\(bookmarkModel?.chapterIdx ?? 0)章"
+            }
+            titleLabel.text = title
             timeLabel.text = String.formateTimeIntervalToString1(timeInterval: bookmarkModel?.markTime ?? NSTimeIntervalSince1970)
             contentLabel.text = bookmarkModel?.content
         }
@@ -60,13 +65,21 @@ class IRBookmarkCell: UICollectionViewCell {
             make.top.equalTo(contentView).offset(10)
         }
         
+        timeIcon.image = UIImage.init(named: "bookmark_time")
+        contentView.addSubview(timeIcon)
+        timeIcon.snp.makeConstraints { (make) in
+            make.left.equalTo(titleLabel)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.size.equalTo(CGSize.init(width: 10, height: 10))
+        }
+        
         timeLabel.textColor = IRReaderConfig.textColor.withAlphaComponent(0.5)
         timeLabel.textAlignment = .left
         timeLabel.font = UIFont.systemFont(ofSize: 11)
         contentView.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(titleLabel)
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.left.equalTo(timeIcon.snp.right).offset(3)
+            make.centerY.equalTo(timeIcon)
         }
         
         contentLabel.textColor = IRReaderConfig.textColor

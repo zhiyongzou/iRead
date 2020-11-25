@@ -24,7 +24,9 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     
     weak var delegate: IRChapterListViewControllerDelagate?
     
-    var collectionView: UICollectionView!
+    var chapterListView: UICollectionView?
+    var bookmarkListListView: UICollectionView?
+     
     var segmentType = IRSegmentType.chapter
     var currentChapterIdx: Int?
     lazy var chapterList = [FRTocReference]()
@@ -33,10 +35,9 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupLeftBackBarButton()
-        self.setupCollectionView()
         self.setupNavigationBar()
+        self.setupCollectionView()
     }
-    
     
     // MARK: - Private
     
@@ -55,27 +56,58 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         self.navigationItem.titleView = segment
     }
     
-    private func setupCollectionView() {
+    func setupCollectionView() {
+        if segmentType == .chapter {
+            self.addChapterListViewIfNeeded()
+        } else {
+            self.addBookmarkListListViewIfNeeded()
+        }
+    }
+    
+    func addChapterListViewIfNeeded() {
+        if self.chapterListView == nil {
+            self.chapterListView = self.defaultCollectionView()
+            self.chapterListView!.register(IRChapterCell.self, forCellWithReuseIdentifier: "IRChapterCell")
+            self.chapterListView!.frame = self.view.bounds
+            self.view.addSubview(self.chapterListView!)
+            self.chapterListView!.reloadData()
+        }
+    }
+    
+    func addBookmarkListListViewIfNeeded() {
+        if self.bookmarkListListView == nil {
+            self.bookmarkListListView = self.defaultCollectionView()
+            self.bookmarkListListView!.register(IRBookmarkCell.self, forCellWithReuseIdentifier: "IRBookmarkCell")
+            self.bookmarkListListView!.frame = self.view.bounds
+            self.view.addSubview(self.bookmarkListListView!)
+            self.bookmarkListListView!.reloadData()
+        }
+    }
+    
+    func defaultCollectionView() -> UICollectionView {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 0
         flowLayout.minimumInteritemSpacing = 0
-        collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
+        let collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = IRReaderConfig.pageColor
         collectionView.alwaysBounceVertical = true
-        collectionView.register(IRChapterCell.self, forCellWithReuseIdentifier: "IRChapterCell")
-        collectionView.register(IRBookmarkCell.self, forCellWithReuseIdentifier: "IRBookmarkCell")
-        self.view.addSubview(collectionView)
+        return collectionView
     }
     
     @objc func segmentValueDidChange(_ segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             segmentType = .chapter
+            self.addChapterListViewIfNeeded()
+            self.view.addSubview(self.chapterListView!)
+            self.bookmarkListListView?.removeFromSuperview()
         } else {
             segmentType = .bookmark
+            self.addBookmarkListListViewIfNeeded()
+            self.view.addSubview(self.bookmarkListListView!)
+            self.chapterListView?.removeFromSuperview()
         }
-        collectionView.reloadData()
     }
     
     // MARK: - UICollectionView

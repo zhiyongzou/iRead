@@ -13,10 +13,10 @@ iRead is an EPUB reader for iOS written in Swift.
 - [x] Chapter list / Sub-chapter support / Chapter select
 - [x] Support Dimming
 - [x] Reading Record
+- [x] Bookmark
 - [ ] Upload book by wifi
 - [ ] Reading Notes
 - [ ] Reading Goal
-- [ ] Bookmark
 - [ ] Bookshelf Edit/Delete/Sort
 - [ ] Bookshelf
 - [ ] Home

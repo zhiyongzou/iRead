@@ -13,17 +13,19 @@ iRead is an EPUB reader for iOS written in Swift.
 - [x] Chapter list / Sub-chapter support / Chapter select
 - [x] Support Dimming
 - [x] Reading Record
+- [x] Bookmark
 - [ ] Upload book by wifi
 - [ ] Reading Notes
 - [ ] Reading Goal
-- [ ] Bookmark
 - [ ] Bookshelf Edit/Delete/Sort
 - [ ] Bookshelf
 - [ ] Home
 - [ ] Mine
 
 ## Snapshot
-![](https://gitee.com/zhiyongzou/images/raw/master/iRead/book_list.png)
-![](https://gitee.com/zhiyongzou/images/raw/master/iRead/read_snap.png)
+![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot1.png)
+![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot2.png)
+![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot3.png)
+![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot4.png)
 
 ## To be continued

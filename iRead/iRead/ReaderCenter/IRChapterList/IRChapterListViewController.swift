@@ -11,6 +11,7 @@ import IRCommonLib
 protocol IRChapterListViewControllerDelagate: AnyObject {
     func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference)
     func chapterListViewController(_ vc: IRChapterListViewController, didSelectBookmark bookmark: IRBookmarkModel)
+    func chapterListViewController(_ vc: IRChapterListViewController, deleteBookmark bookmark: IRBookmarkModel)
 }
 
 enum IRSegmentType: String {
@@ -20,12 +21,12 @@ enum IRSegmentType: String {
     case bookmark = "书签"
 }
 
-class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
+class IRChapterListViewController: IRBaseViewcontroller{
     
     weak var delegate: IRChapterListViewControllerDelagate?
     
     var chapterListView: UICollectionView?
-    var bookmarkListListView: UICollectionView?
+    var bookmarkListListView: UITableView?
      
     var segmentType = IRSegmentType.chapter
     var currentChapterIdx: Int?
@@ -36,7 +37,11 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         super.viewDidLoad()
         self.setupLeftBackBarButton()
         self.setupNavigationBar()
-        self.setupCollectionView()
+        if segmentType == .chapter {
+            self.addChapterListViewIfNeeded()
+        } else {
+            self.addBookmarkListListViewIfNeeded()
+        }
     }
     
     // MARK: - Private
@@ -56,44 +61,39 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
         self.navigationItem.titleView = segment
     }
     
-    func setupCollectionView() {
-        if segmentType == .chapter {
-            self.addChapterListViewIfNeeded()
-        } else {
-            self.addBookmarkListListViewIfNeeded()
-        }
-    }
-    
     func addChapterListViewIfNeeded() {
         if self.chapterListView == nil {
-            self.chapterListView = self.defaultCollectionView()
-            self.chapterListView!.register(IRChapterCell.self, forCellWithReuseIdentifier: "IRChapterCell")
-            self.chapterListView!.frame = self.view.bounds
-            self.view.addSubview(self.chapterListView!)
-            self.chapterListView!.reloadData()
+            let flowLayout = UICollectionViewFlowLayout()
+            flowLayout.minimumLineSpacing = 0
+            flowLayout.minimumInteritemSpacing = 0
+            let collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.backgroundColor = IRReaderConfig.pageColor
+            collectionView.alwaysBounceVertical = true
+            collectionView.register(IRChapterCell.self, forCellWithReuseIdentifier: "IRChapterCell")
+            collectionView.frame = self.view.bounds
+            self.view.addSubview(collectionView)
+            collectionView.reloadData()
+            self.chapterListView = collectionView
         }
     }
     
     func addBookmarkListListViewIfNeeded() {
         if self.bookmarkListListView == nil {
-            self.bookmarkListListView = self.defaultCollectionView()
-            self.bookmarkListListView!.register(IRBookmarkCell.self, forCellWithReuseIdentifier: "IRBookmarkCell")
-            self.bookmarkListListView!.frame = self.view.bounds
-            self.view.addSubview(self.bookmarkListListView!)
-            self.bookmarkListListView!.reloadData()
+            let tableView = UITableView.init(frame: self.view.bounds, style: .plain)
+            tableView.register(IRBookmarkCell.self, forCellReuseIdentifier: "IRBookmarkCell")
+            tableView.frame = self.view.bounds
+            tableView.separatorStyle = .none
+            tableView.estimatedRowHeight = 0
+            tableView.estimatedSectionHeaderHeight = 0
+            tableView.estimatedSectionFooterHeight = 0
+            tableView.delegate = self
+            tableView.dataSource = self
+            self.view.addSubview(tableView)
+            tableView.reloadData()
+            self.bookmarkListListView = tableView
         }
-    }
-    
-    func defaultCollectionView() -> UICollectionView {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = 0
-        let collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = IRReaderConfig.pageColor
-        collectionView.alwaysBounceVertical = true
-        return collectionView
     }
     
     @objc func segmentValueDidChange(_ segment: UISegmentedControl) {
@@ -109,38 +109,25 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
             self.chapterListView?.removeFromSuperview()
         }
     }
-    
-    // MARK: - UICollectionView
-    
+}
+
+// MARK: - UICollectionView
+extension IRChapterListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if segmentType == .chapter {
-            return chapterList.count
-        } else {
-            return bookmarkList.count
-        }
+        return chapterList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if segmentType == .chapter {
-            let chapterCell: IRChapterCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterCell", for: indexPath) as! IRChapterCell
-            chapterCell.tocReference = chapterList[indexPath.item]
-            if let currentChapterIdx = currentChapterIdx {
-                chapterCell.isSelected = indexPath.item == currentChapterIdx
-            }
-            return chapterCell
-        } else {
-            let bookmarkCell: IRBookmarkCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRBookmarkCell", for: indexPath) as! IRBookmarkCell
-            bookmarkCell.bookmarkModel = bookmarkList[indexPath.item]
-            return bookmarkCell
+        let chapterCell: IRChapterCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterCell", for: indexPath) as! IRChapterCell
+        chapterCell.tocReference = chapterList[indexPath.item]
+        if let currentChapterIdx = currentChapterIdx {
+            chapterCell.isSelected = indexPath.item == currentChapterIdx
         }
+        return chapterCell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if segmentType == .chapter {
-            return CGSize.init(width: collectionView.width, height: 50)
-        } else {
-            return CGSize.init(width: collectionView.width, height: 80)
-        }
+        return CGSize.init(width: collectionView.width, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -148,11 +135,43 @@ class IRChapterListViewController: IRBaseViewcontroller, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if segmentType == .chapter {
-            self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item])
-        } else {
-            self.delegate?.chapterListViewController(self, didSelectBookmark: bookmarkList[indexPath.item])
-        }
+        self.delegate?.chapterListViewController(self, didSelectTocReference: chapterList[indexPath.item])
         self.navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - UITableView
+extension IRChapterListViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return bookmarkList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let bookmarkCell: IRBookmarkCell = tableView.dequeueReusableCell(withIdentifier: "IRBookmarkCell", for: indexPath) as! IRBookmarkCell
+        bookmarkCell.bookmarkModel = bookmarkList[indexPath.row]
+        return bookmarkCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.chapterListViewController(self, didSelectBookmark: bookmarkList[indexPath.row])
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "删除"
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let bookmark = bookmarkList[indexPath.row]
+            bookmarkList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            self.delegate?.chapterListViewController(self, deleteBookmark: bookmark)
+        }
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import IRCommonLib
 
-class IRBookmarkCell: UICollectionViewCell {
+class IRBookmarkCell: UITableViewCell {
     
     var titleLabel = UILabel()
     var timeLabel = UILabel()
@@ -17,24 +17,14 @@ class IRBookmarkCell: UICollectionViewCell {
     var contentLabel = UILabel()
     var separatorLine = UIView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupSubviews()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.setupSubviews()
-    }
-    
-    override var isHighlighted: Bool {
-        willSet {
-            if newValue {
-                contentView.backgroundColor = UIColor.rgba(200, 200, 200, 0.5)
-            } else {
-                contentView.backgroundColor = UIColor.clear
-            }
-        }
     }
     
     var bookmarkModel: IRBookmarkModel? {
@@ -48,7 +38,6 @@ class IRBookmarkCell: UICollectionViewCell {
             contentLabel.text = bookmarkModel?.content
         }
     }
-    
     
     // MARK: - Private
     

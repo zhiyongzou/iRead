@@ -318,6 +318,11 @@ extension IRReaderCenterViewController: IRChapterListViewControllerDelagate {
         self.shouldHideStatusBar = !self.shouldHideStatusBar;
         self.updateReadNavigationBarDispalyState(animated: false)
     }
+    
+    func chapterListViewController(_ vc: IRChapterListViewController, deleteBookmark bookmark: IRBookmarkModel) {
+        book.removeBookmark(bookmark, textRange: NSMakeRange(bookmark.textLoction, 1))
+        self.updateBookmarkState()
+    }
 }
 
 //MARK: - IRBookParseDelegate
@@ -432,7 +437,7 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
         if isMark {
             book.saveBookmark(bookmark)
         } else {
-            book.removeBookmark(bookmark, chapterIdx: pageModel.chapterIdx, textRange: pageModel.range)
+            book.removeBookmark(bookmark, textRange: pageModel.range)
         }
     }
     

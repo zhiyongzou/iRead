@@ -128,7 +128,7 @@ extension IRBook {
         IRBookmarkManager.insertBookmark(bookmark, into: bookName)
     }
     
-    func removeBookmark(_ bookmark: IRBookmarkModel, chapterIdx: Int, textRange: NSRange) {
+    func removeBookmark(_ bookmark: IRBookmarkModel, textRange: NSRange) {
         
         var tempBookmarkList = [IRBookmarkModel]()
         for item in bookmarkList {
@@ -140,7 +140,7 @@ extension IRBook {
             tempBookmarkList.append(item)
         }
         bookmarkList = tempBookmarkList
-        IRBookmarkManager.deleteBookmark(from: bookName, chapterIdx: chapterIdx, textRange: textRange)
+        IRBookmarkManager.deleteBookmark(from: bookName, chapterIdx: bookmark.chapterIdx, textRange: textRange)
     }
     
     func loadBookmarkList() {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IRCommonLib
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
     
     var window: UIWindow?
+    var rootViewController: IRNavigationController!
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
@@ -26,15 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func setupMainViewController() {
-        self.window = UIWindow.init(frame: UIScreen.main.bounds)
-        self.window?.backgroundColor = UIColor.white
-        let mainVC = IRMainViewController()
-        let rootVC = IRNavigationController.init(rootViewController: mainVC)
-        self.window?.rootViewController = rootVC
-        self.window?.makeKeyAndVisible()
-    }
-
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -55,6 +49,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        // System-Declared Uniform Type Identifiers: https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+        return false
+    }
+}
+
+// MARK: Private
+extension AppDelegate {
+    
+    func setupMainViewController() {
+        self.window = UIWindow.init(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
+        let mainVC = IRMainViewController()
+        rootViewController = IRNavigationController.init(rootViewController: mainVC)
+        self.window?.rootViewController = rootViewController
+        self.window?.makeKeyAndVisible()
     }
 }
 

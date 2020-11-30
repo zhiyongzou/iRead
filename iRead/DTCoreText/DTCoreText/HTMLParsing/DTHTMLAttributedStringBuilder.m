@@ -838,8 +838,7 @@
 							}
 							
 							NSAttributedString *nodeString = [theTag attributedString];
-							
-							if (nodeString)
+							if (nodeString.length > 0 && ![nodeString.string isEqualToString:@"\n"])
 							{
 								// if this is a block element then we need a paragraph break before it
 								if (theTag.displayStyle != DTHTMLElementDisplayStyleInline)

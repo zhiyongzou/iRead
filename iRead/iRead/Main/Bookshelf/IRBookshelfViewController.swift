@@ -19,15 +19,11 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
-        
+        self.addNotifications()
         self.navigationItem.title = IRTabBarName.bookshelf.rawValue
         
     #if DEBUG
-        self.addTestBook(name: "支付战争")
-        self.addTestBook(name: "细说明朝")
-        self.addTestBook(name: "The Silver Chair")
-        self.addTestBook(name: "Гарри Поттер")
-        self.addTestBook(name: "Крушение империи")
+        self.addTestBooks()
     #endif
     }
     
@@ -44,28 +40,23 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         self.collectionView.frame = self.view.bounds
     }
     
-    // MARK: - Private
-    
-    #if DEBUG
-    func addTestBook(name: String) {
-        let epubParser: FREpubParser = FREpubParser()
-        
-        let bundle = Bundle.init(for: IRHomeViewController.self)
-        var bookPath = bundle.path(forResource: name, ofType: "epub")
-        if bookPath == nil {
-            let budlePath = bundle.path(forResource: "EpubBooks", ofType: "bundle")
-            let resourcesBundle = Bundle.init(path: budlePath ?? "")
-            bookPath = resourcesBundle?.path(forResource: name, ofType: "epub")
-        }
-        
-        if let bookPath = bookPath {
-            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath) else { return }
-            let book = IRBook.init(bookMeta)
-            bookList.append(book)
-        }
+    // MARK: - Notifications
+    func addNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(importEpubBookNotification(_:)), name: Notification.IRImportEpubBookNotification, object: nil)
     }
-    #endif
     
+    @objc func importEpubBookNotification(_ notification: Notification) {
+        guard let bookPath = notification.object as? String else { return }
+        
+        let epubParser: FREpubParser = FREpubParser()
+        guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRReaderConfig.bookUnzipPath) else { return }
+        let book = IRBook.init(bookMeta)
+        bookList.append(book)
+        collectionView.reloadData()
+    }
+    
+    // MARK: - Private
+
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 20
@@ -106,4 +97,35 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         self.navigationController?.pushViewController(readerCenter, animated: true)
     }
 }
+
+// MARK: - DEBUG
+#if DEBUG
+extension IRBookshelfViewController {
+    func addTestBooks() {
+        self.addTestBook(name: "支付战争")
+        self.addTestBook(name: "细说明朝")
+        self.addTestBook(name: "The Silver Chair")
+        self.addTestBook(name: "Гарри Поттер")
+        self.addTestBook(name: "Крушение империи")
+    }
+    
+    func addTestBook(name: String) {
+        let epubParser: FREpubParser = FREpubParser()
+        
+        let bundle = Bundle.init(for: IRHomeViewController.self)
+        var bookPath = bundle.path(forResource: name, ofType: "epub")
+        if bookPath == nil {
+            let budlePath = bundle.path(forResource: "EpubBooks", ofType: "bundle")
+            let resourcesBundle = Bundle.init(path: budlePath ?? "")
+            bookPath = resourcesBundle?.path(forResource: name, ofType: "epub")
+        }
+        
+        if let bookPath = bookPath {
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRReaderConfig.bookUnzipPath) else { return }
+            let book = IRBook.init(bookMeta)
+            bookList.append(book)
+        }
+    }
+}
+#endif
 

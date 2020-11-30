@@ -39,6 +39,7 @@
 		8193A44E25480AAB00501F8F /* IRDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193A44D25480AAB00501F8F /* IRDBManager.swift */; };
 		819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819422FB253702B4002B5D62 /* IRArrowSettingView.swift */; };
 		81A14FA7256AA75700539590 /* IRBookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A14FA6256AA75700539590 /* IRBookmarkCell.swift */; };
+		81A7C1BB2574F1F7004CDA01 /* IRBookshelfNotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A7C1BA2574F1F7004CDA01 /* IRBookshelfNotificationNames.swift */; };
 		81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78BD6253E969B00353157 /* IRFontModel.swift */; };
 		81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78EA52541847000353157 /* IRReadNavigationContentView.swift */; };
 		81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */; };
@@ -114,6 +115,7 @@
 		8193A44D25480AAB00501F8F /* IRDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRDBManager.swift; sourceTree = "<group>"; };
 		819422FB253702B4002B5D62 /* IRArrowSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRArrowSettingView.swift; sourceTree = "<group>"; };
 		81A14FA6256AA75700539590 /* IRBookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookmarkCell.swift; sourceTree = "<group>"; };
+		81A7C1BA2574F1F7004CDA01 /* IRBookshelfNotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfNotificationNames.swift; sourceTree = "<group>"; };
 		81B78BD6253E969B00353157 /* IRFontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontModel.swift; sourceTree = "<group>"; };
 		81B78EA52541847000353157 /* IRReadNavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationContentView.swift; sourceTree = "<group>"; };
 		81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMainViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			children = (
 				81B7E1E5251DE32600E84A37 /* IRBookCell.swift */,
 				8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */,
+				81A7C1BA2574F1F7004CDA01 /* IRBookshelfNotificationNames.swift */,
 			);
 			path = Bookshelf;
 			sourceTree = "<group>";
@@ -608,6 +611,7 @@
 				818040A52521967800F31442 /* IRBookChapter.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,
+				81A7C1BB2574F1F7004CDA01 /* IRBookshelfNotificationNames.swift in Sources */,
 				81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */,
 				8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */,
 				8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */,

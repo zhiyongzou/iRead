@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IRCommonLib
 
 public enum IRReadPageColorHex: String {
     case HexF8F8F8 = "F8F8F8"
@@ -64,6 +65,24 @@ public enum IRTransitionStyle: Int {
 }
 
 class IRReaderConfig: NSObject {
+    
+    /// epub books path
+    static let bookUnzipPath: String = {
+        let path = IRDocumentDirectoryPath + "/" + "books"
+        if !FileManager.default.fileExists(atPath: path) {
+            try? FileManager.default.createDirectory(at: URL.init(fileURLWithPath: path), withIntermediateDirectories: true, attributes: nil)
+        }
+        return path
+    }()
+    
+    /// epub books path
+    static let bookZipPath: String = {
+        let path = IRDocumentDirectoryPath + "/" + "bookZips"
+        if !FileManager.default.fileExists(atPath: path) {
+            try? FileManager.default.createDirectory(at: URL.init(fileURLWithPath: path), withIntermediateDirectories: true, attributes: nil)
+        }
+        return path
+    }()
     
     /// 中文
     static var isChinese = true

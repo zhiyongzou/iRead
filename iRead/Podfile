@@ -16,7 +16,7 @@ end
 
 # common_pods
 def common_pods
-  pod 'IRHexColor', '~> 0.0.2'
+  pod 'IRHexColor', '~> 0.0.3'
   pod 'AEXML', '~> 4.5.0'
   pod 'SSZipArchive', '~> 2.2.2'
   pod 'FMDB', '~> 2.7.5'
@@ -45,6 +45,7 @@ target 'iRead' do
   pod 'SnapKit', '~> 5.0.1'
   pod 'CMPopTipView', '~> 2.3.2'
   pod 'HGCircularSlider', '~> 2.2.0'
+  pod 'NVActivityIndicatorView', '~> 5.1.1'
 
 end
 

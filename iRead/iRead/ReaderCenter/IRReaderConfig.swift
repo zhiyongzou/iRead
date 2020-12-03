@@ -75,7 +75,7 @@ class IRReaderConfig: NSObject {
         return path
     }()
     
-    /// epub books path
+    /// epub zip path
     static let bookZipPath: String = {
         let path = IRDocumentDirectoryPath + "/" + "bookZips"
         if !FileManager.default.fileExists(atPath: path) {

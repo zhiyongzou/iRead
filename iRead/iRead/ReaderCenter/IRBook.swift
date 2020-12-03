@@ -37,6 +37,8 @@ class IRBook: NSObject {
     var parseQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "book_parse_queue"
+        let cores = ProcessInfo.processInfo.activeProcessorCount
+        queue.maxConcurrentOperationCount = cores
         queue.qualityOfService = .default
         return queue
     }()
@@ -145,16 +147,17 @@ extension IRBook {
     
     func loadBookmarkList() {
         parseQueue.addOperation {
-            let list = IRBookmarkManager.loadBookmarkList(withBookName: self.bookName)
-            DispatchQueue.main.async {
-                self.handleBookmarkList(list)
+            IRBookmarkManager.loadBookmarkList(withBookName: self.bookName) {list, error in
+                DispatchQueue.main.async {
+                    self.handleBookmarkList(list, error: error)
+                }
             }
         }
     }
     
-    func handleBookmarkList(_ list: [IRBookmarkModel]) {
-        bookmarkList = list
-        self.parseDelegate?.book(self, didFinishLoadBookmarkList: list)
+    func handleBookmarkList(_ list: [IRBookmarkModel]?, error: Error?) {
+        bookmarkList = list ?? [IRBookmarkModel]()
+        self.parseDelegate?.book(self, didFinishLoadBookmarkList: bookmarkList)
         IRDebugLog("finish")
     }
     

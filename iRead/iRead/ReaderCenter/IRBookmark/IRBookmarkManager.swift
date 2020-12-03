@@ -81,29 +81,30 @@ class IRBookmarkManager: NSObject {
 // MARK: Public
 extension IRBookmarkManager {
     
-    class func loadBookmarkList(withBookName name: String) -> [IRBookmarkModel] {
+    class func loadBookmarkList(withBookName name: String, completion: ([IRBookmarkModel]?, Error?) -> Void) {
         let tableName = self.tableName(withBookName: name)
         let sql = "SELECT * FROM \(tableName)"
-        guard let resultSet = IRDBManager.shared.executeQuery(sql, values: nil) else {
-            return [IRBookmarkModel]()
+        IRDBManager.shared.executeQuery(sql) {
+            
+            guard let resultSet = $0 else {
+                completion(nil, $1)
+                return
+            }
+            var bookmarkList = [IRBookmarkModel]()
+            while resultSet.next() {
+                let markTime = resultSet.double(forColumn: "markTime")
+                let chapterIdx = resultSet.long(forColumn: "chapterIdx")
+                let textLoction = resultSet.long(forColumn: "textLoction")
+                let chapterName = resultSet.string(forColumn: "chapterName")
+                let content = resultSet.string(forColumn: "content")
+     
+                let bookmark = IRBookmarkModel.init(chapterIdx: chapterIdx, chapterName: chapterName, textLoction: textLoction)
+                bookmark.markTime = markTime
+                bookmark.content = content
+                bookmarkList.append(bookmark)
+            }
+            completion(bookmarkList, nil)
         }
-        
-        var bookmarkList = [IRBookmarkModel]()
-        while resultSet.next() {
-            let markTime = resultSet.double(forColumn: "markTime")
-            let chapterIdx = resultSet.long(forColumn: "chapterIdx")
-            let textLoction = resultSet.long(forColumn: "textLoction")
-            let chapterName = resultSet.string(forColumn: "chapterName")
-            let content = resultSet.string(forColumn: "content")
- 
-            let bookmark = IRBookmarkModel.init(chapterIdx: chapterIdx, chapterName: chapterName, textLoction: textLoction)
-            bookmark.markTime = markTime
-            bookmark.content = content
-            bookmarkList.append(bookmark)
-        }
-        defer {
-            IRDBManager.shared.close()
-        }
-        return bookmarkList
+        IRDBManager.shared.close()
     }
 }

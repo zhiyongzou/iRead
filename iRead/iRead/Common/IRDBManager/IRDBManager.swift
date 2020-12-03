@@ -66,19 +66,17 @@ class IRDBManager: NSObject {
      1. executeQuery("SELECT x, y, z FROM test", values: nil)
      2. 获取所有可用的字段: SELECT * FROM table_name
      */
-    func executeQuery(_ sql: String, values: [Any]?) -> FMResultSet? {
-        
-        var resultSet: FMResultSet?
+    func executeQuery(_ sql: String, completion: (FMResultSet?, Error?) -> Void) {
         fmdbQueue?.inDatabase({ (db) in
             do {
-                resultSet = try db.executeQuery(sql, values: nil)
+                let resultSet = try db.executeQuery(sql, values: nil)
+                completion(resultSet, nil)
             } catch {
+                completion(nil, error)
                 IRDebugLog("failed: \(error.localizedDescription)")
             }
         })
-        return resultSet
     }
-    
     /**
      适用于除 SELECT 的其他语句
      1. executeUpdate("create table test(x text, y text, z text)", values: nil)

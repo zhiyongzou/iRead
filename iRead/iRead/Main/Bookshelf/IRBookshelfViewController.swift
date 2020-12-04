@@ -18,13 +18,10 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = IRTabBarName.bookshelf.rawValue
         self.setupCollectionView()
         self.addNotifications()
-        self.navigationItem.title = IRTabBarName.bookshelf.rawValue
-        
-    #if DEBUG
-        self.addTestBooks()
-    #endif
+        self.loadLocalBooks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,13 +46,29 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         guard let bookPath = notification.object as? String else { return }
         
         let epubParser: FREpubParser = FREpubParser()
-        guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRReaderConfig.bookUnzipPath) else { return }
+        guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
         let book = IRBook.init(bookMeta)
-        bookList.append(book)
-        collectionView.reloadData()
+        bookList.insert(book, at: 0)
+        collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
     }
     
     // MARK: - Private
+    
+    func loadLocalBooks() {
+        for bookPath in IRFileManager.shared.bookPathList {
+            let epubParser: FREpubParser = FREpubParser()
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
+            let book = IRBook.init(bookMeta)
+            bookList.append(book)
+        }
+        
+        #if DEBUG
+        if IRFileManager.shared.bookPathList.count == 0 {
+            self.addTestBooks()
+        }
+        #endif
+        collectionView.reloadData()
+    }
 
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()
@@ -121,7 +134,7 @@ extension IRBookshelfViewController {
         }
         
         if let bookPath = bookPath {
-            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRReaderConfig.bookUnzipPath) else { return }
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
             let book = IRBook.init(bookMeta)
             bookList.append(book)
         }

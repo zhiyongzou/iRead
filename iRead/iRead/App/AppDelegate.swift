@@ -52,7 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return self.addEpubBookByShareUrl(url)
+        IRFileManager.shared.addEpubBookByShareUrl(url)
+        return true
     }
 }
 
@@ -66,27 +67,6 @@ extension AppDelegate {
         rootViewController = IRNavigationController.init(rootViewController: mainVC)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
-    }
-    
-    func addEpubBookByShareUrl(_ url: URL) -> Bool {
-        // System-Declared Uniform Type Identifiers: https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
-        let isEpub = url.isFileURL && url.lastPathComponent.hasSuffix("epub")
-        if isEpub {
-            let toPath = IRReaderConfig.bookZipPath + "/" + url.lastPathComponent
-            let isExist = FileManager.default.fileExists(atPath: toPath, isDirectory: nil)
-            if isExist {
-                return true
-            }
-            // 注意：不要使用 url.absoluteString，否则会报下面错误： couldn’t be moved to “tmp” because either the former doesn't exist, or the folder containing the latter doesn't exist
-            DispatchQueue.global().async {
-                try? FileManager.default.moveItem(atPath: url.path, toPath: toPath)
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: Notification.IRImportEpubBookNotification, object: toPath)
-                }
-            }
-            return true
-        }
-        return false
     }
 }
 

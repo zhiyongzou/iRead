@@ -70,7 +70,9 @@ class IRFileManager: NSObject {
         if !isEpub { return }
         
         fileQueue.addOperation {
-            self.deleteAirDropFileContents()
+            defer {
+                self.deleteAirDropFileContents()
+            }
             
             let lastPathComponent = url.lastPathComponent
             // filter duplicate file which shared by Airdrop if needed

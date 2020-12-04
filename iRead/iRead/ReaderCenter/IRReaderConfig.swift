@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IRCommonLib
 
 public enum IRReadPageColorHex: String {
     case HexF8F8F8 = "F8F8F8"

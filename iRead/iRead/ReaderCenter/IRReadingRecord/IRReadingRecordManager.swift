@@ -29,10 +29,8 @@ class IRReadingRecordManager: NSObject {
     
     class func readingRecordPath(with bookName: String) -> String  {
         let dirPath = IRDocumentDirectoryPath + directoryPath
-        var isDir: ObjCBool = false
-        let isExist = FileManager.default.fileExists(atPath: dirPath, isDirectory: &isDir)
-        
-        if !isExist && !isDir.boolValue {
+        let isExist = FileManager.default.fileExists(atPath: dirPath)
+        if !isExist {
             do {
                 try FileManager.default.createDirectory(at: URL.init(fileURLWithPath: dirPath), withIntermediateDirectories: true, attributes: nil)
             } catch  {

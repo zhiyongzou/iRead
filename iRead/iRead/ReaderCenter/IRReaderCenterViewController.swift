@@ -348,7 +348,6 @@ extension IRReaderCenterViewController: IRBookParseDelegate {
         if self.readNavigationContentView != nil {
             readBottomBar.parseProgress = progress
         }
-        IRDebugLog(progress)
     }
     
     func bookDidFinishParse(_ book: IRBook) {

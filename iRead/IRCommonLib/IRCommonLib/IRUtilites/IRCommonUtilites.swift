@@ -20,4 +20,9 @@ public let IRAppThemeColor = UIColor.init(red: 1, green: 156/255.0, blue: 0, alp
 /// App 分割线颜色
 public let IRSeparatorColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.05)
 
+/// Documents
 public let IRDocumentDirectoryPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+/// Library
+public let IRLibraryDirectoryPath: String = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first!
+/// Library/Caches
+public let IRCachesDirectoryPath: String = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first!

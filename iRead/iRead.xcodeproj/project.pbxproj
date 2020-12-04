@@ -39,6 +39,7 @@
 		8193A44E25480AAB00501F8F /* IRDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193A44D25480AAB00501F8F /* IRDBManager.swift */; };
 		819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819422FB253702B4002B5D62 /* IRArrowSettingView.swift */; };
 		81A14FA7256AA75700539590 /* IRBookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A14FA6256AA75700539590 /* IRBookmarkCell.swift */; };
+		81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A7C6232579CE92004CDA01 /* IRFileManager.swift */; };
 		81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78BD6253E969B00353157 /* IRFontModel.swift */; };
 		81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78EA52541847000353157 /* IRReadNavigationContentView.swift */; };
 		81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */; };
@@ -114,6 +115,7 @@
 		8193A44D25480AAB00501F8F /* IRDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRDBManager.swift; sourceTree = "<group>"; };
 		819422FB253702B4002B5D62 /* IRArrowSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRArrowSettingView.swift; sourceTree = "<group>"; };
 		81A14FA6256AA75700539590 /* IRBookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookmarkCell.swift; sourceTree = "<group>"; };
+		81A7C6232579CE92004CDA01 /* IRFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFileManager.swift; sourceTree = "<group>"; };
 		81B78BD6253E969B00353157 /* IRFontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontModel.swift; sourceTree = "<group>"; };
 		81B78EA52541847000353157 /* IRReadNavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationContentView.swift; sourceTree = "<group>"; };
 		81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMainViewController.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 		8193A44525480A3300501F8F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				81A7C6222579CE2B004CDA01 /* IRFileManager */,
 				8162E4A7256404BF007BDDA2 /* IRWebServer */,
 				8193A44C25480AAB00501F8F /* IRDBManager */,
 			);
@@ -349,6 +352,14 @@
 				8193A44D25480AAB00501F8F /* IRDBManager.swift */,
 			);
 			path = IRDBManager;
+			sourceTree = "<group>";
+		};
+		81A7C6222579CE2B004CDA01 /* IRFileManager */ = {
+			isa = PBXGroup;
+			children = (
+				81A7C6232579CE92004CDA01 /* IRFileManager.swift */,
+			);
+			path = IRFileManager;
 			sourceTree = "<group>";
 		};
 		81B7E1DE251DE09500E84A37 /* Main */ = {
@@ -594,6 +605,7 @@
 				81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */,
 				818F99C3253BEDB800C47427 /* IRBook.swift in Sources */,
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
+				81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */,
 				81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */,
 				8162E4D92566AF41007BDDA2 /* IRBookmarkModel.swift in Sources */,
 				81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */,

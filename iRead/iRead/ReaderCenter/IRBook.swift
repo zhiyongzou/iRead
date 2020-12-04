@@ -37,6 +37,8 @@ class IRBook: NSObject {
     var parseQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "book_parse_queue"
+        let cores = ProcessInfo.processInfo.activeProcessorCount
+        queue.maxConcurrentOperationCount = cores
         queue.qualityOfService = .default
         return queue
     }()
@@ -145,16 +147,17 @@ extension IRBook {
     
     func loadBookmarkList() {
         parseQueue.addOperation {
-            let list = IRBookmarkManager.loadBookmarkList(withBookName: self.bookName)
-            DispatchQueue.main.async {
-                self.handleBookmarkList(list)
+            IRBookmarkManager.loadBookmarkList(withBookName: self.bookName) {list, error in
+                DispatchQueue.main.async {
+                    self.handleBookmarkList(list, error: error)
+                }
             }
         }
     }
     
-    func handleBookmarkList(_ list: [IRBookmarkModel]) {
-        bookmarkList = list
-        self.parseDelegate?.book(self, didFinishLoadBookmarkList: list)
+    func handleBookmarkList(_ list: [IRBookmarkModel]?, error: Error?) {
+        bookmarkList = list ?? [IRBookmarkModel]()
+        self.parseDelegate?.book(self, didFinishLoadBookmarkList: bookmarkList)
         IRDebugLog("finish")
     }
     
@@ -183,19 +186,75 @@ extension IRBook {
 //MARK: Parse
 extension IRBook {
     
-    func didFinishParse(chapterList: [AnyObject], pageCount: Int) {
+    func finishParse(chapterList: [AnyObject]) {
         self.chapterList.removeAll()
         var pageOffset = 0
+        var pageCount = 0
         for item in chapterList {
+            if !(item is IRBookChapter) {
+                continue
+            }
             let chapter = item as! IRBookChapter
             chapter.pageOffset = pageOffset
             pageOffset += chapter.pageList.count
+            pageCount += chapter.pageList.count
             self.chapterList.append(chapter)
         }
         self.pageCount = pageCount
         isFinishParse = true
         self.parseDelegate?.bookDidFinishParse(self)
-        IRDebugLog("book parse finish")
+        IRDebugLog("Book parse finish")
+    }
+    
+    func parseChapterList(withParseQueueId queueId: Int) {
+        var resultList = [AnyObject]()
+        for _ in 0..<chapterCount {
+            resultList.append(NSNull())
+        }
+        var finishCount = 0
+        for chapter in chapterList {
+            parseQueue.addOperation {
+                if chapter.fontName != IRReaderConfig.fontName {
+                    chapter.updateTextFontName(IRReaderConfig.fontName)
+                } else if chapter.textSizeMultiplier != IRReaderConfig.textSizeMultiplier {
+                    chapter.updateTextSizeMultiplier(IRReaderConfig.textSizeMultiplier)
+                }
+                IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
+                DispatchQueue.main.async {
+                    if queueId != self.parseQueueId { return }
+                    finishCount += 1
+                    resultList[chapter.chapterIdx] = chapter
+                    self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
+                    if finishCount >= self.chapterCount {
+                        self.finishParse(chapterList: resultList)
+                    }
+                }
+            }
+        }
+    }
+    
+    func parseSpineReferences(withParseQueueId queueId: Int) {
+        var resultList = [AnyObject]()
+        for _ in 0..<chapterCount {
+            resultList.append(NSNull())
+        }
+        var finishCount = 0
+        for (index, spine) in bookMeta.spine.spineReferences.enumerated() {
+            parseQueue.addOperation {
+                let tocReference: FRTocReference = self.bookMeta.tableOfContentsMap[spine.resource.href] ?? FRTocReference.init(title: "", resource: spine.resource)
+                let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
+                IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
+                DispatchQueue.main.async {
+                    if queueId != self.parseQueueId { return }
+                    finishCount += 1
+                    resultList[chapter.chapterIdx] = chapter
+                    self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
+                    if finishCount >= self.chapterCount {
+                        self.finishParse(chapterList: resultList)
+                    }
+                }
+            }
+        }
     }
     
     func parseBookMeta() {
@@ -203,57 +262,12 @@ extension IRBook {
         parseQueue.cancelAllOperations()
         isFinishParse = false
         self.parseDelegate?.bookBeginParse(self)
-        
-        var resultList = [AnyObject]()
-        var pageCount = 0
-        
-        // 占位
-        for _ in 0..<chapterCount {
-            resultList.append(NSNull())
-        }
-        
-        var finishCount = 0
         let currentQueueId = parseQueueId
         
         if chapterList.count > 0 && chapterList.count == self.chapterCount {
-            for chapter in chapterList {
-                parseQueue.addOperation {
-                    if chapter.fontName != IRReaderConfig.fontName {
-                        chapter.updateTextFontName(IRReaderConfig.fontName)
-                    } else if chapter.textSizeMultiplier != IRReaderConfig.textSizeMultiplier {
-                        chapter.updateTextSizeMultiplier(IRReaderConfig.textSizeMultiplier)
-                    }
-                    IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
-                    DispatchQueue.main.async {
-                        if currentQueueId != self.parseQueueId { return }
-                        pageCount += chapter.pageList.count
-                        finishCount += 1
-                        resultList[chapter.chapterIdx] = chapter
-                        self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
-                        if finishCount >= self.chapterCount {
-                            self.didFinishParse(chapterList: resultList, pageCount: pageCount)
-                        }
-                    }
-                }
-            }
+            self.parseChapterList(withParseQueueId: currentQueueId)
         } else {
-            for (index, spine) in bookMeta.spine.spineReferences.enumerated() {
-                parseQueue.addOperation {
-                    let tocReference: FRTocReference = self.bookMeta.tableOfContentsMap[spine.resource.href] ?? FRTocReference.init(title: "", resource: spine.resource)
-                    let chapter = IRBookChapter.init(withTocRefrence: tocReference, chapterIndex: index)
-                    IRDebugLog(" \(Thread.current) \(chapter.title ?? "") pageCount: \(chapter.pageList.count)")
-                    DispatchQueue.main.async {
-                        if currentQueueId != self.parseQueueId { return }
-                        pageCount += chapter.pageList.count
-                        finishCount += 1
-                        resultList[chapter.chapterIdx] = chapter
-                        self.parseDelegate?.book(self, currentParseProgress: Float(finishCount) / Float(self.chapterCount))
-                        if finishCount >= self.chapterCount {
-                            self.didFinishParse(chapterList: resultList, pageCount: pageCount)
-                        }
-                    }
-                }
-            }
+            self.parseSpineReferences(withParseQueueId: currentQueueId)
         }
     }
 }

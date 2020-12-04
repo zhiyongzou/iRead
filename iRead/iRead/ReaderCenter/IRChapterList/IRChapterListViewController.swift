@@ -25,8 +25,10 @@ class IRChapterListViewController: IRBaseViewcontroller{
     
     weak var delegate: IRChapterListViewControllerDelagate?
     
+    var contentView = UIView()
     var chapterListView: UICollectionView?
     var bookmarkListListView: UITableView?
+    var emptyView: IREmptyView?
      
     var segmentType = IRSegmentType.chapter
     var currentChapterIdx: Int?
@@ -35,6 +37,7 @@ class IRChapterListViewController: IRBaseViewcontroller{
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(contentView)
         self.setupLeftBackBarButton()
         self.setupNavigationBar()
         if segmentType == .chapter {
@@ -42,6 +45,12 @@ class IRChapterListViewController: IRBaseViewcontroller{
         } else {
             self.addBookmarkListListViewIfNeeded()
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        contentView.frame = self.view.bounds
+        emptyView?.frame = self.view.bounds
     }
     
     // MARK: - Private
@@ -61,6 +70,19 @@ class IRChapterListViewController: IRBaseViewcontroller{
         self.navigationItem.titleView = segment
     }
     
+    func updateEmptyStata() {
+        if (segmentType == .bookmark && bookmarkList.count == 0) {
+            if emptyView == nil {
+                emptyView = IREmptyView.init(frame: self.view.bounds)
+                emptyView?.setTitle("暂无书签", subTitle: "呼出阅读菜单，轻点“书签”按钮添加书签～")
+                self.view.addSubview(emptyView!)
+            }
+            emptyView?.isHidden = false
+        } else {
+            emptyView?.isHidden = true
+        }
+    }
+    
     func addChapterListViewIfNeeded() {
         if self.chapterListView == nil {
             let flowLayout = UICollectionViewFlowLayout()
@@ -73,7 +95,7 @@ class IRChapterListViewController: IRBaseViewcontroller{
             collectionView.alwaysBounceVertical = true
             collectionView.register(IRChapterCell.self, forCellWithReuseIdentifier: "IRChapterCell")
             collectionView.frame = self.view.bounds
-            self.view.addSubview(collectionView)
+            contentView.addSubview(collectionView)
             collectionView.reloadData()
             self.chapterListView = collectionView
         }
@@ -85,12 +107,13 @@ class IRChapterListViewController: IRBaseViewcontroller{
             tableView.register(IRBookmarkCell.self, forCellReuseIdentifier: "IRBookmarkCell")
             tableView.frame = self.view.bounds
             tableView.separatorStyle = .none
+            tableView.backgroundColor = IRReaderConfig.pageColor
             tableView.estimatedRowHeight = 0
             tableView.estimatedSectionHeaderHeight = 0
             tableView.estimatedSectionFooterHeight = 0
             tableView.delegate = self
             tableView.dataSource = self
-            self.view.addSubview(tableView)
+            contentView.addSubview(tableView)
             tableView.reloadData()
             self.bookmarkListListView = tableView
         }
@@ -100,14 +123,15 @@ class IRChapterListViewController: IRBaseViewcontroller{
         if segment.selectedSegmentIndex == 0 {
             segmentType = .chapter
             self.addChapterListViewIfNeeded()
-            self.view.addSubview(self.chapterListView!)
+            contentView.addSubview(self.chapterListView!)
             self.bookmarkListListView?.removeFromSuperview()
         } else {
             segmentType = .bookmark
             self.addBookmarkListListViewIfNeeded()
-            self.view.addSubview(self.bookmarkListListView!)
+            contentView.addSubview(self.bookmarkListListView!)
             self.chapterListView?.removeFromSuperview()
         }
+        self.updateEmptyStata()
     }
 }
 
@@ -172,6 +196,7 @@ extension IRChapterListViewController: UITableViewDelegate, UITableViewDataSourc
             bookmarkList.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             self.delegate?.chapterListViewController(self, deleteBookmark: bookmark)
+            self.updateEmptyStata()
         }
     }
 }

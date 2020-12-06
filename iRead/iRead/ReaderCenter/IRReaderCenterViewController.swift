@@ -38,6 +38,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         self.book = book
         IRReaderConfig.isChinese = book.isChinese
         book.parseDelegate = self
+        book.loadBookmarkList()
         book.parseBookMeta()
     }
     

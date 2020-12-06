@@ -70,7 +70,6 @@ class IRBook: NSObject {
         self.bookMeta = bookMeta
         super.init()
         
-        self.loadBookmarkList()
         if let coverUrl = bookMeta.coverImage?.fullHref {
             coverImage = UIImage.init(contentsOfFile: coverUrl)
         }

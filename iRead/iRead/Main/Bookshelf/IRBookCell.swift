@@ -40,32 +40,45 @@ class IRBookCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.bookCoverView.frame = CGRect.init(x: 0, y: 0, width: self.width, height: self.width / bookCoverScale)
+        var coverH: CGFloat = 0
+        var coverW: CGFloat = 0
+        if let coverImg = bookCoverView.image {
+            let imageScale = coverImg.size.width / coverImg.size.height
+            if imageScale <= bookCoverScale {
+                coverH = self.width / bookCoverScale
+                coverW = coverH * imageScale
+            } else {
+                coverW = self.width
+                coverH = coverW / imageScale
+            }
+        } else {
+            coverH = self.width / bookCoverScale
+            coverW = self.width
+        }
+        let coverX: CGFloat = (self.width - coverW) * 0.5
+        let coverY: CGFloat = self.height - coverH - bookCellBottomHeight
+        bookCoverView.frame = CGRect.init(x: coverX, y: coverY, width: coverW, height: coverH)
         
-        let progressY = self.bookCoverView.frame.maxY
-        self.progressLabel.frame = CGRect.init(x: 0, y: progressY, width: 60, height: bookCellBottomHeight)
+        let progressY = bookCoverView.frame.maxY
+        progressLabel.frame = CGRect.init(x: 0, y: progressY, width: 60, height: bookCellBottomHeight)
     }
     
     // MARK: - Private
     
     private func setupSubviews() {
         
-        self.contentView.backgroundColor = UIColor.white
+        contentView.backgroundColor = .white
         
         bookCoverView = UIImageView()
         bookCoverView.contentMode = .scaleAspectFit
-#if DEBUG
-        bookCoverView.layer.borderWidth = 1
-        bookCoverView.layer.borderColor = UIColor.randomColor().cgColor
-#endif
-        self.contentView.addSubview(bookCoverView)
-        
+        contentView.addSubview(bookCoverView)
+
         progressLabel = UILabel()
         progressLabel.text = "\(arc4random()%99)%"
         progressLabel.textColor = UIColor.hexColor("666666")
         progressLabel.font = UIFont.systemFont(ofSize: 13)
         progressLabel.textAlignment = .left
-        self.contentView.addSubview(progressLabel)
+        contentView.addSubview(progressLabel)
     }
     
     // MARK: - Public

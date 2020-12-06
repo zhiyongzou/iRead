@@ -11,10 +11,18 @@ import IRCommonLib
 class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     var collectionView: UICollectionView!
-    let sectionEdgeInsetsLR: CGFloat = 20
-    let minimumInteritemSpacing: CGFloat = 30
     var bookList = [IRBook]()
     
+    var rowCount: CGFloat = {
+        // 6s 以上3列
+        return UIScreen.main.bounds.width > 375 ? 3 : 2
+    }()
+    lazy var sectionEdgeInsetsLR: CGFloat = {
+        return rowCount > 2 ? 12 : 20
+    }()
+    lazy var minimumInteritemSpacing: CGFloat = {
+        return rowCount > 2 ? 15 : 30
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,7 +104,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.width - minimumInteritemSpacing - sectionEdgeInsetsLR * 2) * 0.5
+        let width = floor((collectionView.width - minimumInteritemSpacing * (rowCount - 1) - sectionEdgeInsetsLR * 2) / rowCount)
         return CGSize.init(width: width, height: IRBookCell.cellHeightWithWidth(width))
     }
     

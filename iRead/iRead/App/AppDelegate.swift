@@ -62,8 +62,9 @@ extension AppDelegate {
     
     func setupMainViewController() {
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
-        self.window?.backgroundColor = UIColor.white
+        self.window?.backgroundColor = .black
         let mainVC = IRMainViewController()
+        mainVC.view.backgroundColor = .white
         rootViewController = IRNavigationController.init(rootViewController: mainVC)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()

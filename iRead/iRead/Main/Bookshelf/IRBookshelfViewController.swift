@@ -8,20 +8,15 @@
 
 import IRCommonLib
 
-class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, IRBookCellDelegate {
     
     var collectionView: UICollectionView!
     var bookList = [IRBook]()
+    let sectionEdgeInsetsLR: CGFloat = 30
+    let minimumInteritemSpacing: CGFloat = 25
     
     var rowCount: CGFloat = {
-        // 6s 以上3列
-        return UIScreen.main.bounds.width > 375 ? 3 : 2
-    }()
-    lazy var sectionEdgeInsetsLR: CGFloat = {
-        return rowCount > 2 ? 12 : 20
-    }()
-    lazy var minimumInteritemSpacing: CGFloat = {
-        return rowCount > 2 ? 15 : 30
+        return UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2
     }()
     
     override func viewDidLoad() {
@@ -67,6 +62,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
             let epubParser: FREpubParser = FREpubParser()
             guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
             let book = IRBook.init(bookMeta)
+            book.bookPath = bookPath
             bookList.append(book)
         }
         
@@ -91,6 +87,28 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         self.view.addSubview(collectionView)
     }
     
+    // MARK: - IRBookCellDelegate
+    func bookCellDidClickOptionButton(_ cell: IRBookCell) {
+        guard let bookModel = cell.bookModel else { return }
+        guard let bookPath = bookModel.bookPath else { return }
+        let bookPathUrl = URL.init(fileURLWithPath: bookPath)
+        let epubItem = IRActivityItemProvider.init(shareUrl: bookPathUrl)
+        epubItem.title = bookModel.bookName
+        epubItem.icon = bookModel.coverImage
+        
+        let delete = IRActivity.init(withTitle: "删除", type: UIActivity.ActivityType.delete)
+        delete.image = UIImage.init(named: "trash")
+        
+        let activityVC = UIActivityViewController.init(activityItems: [epubItem], applicationActivities: [delete])
+        activityVC.completionWithItemsHandler = activityViewControllerCompletion
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    func activityViewControllerCompletion(WithType type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) {
+        
+        IRDebugLog("")
+    }
+    
     // MARK: - UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -100,6 +118,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let bookCell: IRBookCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRBookCell", for: indexPath) as! IRBookCell
         bookCell.bookModel = bookList[indexPath.item]
+        bookCell.delegate = self
         return bookCell
     }
 
@@ -144,6 +163,7 @@ extension IRBookshelfViewController {
         if let bookPath = bookPath {
             guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
             let book = IRBook.init(bookMeta)
+            book.bookPath = bookPath
             bookList.append(book)
         }
     }

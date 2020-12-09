@@ -10,7 +10,7 @@ import UIKit
 import IRCommonLib
 
 protocol IRReadSettingViewDelegate: AnyObject {
-    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle)
+    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChange newValue: IRTransitionStyle)
     
     func readSettingView(_ view: IRReadSettingView, didChangeSelectColor color: IRReadColorModel)
     
@@ -150,7 +150,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
         IRReaderConfig.transitionStyle = isOn ? .scroll : .pageCurl
         UserDefaults.standard.set(IRReaderConfig.transitionStyle.rawValue, forKey: kReadTransitionStyle)
-        self.deleage?.readSettingView(self, transitionStyleDidChagne: IRReaderConfig.transitionStyle)
+        self.deleage?.readSettingView(self, transitionStyleDidChange: IRReaderConfig.transitionStyle)
     }
     
     //MARK: - IRReadColorSettingViewDelegate

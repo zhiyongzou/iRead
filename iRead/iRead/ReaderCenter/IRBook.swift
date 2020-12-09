@@ -21,6 +21,7 @@ class IRBook: NSObject {
 
     weak var parseDelegate: IRBookParseDelegate?
     private var bookMeta: FRBook
+    var bookPath: String?
     var coverImage: UIImage?
     var isFinishParse = false
     var pageCount = 0
@@ -42,6 +43,10 @@ class IRBook: NSObject {
         queue.qualityOfService = .default
         return queue
     }()
+    
+    var authorName: String? {
+        return bookMeta.authorName
+    }
     
     var isChinese: Bool {
         if bookMeta.metadata.language.hasPrefix("zh") {

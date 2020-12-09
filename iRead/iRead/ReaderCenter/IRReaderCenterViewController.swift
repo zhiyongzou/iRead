@@ -558,7 +558,7 @@ extension IRReaderCenterViewController: IRReadSettingViewDelegate {
         book.parseBookMeta()
     }
     
-    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
+    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChange newValue: IRTransitionStyle) {
         self.setupPageViewControllerWithPageModel(self.currentReadingVC.pageModel)
     }
     

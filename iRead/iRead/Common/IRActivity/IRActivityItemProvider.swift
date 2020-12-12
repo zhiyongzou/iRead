@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import IRCommonLib
+import SSZipArchive
 import LinkPresentation
 
 class IRActivityItemProvider: UIActivityItemProvider {
@@ -14,14 +16,19 @@ class IRActivityItemProvider: UIActivityItemProvider {
     var title: String?
     var icon: UIImage?
     var shareUrl: URL
+    var originalshareUrl: URL!
     var type: UIActivity.ActivityType?
     
     init(shareUrl: URL) {
-        self.shareUrl = shareUrl
-        super.init(placeholderItem: shareUrl)
+        originalshareUrl = shareUrl
+        self.shareUrl = URL.init(fileURLWithPath: IRCachesDirectoryPath + "/" + shareUrl.lastPathComponent)
+        super.init(placeholderItem: self.shareUrl)
     }
     
     override var item: Any {
+        if !FileManager.default.fileExists(atPath: shareUrl.path) {
+            SSZipArchive.createZipFile(atPath: shareUrl.path, withContentsOfDirectory: originalshareUrl.path)
+        }
         return shareUrl
     }
     

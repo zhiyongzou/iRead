@@ -100,6 +100,9 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         delete.image = UIImage.init(named: "trash")
         
         let activityVC = UIActivityViewController.init(activityItems: [epubItem], applicationActivities: [delete])
+        // Try to exclude add tags, but failed. I don't konw why 😭
+        //        let tagType = UIActivity.ActivityType.init("com.apple.DocumentManagerUICore.AddTagsActionExtension")
+        //        activityVC.excludedActivityTypes = [tagType]
         activityVC.completionWithItemsHandler = activityViewControllerCompletion
         self.present(activityVC, animated: true, completion: nil)
     }

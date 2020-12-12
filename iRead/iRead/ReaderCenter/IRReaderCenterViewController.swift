@@ -133,7 +133,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         if #available(iOS 11.0, *) {
             safe = self.view.safeAreaInsets
         }
-        if safe == UIEdgeInsets.zero {
+        if safe.top <= 0 || safe.bottom <= 0 {
             safe = UIEdgeInsets.init(top: 20, left: 0, bottom: 20, right: 0)
         }
         let width = readNavigationContentView!.width

@@ -66,8 +66,8 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         
         let width = self.view.width - IRReaderConfig.horizontalSpacing * 2
         let height = self.view.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
-        
-        IRReaderConfig.pageSzie = CGSize.init(width: width, height: height)
+        let maxSize: CGFloat = 1000
+        IRReaderConfig.pageSzie = CGSize.init(width: min(maxSize, width), height: min(maxSize, height))
     }
     
     func commonInit() {

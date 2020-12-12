@@ -52,6 +52,9 @@ class IRFileManager: NSObject {
             guard let pathList = try? FileManager.default.contentsOfDirectory(atPath: IRFileManager.bookUnzipPath) else { return [String]() }
             var bookPaths = [String]()
             for path in pathList {
+                if !path.hasSuffix(IRFileType.Epub.rawValue) {
+                    continue
+                }
                 bookPaths.append(IRFileManager.bookUnzipPath + "/" + path)
             }
             return bookPaths

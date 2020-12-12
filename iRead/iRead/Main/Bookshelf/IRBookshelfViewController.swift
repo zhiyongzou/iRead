@@ -103,14 +103,24 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         // Try to exclude add tags, but failed. I don't konw why 😭
         //        let tagType = UIActivity.ActivityType.init("com.apple.DocumentManagerUICore.AddTagsActionExtension")
         //        activityVC.excludedActivityTypes = [tagType]
+        let cellIndex = collectionView.indexPath(for: cell)
         activityVC.completionWithItemsHandler = { (type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) in
-            IRDebugLog("")
+            if type == UIActivity.ActivityType.delete {
+                self.deleteBook(at: cellIndex, bookPath: bookPath)
+            }
         }
         let popover = activityVC.popoverPresentationController
         if popover != nil {
             popover?.sourceView = cell.optionButton
         }
         self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    func deleteBook(at index: IndexPath?, bookPath: String) {
+        guard let index = index else { return }
+        bookList.remove(at: index.item)
+        collectionView.deleteItems(at: [index])
+        try? FileManager.default.removeItem(at: URL.init(fileURLWithPath: bookPath))
     }
     
     // MARK: - UICollectionView

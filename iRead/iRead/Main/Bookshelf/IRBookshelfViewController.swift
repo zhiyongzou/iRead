@@ -103,13 +103,14 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         // Try to exclude add tags, but failed. I don't konw why 😭
         //        let tagType = UIActivity.ActivityType.init("com.apple.DocumentManagerUICore.AddTagsActionExtension")
         //        activityVC.excludedActivityTypes = [tagType]
-        activityVC.completionWithItemsHandler = activityViewControllerCompletion
+        activityVC.completionWithItemsHandler = { (type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) in
+            IRDebugLog("")
+        }
+        let popover = activityVC.popoverPresentationController
+        if popover != nil {
+            popover?.sourceView = cell.optionButton
+        }
         self.present(activityVC, animated: true, completion: nil)
-    }
-    
-    func activityViewControllerCompletion(WithType type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) {
-        
-        IRDebugLog("")
     }
     
     // MARK: - UICollectionView

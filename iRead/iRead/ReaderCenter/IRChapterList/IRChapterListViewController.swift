@@ -75,6 +75,7 @@ class IRChapterListViewController: IRBaseViewcontroller{
             if emptyView == nil {
                 emptyView = IREmptyView.init(frame: self.view.bounds)
                 emptyView?.setTitle("暂无书签", subTitle: "呼出阅读菜单，轻点“书签”按钮添加书签～")
+                emptyView?.state = .empty
                 self.view.addSubview(emptyView!)
             }
             emptyView?.isHidden = false

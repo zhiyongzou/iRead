@@ -11,6 +11,7 @@ import IRCommonLib
 class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, IRBookCellDelegate {
     
     var collectionView: UICollectionView!
+    var emptyView: IREmptyView?
     var bookList = [IRBook]()
     let sectionEdgeInsetsLR: CGFloat = 30
     let minimumInteritemSpacing: CGFloat = 25
@@ -38,6 +39,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.collectionView.frame = self.view.bounds
+        self.emptyView?.frame = self.view.bounds
     }
     
     // MARK: - Notifications
@@ -58,20 +60,31 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     // MARK: - Private
     
     func loadLocalBooks() {
-        for bookPath in IRFileManager.shared.bookPathList {
-            let epubParser: FREpubParser = FREpubParser()
-            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
-            let book = IRBook.init(bookMeta)
-            book.bookPath = bookPath
-            bookList.append(book)
+        self.updateEmptyViewState(.loading)
+        DispatchQueue.global().async {
+            var bookList = [IRBook]()
+            for bookPath in IRFileManager.shared.bookPathList {
+                autoreleasepool {
+                    let epubParser: FREpubParser = FREpubParser()
+                    guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
+                    let book = IRBook.init(bookMeta)
+                    book.bookPath = bookPath
+                    bookList.append(book)
+                }
+            }
+            
+            #if DEBUG
+            if IRFileManager.shared.bookPathList.count == 0 {
+                bookList = self.testBooks()
+            }
+            #endif
+            
+            DispatchQueue.main.async {
+                self.bookList = bookList
+                self.collectionView.reloadData()
+                self.updateEmptyViewState(.empty)
+            }
         }
-        
-        #if DEBUG
-        if IRFileManager.shared.bookPathList.count == 0 {
-            self.addTestBooks()
-        }
-        #endif
-        collectionView.reloadData()
     }
 
     private func setupCollectionView() {
@@ -85,6 +98,21 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         collectionView.alwaysBounceVertical = true
         collectionView.register(IRBookCell.self, forCellWithReuseIdentifier: "IRBookCell")
         self.view.addSubview(collectionView)
+    }
+    
+    func updateEmptyViewState(_ state: IREmptyState) {
+        if (bookList.count == 0) {
+            if emptyView == nil {
+                emptyView = IREmptyView.init(frame: self.view.bounds)
+                emptyView?.setTitle("空空如也", subTitle: "快用好书塞满书架吧～")
+                self.view.addSubview(emptyView!)
+            }
+            emptyView?.state = state
+            emptyView?.isHidden = false
+            self.view.bringSubviewToFront(emptyView!)
+        } else {
+            emptyView?.isHidden = true
+        }
     }
     
     // MARK: - IRBookCellDelegate
@@ -120,6 +148,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         guard let index = index else { return }
         bookList.remove(at: index.item)
         collectionView.deleteItems(at: [index])
+        self.updateEmptyViewState(.empty)
         try? FileManager.default.removeItem(at: URL.init(fileURLWithPath: bookPath))
     }
     
@@ -155,15 +184,27 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
 // MARK: - DEBUG
 #if DEBUG
 extension IRBookshelfViewController {
-    func addTestBooks() {
-        self.addTestBook(name: "支付战争")
-        self.addTestBook(name: "细说明朝")
-        self.addTestBook(name: "The Silver Chair")
-        self.addTestBook(name: "Гарри Поттер")
-        self.addTestBook(name: "Крушение империи")
+    func testBooks() -> [IRBook] {
+        var bookList = [IRBook]()
+        if let book = testBook(name: "细说明朝") {
+            bookList.append(book)
+        }
+        if let book = testBook(name: "支付战争") {
+            bookList.append(book)
+        }
+        if let book = testBook(name: "Гарри Поттер") {
+            bookList.append(book)
+        }
+        if let book = testBook(name: "The Silver Chair") {
+            bookList.append(book)
+        }
+        if let book = testBook(name: "Крушение империи") {
+            bookList.append(book)
+        }
+        return bookList
     }
     
-    func addTestBook(name: String) {
+    func testBook(name: String) -> IRBook? {
         let epubParser: FREpubParser = FREpubParser()
         
         let bundle = Bundle.init(for: IRHomeViewController.self)
@@ -173,13 +214,13 @@ extension IRBookshelfViewController {
             let resourcesBundle = Bundle.init(path: budlePath ?? "")
             bookPath = resourcesBundle?.path(forResource: name, ofType: "epub")
         }
-        
         if let bookPath = bookPath {
-            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return nil}
             let book = IRBook.init(bookMeta)
             book.bookPath = bookPath
-            bookList.append(book)
+            return book
         }
+        return nil
     }
 }
 #endif

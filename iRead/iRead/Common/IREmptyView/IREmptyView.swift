@@ -8,28 +8,50 @@
 
 import UIKit
 import SnapKit
+import NVActivityIndicatorView
+
+enum IREmptyState: Int {
+    case empty
+    case loading
+}
 
 class IREmptyView: UIView {
     
+    var emptyContentView: UIView?
+    var loadingContentView: UIView?
+    var loadingView: NVActivityIndicatorView?
     lazy var emptyIcon = UIImageView()
     lazy var titleLabel = UILabel()
     var subLabel: UILabel?
+    var text: String?
+    var subText: String?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupSubviews()
+    var state: IREmptyState = .empty {
+        willSet {
+            if newValue == .empty {
+                self.addEmptySubviewsIfNeeded()
+                self.loadingView?.stopAnimating()
+            } else {
+                self.addLoadingViewIfNeeded()
+                self.loadingView?.startAnimating()
+            }
+            self.emptyContentView?.isHidden = newValue != .empty
+            self.loadingContentView?.isHidden = newValue == .empty
+        }
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setupSubviews()
-    }
-    
-    private func setupSubviews() {
-        self.backgroundColor = UIColor.clear
+    private func addEmptySubviewsIfNeeded() {
+        if emptyContentView != nil {
+            return
+        }
+        emptyContentView = UIView()
+        self.addSubview(emptyContentView!)
+        emptyContentView!.snp.makeConstraints { (make) in
+            make.edges.equalTo(self)
+        }
         
         emptyIcon.image = UIImage.init(named: "empty_icon")
-        self.addSubview(emptyIcon)
+        emptyContentView!.addSubview(emptyIcon)
         emptyIcon.snp.makeConstraints { (make) in
             make.size.equalTo(CGSize(width: 59, height: 49))
             make.centerX.equalTo(self)
@@ -37,29 +59,31 @@ class IREmptyView: UIView {
         }
         
         titleLabel.textAlignment = .center
+        titleLabel.text = text
         titleLabel.textColor = IRReaderConfig.textColor
         titleLabel.numberOfLines = 1
         titleLabel.font = UIFont.systemFont(ofSize: 17)
-        self.addSubview(titleLabel)
+        emptyContentView!.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.right.equalTo(self).offset(-10)
             make.left.equalTo(self).offset(10)
             make.top.equalTo(emptyIcon.snp.bottom).offset(11)
             make.centerX.equalTo(self)
         }
+        self.addSubLabelIfNeeded()
     }
     
     private func addSubLabelIfNeeded() {
-        if subLabel != nil {
+        if subText == nil || subLabel != nil {
             return
         }
-        
         subLabel = UILabel()
+        subLabel?.text = subText
         subLabel!.numberOfLines = 2
         subLabel!.textColor = IRReaderConfig.textColor.withAlphaComponent(0.5)
         subLabel!.textAlignment = .center
         subLabel!.font = UIFont.systemFont(ofSize: 13)
-        self.addSubview(subLabel!)
+        emptyContentView!.addSubview(subLabel!)
         subLabel!.snp.makeConstraints { (make) in
             make.right.equalTo(self).offset(-10)
             make.left.equalTo(self).offset(10)
@@ -68,12 +92,27 @@ class IREmptyView: UIView {
         }
     }
     
+    func addLoadingViewIfNeeded() {
+        if loadingContentView != nil {
+            return
+        }
+        loadingContentView = UIView()
+        self.addSubview(loadingContentView!)
+        loadingContentView!.snp.makeConstraints { (make) in
+            make.edges.equalTo(self)
+        }
+        let loadingView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height: 60), type: .ballRotateChase, color: .lightGray, padding: 6)
+        loadingContentView!.addSubview(loadingView)
+        self.loadingView = loadingView
+        loadingView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(60)
+            make.center.equalTo(loadingContentView!)
+        }
+    }
+    
     //MARK: - Public
     func setTitle(_ title: String?, subTitle: String?) {
-        titleLabel.text = title
-        if let subTitle = subTitle {
-            self.addSubLabelIfNeeded()
-            subLabel?.text = subTitle
-        }
+        text = title
+        subText = subTitle
     }
 }

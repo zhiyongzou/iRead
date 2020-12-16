@@ -94,7 +94,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
             case IRTabBarIndex.bookshelf.rawValue:
                 normalName = "tabbar_bookshelf_n"; selectName = "tabbar_bookshelf_s"
             case IRTabBarIndex.mine.rawValue:
-                normalName = "tabbar_mine_n"; selectName = "tabbar_mine_s"
+                normalName = "tabbar_explore_n"; selectName = "tabbar_explore_s"
             default:
                 IRDebugLog("TabIndex: (\(index)) undefine")
             }
@@ -114,7 +114,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         case IRTabBarIndex.bookshelf.rawValue:
             vc = IRBookshelfViewController()
         case IRTabBarIndex.mine.rawValue:
-            vc = IRMineViewController()
+            vc = IRExploreViewController()
         default:
             vc = UIViewController()
         }

@@ -49,7 +49,7 @@
 		81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78EA52541847000353157 /* IRReadNavigationContentView.swift */; };
 		81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */; };
 		81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */; };
-		81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E3251DE1CB00E84A37 /* IRMineViewController.swift */; };
+		81B7E1E4251DE1CB00E84A37 /* IRExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E3251DE1CB00E84A37 /* IRExploreViewController.swift */; };
 		81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E5251DE32600E84A37 /* IRBookCell.swift */; };
 		81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C13AF12538492300B78BC2 /* IRReadColorCell.swift */; };
 		81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C13AF72538497B00B78BC2 /* IRReadColorModel.swift */; };
@@ -130,7 +130,7 @@
 		81B78EA52541847000353157 /* IRReadNavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationContentView.swift; sourceTree = "<group>"; };
 		81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMainViewController.swift; sourceTree = "<group>"; };
 		81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeViewController.swift; sourceTree = "<group>"; };
-		81B7E1E3251DE1CB00E84A37 /* IRMineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMineViewController.swift; sourceTree = "<group>"; };
+		81B7E1E3251DE1CB00E84A37 /* IRExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRExploreViewController.swift; sourceTree = "<group>"; };
 		81B7E1E5251DE32600E84A37 /* IRBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookCell.swift; sourceTree = "<group>"; };
 		81C13AF12538492300B78BC2 /* IRReadColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorCell.swift; sourceTree = "<group>"; };
 		81C13AF72538497B00B78BC2 /* IRReadColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorModel.swift; sourceTree = "<group>"; };
@@ -329,7 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				8126CF742545ABAA00C71415 /* Bookshelf */,
-				81B7E1E0251DE0A400E84A37 /* Mine */,
+				81B7E1E0251DE0A400E84A37 /* Explore */,
 				81B7E1DF251DE09E00E84A37 /* Home */,
 				81B7E1DE251DE09500E84A37 /* Main */,
 			);
@@ -418,12 +418,12 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		81B7E1E0251DE0A400E84A37 /* Mine */ = {
+		81B7E1E0251DE0A400E84A37 /* Explore */ = {
 			isa = PBXGroup;
 			children = (
-				81B7E1E3251DE1CB00E84A37 /* IRMineViewController.swift */,
+				81B7E1E3251DE1CB00E84A37 /* IRExploreViewController.swift */,
 			);
-			path = Mine;
+			path = Explore;
 			sourceTree = "<group>";
 		};
 		81C13AF62538494000B78BC2 /* IRReadColorSetting */ = {
@@ -646,7 +646,7 @@
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
 				81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */,
 				81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */,
-				81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */,
+				81B7E1E4251DE1CB00E84A37 /* IRExploreViewController.swift in Sources */,
 				8162E4D92566AF41007BDDA2 /* IRBookmarkModel.swift in Sources */,
 				81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */,
 				8133228F254BB01400820AA5 /* IRReadBottomBar.swift in Sources */,

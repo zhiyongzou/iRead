@@ -1,5 +1,5 @@
 //
-//  IRMineViewController.swift
+//  IRExploreViewController.swift
 //  iRead
 //
 //  Created by zzyong on 2020/9/25.
@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRMineViewController: IRBaseViewcontroller {
+class IRExploreViewController: IRBaseViewcontroller {
 
     override func viewDidLoad() {
         super.viewDidLoad()

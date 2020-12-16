@@ -12,8 +12,9 @@ import IRCommonLib
 class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDelegate {
     
     var shouldHideStatusBar = true
+    var bookPath: String
     var book: IRBook!
-    var pageViewController: IRPageViewController!
+    var pageViewController: IRPageViewController?
     /// 当前阅读页VC
     var currentReadingVC: IRReadPageViewController!
     /// 上一页
@@ -30,16 +31,18 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     var readSettingView: CMPopTipView?
     var chapterTipView: IRChapterTipView?
     
-   
+    var loadingView: UIActivityIndicatorView?
+    
+    
     //MARK: - Init
     
-    convenience init(withBook book:IRBook) {
-        self.init()
-        self.book = book
-        IRReaderConfig.isChinese = book.isChinese
-        book.parseDelegate = self
-        book.loadBookmarkList()
-        book.parseBookMeta()
+    init(withPath path:String) {
+        self.bookPath = path
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: - Override
@@ -48,7 +51,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         super.viewDidLoad()
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.addNavigateTapGesture()
-        self.setupReadingRecord()
+        self.setupLoadingView()
+        self.parseBook()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,10 +82,41 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        pageViewController.view.frame = self.view.bounds
+        pageViewController?.view.frame = self.view.bounds
     }
     
     //MARK: - Private
+    
+    func setupLoadingView() {
+        let loadingView = UIActivityIndicatorView.init(style: .gray)
+        loadingView.hidesWhenStopped = true
+        loadingView.color = .lightGray
+        self.view.addSubview(loadingView)
+        self.loadingView = loadingView
+    }
+    
+    func parseBook() {
+        self.loadingView?.isHidden = false
+        self.loadingView?.startAnimating()
+        DispatchQueue.global().async {
+            let epubParser: FREpubParser = FREpubParser()
+            if let bookMeta = try? epubParser.readEpub(epubPath: self.bookPath, unzipPath: IRFileManager.bookUnzipPath) {
+                DispatchQueue.main.async {
+                    self.handleBook(IRBook.init(bookMeta))
+                }
+            }
+        }
+    }
+    
+    func handleBook(_ book: IRBook) {
+        self.loadingView?.isHidden = true
+        self.book = book
+        IRReaderConfig.isChinese = book.isChinese
+        book.parseDelegate = self
+        book.loadBookmarkList()
+        book.parseBookMeta()
+        self.setupReadingRecord()
+    }
     
     func updateReadNavigationBarDispalyState(animated: Bool) {
         self.addNavigationContentViewIfNeeded()
@@ -161,20 +196,20 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         
         if IRReaderConfig.transitionStyle == .pageCurl {
             pageViewController = IRPageViewController.init(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
-            pageViewController.isDoubleSided = true
+            pageViewController?.isDoubleSided = true
             beforePageVC = nil
         } else {
             pageViewController = IRPageViewController.init(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         }
         
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
-        self.addChild(pageViewController)
-        pageViewController.didMove(toParent: self)
+        pageViewController?.delegate = self
+        pageViewController?.dataSource = self
+        self.addChild(pageViewController!)
+        pageViewController?.didMove(toParent: self)
         if readNavigationContentView != nil {
-            self.view.insertSubview(pageViewController.view, belowSubview: readNavigationContentView!)
+            self.view.insertSubview(pageViewController!.view, belowSubview: readNavigationContentView!)
         } else {
-            self.view.addSubview(pageViewController.view)
+            self.view.addSubview(pageViewController!.view)
         }
         
         if currentReadingVC == nil {
@@ -188,7 +223,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             currentReadingVC.pageModel = pageModel
         }
         
-        pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
+        pageViewController!.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
     }
     
     func previousPageModel(withReadVC readVc: IRReadPageViewController) -> IRBookPage? {

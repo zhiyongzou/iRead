@@ -97,9 +97,9 @@ open class FREpubParser: NSObject, SSZipArchiveDelegate {
         
         IRDebugLog(bookBasePath)
 
-        guard fileManager.fileExists(atPath: withEpubPath) else {
-            throw FRParseError.bookNotAvailable
-        }
+//        guard fileManager.fileExists(atPath: withEpubPath) else {
+//            throw FRParseError.bookNotAvailable
+//        }
 
         // Unzip if necessary
         let needsUnzip = !fileManager.fileExists(atPath: bookBasePath, isDirectory:&isDir) || !isDir.boolValue

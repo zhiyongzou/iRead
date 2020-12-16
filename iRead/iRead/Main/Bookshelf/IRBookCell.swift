@@ -113,7 +113,7 @@ class IRBookCell: UICollectionViewCell {
         return width / bookCoverScale + bookCellBottomHeight
     }
     
-    public var bookModel: IRBook? {
+    public var bookModel: IRBookModel? {
         willSet {
             bookCoverView.image = newValue?.coverImage
         }

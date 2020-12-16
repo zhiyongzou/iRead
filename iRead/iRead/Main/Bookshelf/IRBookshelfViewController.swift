@@ -12,7 +12,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     
     var collectionView: UICollectionView!
     var emptyView: IREmptyView?
-    var bookList = [IRBook]()
+    var bookList = [IRBookModel]()
     let sectionEdgeInsetsLR: CGFloat = 30
     let minimumInteritemSpacing: CGFloat = 25
     
@@ -52,7 +52,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         
         let epubParser: FREpubParser = FREpubParser()
         guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
-        let book = IRBook.init(bookMeta)
+        let book = IRBookModel.model(with: bookMeta, path: bookPath)
+        IRBookshelfManager.asyncInsertBook(book)
         bookList.insert(book, at: 0)
         collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
     }
@@ -62,25 +63,21 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     func loadLocalBooks() {
         self.updateEmptyViewState(.loading)
         DispatchQueue.global().async {
-            var bookList = [IRBook]()
-            for bookPath in IRFileManager.shared.bookPathList {
-                autoreleasepool {
-                    let epubParser: FREpubParser = FREpubParser()
-                    guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
-                    let book = IRBook.init(bookMeta)
-                    book.bookPath = bookPath
-                    bookList.append(book)
+            var bookList: [IRBookModel]?
+            IRBookshelfManager.loadBookList { (list, error) in
+                if error != nil {
+                    IRDebugLog(error)
                 }
+                bookList = list
             }
-            
             #if DEBUG
-            if IRFileManager.shared.bookPathList.count == 0 {
+            if bookList?.count == 0 {
                 bookList = self.testBooks()
             }
             #endif
             
             DispatchQueue.main.async {
-                self.bookList = bookList
+                self.bookList = bookList ?? [IRBookModel]()
                 self.collectionView.reloadData()
                 self.updateEmptyViewState(.empty)
             }
@@ -118,8 +115,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     // MARK: - IRBookCellDelegate
     func bookCellDidClickOptionButton(_ cell: IRBookCell) {
         guard let bookModel = cell.bookModel else { return }
-        guard let bookPath = bookModel.bookPath else { return }
-        let bookPathUrl = URL.init(fileURLWithPath: bookPath)
+        let bookPathUrl = URL.init(fileURLWithPath: bookModel.bookPath)
         let epubItem = IRActivityItemProvider.init(shareUrl: bookPathUrl)
         epubItem.title = bookModel.bookName
         epubItem.icon = bookModel.coverImage
@@ -134,7 +130,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         let cellIndex = collectionView.indexPath(for: cell)
         activityVC.completionWithItemsHandler = { (type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) in
             if type == UIActivity.ActivityType.delete {
-                self.deleteBook(at: cellIndex, bookPath: bookPath)
+                self.deleteBook(at: cellIndex, bookPath: bookModel.bookPath)
             }
         }
         let popover = activityVC.popoverPresentationController
@@ -176,7 +172,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let book = bookList[indexPath.item]
-        let readerCenter = IRReaderCenterViewController.init(withBook: book)
+        let readerCenter = IRReaderCenterViewController.init(withPath: book.bookPath)
         self.navigationController?.pushViewController(readerCenter, animated: true)
     }
 }
@@ -184,8 +180,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
 // MARK: - DEBUG
 #if DEBUG
 extension IRBookshelfViewController {
-    func testBooks() -> [IRBook] {
-        var bookList = [IRBook]()
+    func testBooks() -> [IRBookModel] {
+        var bookList = [IRBookModel]()
         if let book = testBook(name: "细说明朝") {
             bookList.append(book)
         }
@@ -204,7 +200,7 @@ extension IRBookshelfViewController {
         return bookList
     }
     
-    func testBook(name: String) -> IRBook? {
+    func testBook(name: String) -> IRBookModel? {
         let epubParser: FREpubParser = FREpubParser()
         
         let bundle = Bundle.init(for: IRHomeViewController.self)
@@ -216,8 +212,9 @@ extension IRBookshelfViewController {
         }
         if let bookPath = bookPath {
             guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return nil}
-            let book = IRBook.init(bookMeta)
-            book.bookPath = bookPath
+            let bookName = name + "." + IRFileType.Epub.rawValue
+            let book = IRBookModel.model(with: bookMeta, path: IRFileManager.bookUnzipPath + "/" + bookName)
+            IRBookshelfManager.asyncInsertBook(book)
             return book
         }
         return nil

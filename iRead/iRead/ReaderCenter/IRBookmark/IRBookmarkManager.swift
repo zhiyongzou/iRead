@@ -51,7 +51,7 @@ class IRBookmarkManager: NSObject {
         let tableName = self.tableName(withBookName: bookName)
         self.creatBookmarkTableIfNeeded(withName: tableName)
         let sql = "INSERT INTO \(tableName)" + "(chapterIdx, textLoction, markTime, chapterName, content)" + "VALUES (?,?,?,?,?)"
-        let values: [Any] = [mark.chapterIdx, mark.textLoction, mark.markTime, mark.chapterName == nil ? NSNull() : mark.chapterName!, mark.content == nil ? NSNull() : mark.content!]
+        let values: [Any] = [mark.chapterIdx, mark.textLoction, mark.markTime, mark.chapterName ?? NSNull(), mark.content ?? NSNull()]
         let success = IRDBManager.shared.executeUpdate(sql, values: values)
         if !success {
             IRDebugLog("Insert failed")

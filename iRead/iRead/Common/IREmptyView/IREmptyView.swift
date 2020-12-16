@@ -8,7 +8,6 @@
 
 import UIKit
 import SnapKit
-import NVActivityIndicatorView
 
 enum IREmptyState: Int {
     case empty
@@ -19,7 +18,7 @@ class IREmptyView: UIView {
     
     var emptyContentView: UIView?
     var loadingContentView: UIView?
-    var loadingView: NVActivityIndicatorView?
+    var loadingView: UIActivityIndicatorView?
     lazy var emptyIcon = UIImageView()
     lazy var titleLabel = UILabel()
     var subLabel: UILabel?
@@ -101,11 +100,12 @@ class IREmptyView: UIView {
         loadingContentView!.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
-        let loadingView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height: 60), type: .ballRotateChase, color: .lightGray, padding: 6)
+        let loadingView = UIActivityIndicatorView.init(style: .gray)
+        loadingView.color = .lightGray
+        loadingView.hidesWhenStopped = true
         loadingContentView!.addSubview(loadingView)
         self.loadingView = loadingView
         loadingView.snp.makeConstraints { (make) in
-            make.width.height.equalTo(60)
             make.center.equalTo(loadingContentView!)
         }
     }

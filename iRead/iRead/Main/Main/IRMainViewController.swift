@@ -18,7 +18,7 @@ enum IRTabBarIndex: Int {
 enum IRTabBarName: String {
     case home      = "首页"
     case bookshelf = "书架"
-    case mine      = "我的"
+    case explore   = "探索"
 }
 
 class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
@@ -78,7 +78,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     func setupTabbarItems() {
         self.tabBar.tintColor = IRAppThemeColor
         
-        let tabbarTitles = [IRTabBarName.home.rawValue, IRTabBarName.bookshelf.rawValue, IRTabBarName.mine.rawValue]
+        let tabbarTitles = [IRTabBarName.home.rawValue, IRTabBarName.bookshelf.rawValue, IRTabBarName.explore.rawValue]
         var childViewControllers = [UIViewController]()
         
         for (index, _) in tabbarTitles.enumerated() {

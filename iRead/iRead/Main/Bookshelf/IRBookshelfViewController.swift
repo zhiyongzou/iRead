@@ -115,7 +115,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     // MARK: - IRBookCellDelegate
     func bookCellDidClickOptionButton(_ cell: IRBookCell) {
         guard let bookModel = cell.bookModel else { return }
-        let bookPathUrl = URL.init(fileURLWithPath: bookModel.bookPath)
+        let bookPath = IRFileManager.bookUnzipPath + "/" + bookModel.bookPath.lastPathComponent
+        let bookPathUrl = URL.init(fileURLWithPath: bookPath)
         let epubItem = IRActivityItemProvider.init(shareUrl: bookPathUrl)
         epubItem.title = bookModel.bookName
         epubItem.icon = bookModel.coverImage
@@ -130,7 +131,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         let cellIndex = collectionView.indexPath(for: cell)
         activityVC.completionWithItemsHandler = { (type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) in
             if type == UIActivity.ActivityType.delete {
-                self.deleteBook(at: cellIndex, bookPath: bookModel.bookPath)
+                self.deleteBook(at: cellIndex, bookPath: bookPath)
             }
         }
         let popover = activityVC.popoverPresentationController
@@ -147,7 +148,11 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         bookList.remove(at: index.item)
         collectionView.deleteItems(at: [index])
         self.updateEmptyViewState(.empty)
-        try? FileManager.default.removeItem(at: URL.init(fileURLWithPath: bookPath))
+        do {
+            try FileManager.default.removeItem(atPath: bookPath)
+        } catch  {
+            IRDebugLog(error)
+        }
     }
     
     // MARK: - UICollectionView
@@ -174,7 +179,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let book = bookList[indexPath.item]
-        let readerCenter = IRReaderCenterViewController.init(withPath: book.bookPath)
+        let bookPath = IRFileManager.bookUnzipPath + "/" + book.bookPath.lastPathComponent
+        let readerCenter = IRReaderCenterViewController.init(withPath: bookPath)
         self.navigationController?.pushViewController(readerCenter, animated: true)
     }
 }

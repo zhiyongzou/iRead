@@ -17,6 +17,7 @@ class IRBookshelfManager: NSObject {
     static let kBookName   = "bookName"
     static let kProgress   = "progress"
     static let kBookPath   = "bookPath"
+    static let kInsertTime = "insertTime"
     
     class func creatBookshelfTableIfNeeded() {
         if hasCreated {
@@ -25,6 +26,7 @@ class IRBookshelfManager: NSObject {
         let sql = "CREATE TABLE IF NOT EXISTS \(kTableName)" + "(\(kCoverImage) \(IRDBType.BLOB.rawValue)," +
                                                          "\(kBookName) \(IRDBType.TEXT.rawValue)," +
                                                          "\(kProgress) \(IRDBType.INTEGER.rawValue)," +
+                                                         "\(kInsertTime) \(IRDBType.REAL.rawValue)," +
                                                          "\(kBookPath) \(IRDBType.TEXT.rawValue))"
         let success = IRDBManager.shared.executeUpdate(sql, values: nil)
         if success {
@@ -43,9 +45,9 @@ class IRBookshelfManager: NSObject {
     
     class func insertBook(_ book: IRBookModel) {
         self.creatBookshelfTableIfNeeded()
-        let sql = "INSERT INTO \(kTableName)" + "(\(kCoverImage), \(kBookName), \(kProgress), \(kBookPath))" + "VALUES (?,?,?,?)"
+        let sql = "INSERT INTO \(kTableName)" + "(\(kCoverImage), \(kBookName), \(kInsertTime), \(kProgress), \(kBookPath))" + "VALUES (?,?,?,?,?)"
         let imgData = book.coverImage?.jpegData(compressionQuality: 0.8)
-        let values: [Any] = [imgData ?? NSNull(), book.bookName, book.progress, book.bookPath]
+        let values: [Any] = [imgData ?? NSNull(), book.bookName, book.insertTime, book.progress, book.bookPath]
         let success = IRDBManager.shared.executeUpdate(sql, values: values)
         if !success {
             IRDebugLog("Insert failed")
@@ -69,7 +71,7 @@ class IRBookshelfManager: NSObject {
     
     class func loadBookList(completion: ([IRBookModel]?, Error?) -> Void) {
         self.creatBookshelfTableIfNeeded()
-        let sql = "SELECT * FROM \(kTableName)"
+        let sql = "SELECT * FROM \(kTableName) ORDER BY \(kInsertTime) DESC"
         IRDBManager.shared.executeQuery(sql) {
             guard let resultSet = $0 else { completion(nil, $1); return }
             var bookList = [IRBookModel]()
@@ -78,6 +80,7 @@ class IRBookshelfManager: NSObject {
                 if let imgData = resultSet.data(forColumn: kCoverImage) {
                     book.coverImage = UIImage.init(data: imgData)
                 }
+                book.insertTime = Double(resultSet.int(forColumn: kInsertTime))
                 book.progress = CGFloat(resultSet.int(forColumn: kProgress))
                 bookList.append(book)
             }

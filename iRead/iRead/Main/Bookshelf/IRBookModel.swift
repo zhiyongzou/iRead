@@ -15,6 +15,7 @@ class IRBookModel: NSObject {
     var bookName: String
     var progress: CGFloat = 0
     var bookPath: String
+    lazy var insertTime: TimeInterval = NSDate().timeIntervalSince1970
     
     init(with bookName: String, path: String) {
         self.bookName = bookName

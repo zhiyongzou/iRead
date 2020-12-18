@@ -8,6 +8,8 @@
 // Protocol Conformance: https://github.com/raywenderlich/swift-style-guide#protocol-conformance
 
 import IRCommonLib
+import SnapKit
+import PKHUD
 
 class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDelegate {
     
@@ -65,7 +67,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.saveReadingRecord()
+        if let book = book {
+            self.saveReadingRecord()
+            book.cancleAllParse()
+        }
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -93,22 +98,34 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         loadingView.color = .lightGray
         self.view.addSubview(loadingView)
         self.loadingView = loadingView
+        loadingView.snp.makeConstraints { (make) in
+            make.center.equalTo(self.view)
+        }
     }
     
     func parseBook() {
         self.loadingView?.isHidden = false
         self.loadingView?.startAnimating()
+        self.view.isUserInteractionEnabled = false
         DispatchQueue.global().async {
-            let epubParser: FREpubParser = FREpubParser()
-            if let bookMeta = try? epubParser.readEpub(epubPath: self.bookPath, unzipPath: IRFileManager.bookUnzipPath) {
+            if let bookMeta = try? FREpubParser().readEpub(epubPath: self.bookPath, unzipPath: IRFileManager.bookUnzipPath) {
                 DispatchQueue.main.async {
                     self.handleBook(IRBook.init(bookMeta))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadingView?.stopAnimating()
+                    PKHUD.sharedHUD.dimsBackground = false
+                    HUD.flash(.label("解析失败了，看看其他书吧～"), delay: 1) { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
     }
     
     func handleBook(_ book: IRBook) {
+        self.view.isUserInteractionEnabled = true
         self.loadingView?.isHidden = true
         self.book = book
         IRReaderConfig.isChinese = book.isChinese
@@ -290,7 +307,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     }
     
     func saveReadingRecord() {
-        guard let pageModel = currentReadingVC.pageModel else { return }
+        guard let pageModel = self.currentReadingVC?.pageModel else { return }
         if readingRecord.chapterIdx == pageModel.chapterIdx && readingRecord.pageIdx == pageModel.pageIdx {
             return
         }

@@ -33,6 +33,7 @@ PODS:
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - IRHexColor (0.0.3)
+  - PKHUD (5.3.0)
   - SnapKit (5.0.1)
   - SSZipArchive (2.2.3)
 
@@ -45,6 +46,7 @@ DEPENDENCIES:
   - FLEX (~> 4.1.1)
   - FMDB (~> 2.7.5)
   - IRHexColor (~> 0.0.3)
+  - PKHUD (~> 5.3.0)
   - SnapKit (~> 5.0.1)
   - SSZipArchive (~> 2.2.2)
 
@@ -55,6 +57,7 @@ SPEC REPOS:
     - FLEX
     - FMDB
     - IRHexColor
+    - PKHUD
     - SnapKit
     - SSZipArchive
 
@@ -81,9 +84,10 @@ SPEC CHECKSUMS:
   FLEX: 81096107977a09836eb440173010ceeef01105d6
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   IRHexColor: 1e528e52e8b6bfa4fdf6ea8442e240725e338374
+  PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: 5251e061a052e7172e6e8d6017bf8fec63dd0b9f
+PODFILE CHECKSUM: 5851c9354193f6771f865992079b77e0ccc58b54
 
 COCOAPODS: 1.9.3

@@ -142,6 +142,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
     
     func deleteBook(at index: IndexPath?, bookPath: String) {
         guard let index = index else { return }
+        let book = bookList[index.item]
+        IRBookshelfManager.deleteBook(book)
         bookList.remove(at: index.item)
         collectionView.deleteItems(at: [index])
         self.updateEmptyViewState(.empty)

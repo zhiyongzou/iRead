@@ -88,6 +88,12 @@ class IRBook: NSObject {
         self.init(withBookMeta: bookMeta)
     }
     
+#if DEBUG
+    deinit {
+        IRDebugLog("")
+    }
+#endif
+    
     func findChapterIndexByTocReference(_ reference: FRTocReference) -> Int {
         var chapterIndex = 0
         for item in bookMeta.spine.spineReferences {
@@ -243,6 +249,10 @@ extension IRBook {
                 self.finishParse(chapterList: resultList as Array)
             }
         }
+    }
+    
+    func cancleAllParse() {
+        parseQueue.cancelAllOperations()
     }
     
     func parseBookMeta() {

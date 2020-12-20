@@ -49,25 +49,6 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
             return
         }
         initOnceAfterViewDidAppear = true
-        self.updateReadPageSzie()
-        IRReaderConfig.initReaderConfig()
-    }
-    
-    func updateReadPageSzie() {
-        
-        var safeInsets = UIEdgeInsets.zero
-        if #available(iOS 11.0, *) {
-            safeInsets = self.view.safeAreaInsets
-        }
-        
-        if safeInsets.bottom == 0 || safeInsets.top == 0 {
-            safeInsets = UIEdgeInsets.init(top: 30, left: 0, bottom: 30, right: 0)
-        }
-        
-        let width = self.view.width - IRReaderConfig.horizontalSpacing * 2
-        let height = self.view.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
-        let maxSize: CGFloat = 1000
-        IRReaderConfig.pageSzie = CGSize.init(width: min(maxSize, width), height: min(maxSize, height))
     }
     
     func commonInit() {

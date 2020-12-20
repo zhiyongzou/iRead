@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var rootViewController: IRNavigationController!
     
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
         setupDebugConfig()
@@ -69,6 +68,24 @@ extension AppDelegate {
         rootViewController = IRNavigationController.init(rootViewController: mainVC)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
+        self.initReadConfig()
+    }
+    
+    func initReadConfig() {
+        var safeInsets = UIEdgeInsets.zero
+        if #available(iOS 11.0, *) {
+            safeInsets = self.window!.safeAreaInsets
+        }
+        
+        if safeInsets.bottom == 0 || safeInsets.top == 0 {
+            safeInsets = UIEdgeInsets.init(top: 30, left: 0, bottom: 30, right: 0)
+        }
+        
+        let width = self.window!.width - IRReaderConfig.horizontalSpacing * 2
+        let height = self.window!.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
+        let maxSize: CGFloat = 1000
+        IRReaderConfig.pageSzie = CGSize.init(width: min(maxSize, width), height: min(maxSize, height))
+        IRReaderConfig.initReaderConfig()
     }
     
     func addEpubBookByShareUrl(_ url: URL) {

@@ -21,7 +21,8 @@ class IRActivityItemProvider: UIActivityItemProvider {
     
     init(shareUrl: URL) {
         originalshareUrl = shareUrl
-        self.shareUrl = URL.init(fileURLWithPath: IRCachesDirectoryPath + "/" + shareUrl.lastPathComponent)
+        // iPhone下 Library/Caches 作为压缩输出路径会有问题，模拟器是OK的。暂时未找原因😅
+        self.shareUrl = URL.init(fileURLWithPath: IRFileManager.bookSharePath + shareUrl.lastPathComponent)
         super.init(placeholderItem: self.shareUrl)
     }
     

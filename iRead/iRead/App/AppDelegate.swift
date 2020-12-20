@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 import IRCommonLib
 
 @UIApplicationMain
@@ -52,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        IRFileManager.shared.addEpubBookByShareUrl(url)
+        self.addEpubBookByShareUrl(url)
         return true
     }
 }
@@ -68,6 +69,30 @@ extension AppDelegate {
         rootViewController = IRNavigationController.init(rootViewController: mainVC)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
+    }
+    
+    func addEpubBookByShareUrl(_ url: URL) {
+        let indicatorView = UIActivityIndicatorView.init(style: .gray)
+        indicatorView.hidesWhenStopped = true
+        indicatorView.startAnimating()
+        indicatorView.frame = CGRect.init(x: 0, y: 0, width: 50, height: 50)
+        HUD.show(.customView(view: indicatorView))
+        IRFileManager.shared.addEpubBookByShareUrl(url) { bookPath, success in
+            defer {
+                HUD.hide()
+            }
+            guard let bookPath = bookPath, success else {
+                return
+            }
+            if let topViewController = self.rootViewController.topViewController {
+                if topViewController.isMember(of: IRReaderCenterViewController.self) {
+                    topViewController.navigationController?.popViewController(animated: false)
+                }
+            }
+            
+            let readerCenter = IRReaderCenterViewController.init(withPath: bookPath)
+            self.rootViewController.pushViewController(readerCenter, animated: true)
+        }
     }
 }
 

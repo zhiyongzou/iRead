@@ -17,6 +17,12 @@ class IRBookModel: NSObject {
     var bookPath: String
     lazy var insertTime: TimeInterval = NSDate().timeIntervalSince1970
     
+    var fullPath: String {
+        get {
+            return IRFileManager.bookUnzipPath + "/" + bookPath
+        }
+    }
+    
     init(with bookName: String, path: String) {
         self.bookName = bookName
         self.bookPath = path

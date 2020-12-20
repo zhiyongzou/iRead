@@ -115,7 +115,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             } else {
                 DispatchQueue.main.async {
                     self.loadingView?.stopAnimating()
-                    PKHUD.sharedHUD.dimsBackground = false
+                    HUD.dimsBackground = false
                     HUD.flash(.label("解析失败了，看看其他书吧～"), delay: 1) { _ in
                         self.navigationController?.popViewController(animated: true)
                     }

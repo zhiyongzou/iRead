@@ -67,7 +67,7 @@ class IRFileManager: NSObject {
         IRDebugLog("")
     }
     
-    func addEpubBookByShareUrl(_ url: URL) {
+    func addEpubBookByShareUrl(_ url: URL, completion: @escaping (_ bookPath: String?, _ success: Bool) -> Void) {
         // System-Declared Uniform Type Identifiers: https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
         let isEpub = url.isFileURL && url.pathExtension == IRFileType.Epub.rawValue
         if !isEpub { return }
@@ -77,26 +77,42 @@ class IRFileManager: NSObject {
                 self.deleteAirDropFileContents()
             }
             
-            let lastPathComponent = url.lastPathComponent
+            let bookPath = url.lastPathComponent
+            let fullPath = IRFileManager.bookUnzipPath + "/" + bookPath
             // filter duplicate file which shared by Airdrop if needed
-            if let airdropFlagIdx = lastPathComponent.lastIndex(of: "-") {
-                let bookName = String(lastPathComponent[..<airdropFlagIdx]) + "." + IRFileType.Epub.rawValue
+            if let airdropFlagIdx = bookPath.lastIndex(of: "-") {
+                let bookName = String(bookPath[..<airdropFlagIdx]) + "." + IRFileType.Epub.rawValue
                 if FileManager.default.fileExists(atPath: IRFileManager.bookUnzipPath + "/" + bookName) {
                     IRDebugLog("Duplicate file \(bookName)")
+                    DispatchQueue.main.async {
+                        completion(fullPath, true)
+                    }
                     return
                 }
             }
             
-            let toPath = IRFileManager.bookUnzipPath + "/" + lastPathComponent
-            if FileManager.default.fileExists(atPath: toPath) {
-                IRDebugLog("Exist file \(lastPathComponent)")
+            if FileManager.default.fileExists(atPath: fullPath) {
+                IRDebugLog("Exist file \(bookPath)")
+                DispatchQueue.main.async {
+                    completion(fullPath, true)
+                }
                 return
             }
             
             // 注意：不要使用 url.absoluteString，否则会报下面错误： couldn’t be moved to “tmp” because either the former doesn't exist, or the folder containing the latter doesn't exist
-            SSZipArchive.unzipFile(atPath: url.path, toDestination: toPath)
+            let epubParser: FREpubParser = FREpubParser()
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: url.path, unzipPath: IRFileManager.bookUnzipPath) else {
+                IRDebugLog("Import failed")
+                DispatchQueue.main.async {
+                    completion(nil, false)
+                }
+                return
+            }
+            let book = IRBookModel.model(with: bookMeta, path: bookPath)
+            IRBookshelfManager.insertBook(book)
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Notification.IRImportEpubBookNotification, object: toPath)
+                completion(fullPath, true)
+                NotificationCenter.default.post(name: Notification.IRImportEpubBookNotification, object: bookPath)
             }
         }
     }

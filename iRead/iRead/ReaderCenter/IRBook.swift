@@ -158,10 +158,10 @@ extension IRBook {
     }
     
     func loadBookmarkList() {
-        parseQueue.addOperation {
-            IRBookmarkManager.loadBookmarkList(withBookName: self.bookName) {list, error in
+        DispatchQueue.global().async { [weak self] in
+            IRBookmarkManager.loadBookmarkList(withBookName: self?.bookName) {list, error in
                 DispatchQueue.main.async {
-                    self.handleBookmarkList(list, error: error)
+                    self?.handleBookmarkList(list, error: error)
                 }
             }
         }

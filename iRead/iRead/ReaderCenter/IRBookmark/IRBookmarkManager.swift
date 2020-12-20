@@ -83,7 +83,8 @@ class IRBookmarkManager: NSObject {
 // MARK: Public
 extension IRBookmarkManager {
     
-    class func loadBookmarkList(withBookName name: String, completion: ([IRBookmarkModel]?, Error?) -> Void) {
+    class func loadBookmarkList(withBookName name: String?, completion: ([IRBookmarkModel]?, Error?) -> Void) {
+        guard let name = name else { return }
         let tableName = self.tableName(withBookName: name)
         self.creatBookmarkTableIfNeeded(withName: tableName)
         let sql = "SELECT * FROM \(tableName)"

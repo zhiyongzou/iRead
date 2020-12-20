@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, IRBookCellDelegate {
+class IRBookshelfViewController: IRBaseViewcontroller {
     
     var collectionView: UICollectionView!
     var emptyView: IREmptyView?
@@ -111,8 +111,11 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
             emptyView?.isHidden = true
         }
     }
+}
+
+// MARK: - IRBookCellDelegate
+extension IRBookshelfViewController: IRBookCellDelegate {
     
-    // MARK: - IRBookCellDelegate
     func bookCellDidClickOptionButton(_ cell: IRBookCell) {
         guard let bookModel = cell.bookModel else { return }
         let bookFullPath = bookModel.fullPath
@@ -131,7 +134,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         let cellIndex = collectionView.indexPath(for: cell)
         activityVC.completionWithItemsHandler = { (type: UIActivity.ActivityType?, finish: Bool, items: [Any]?, error: Error?) in
             if type == UIActivity.ActivityType.delete {
-                self.deleteBook(at: cellIndex, bookPath: bookFullPath)
+                self.showDeleteAlert(with: bookFullPath, at: cellIndex)
             }
         }
         let popover = activityVC.popoverPresentationController
@@ -155,7 +158,21 @@ class IRBookshelfViewController: IRBaseViewcontroller, UICollectionViewDelegateF
         }
     }
     
-    // MARK: - UICollectionView
+    func showDeleteAlert(with bookPath: String, at index: IndexPath?) {
+        let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertVC.view.tintColor = .black
+        let delete = UIAlertAction.init(title: "删除", style: .destructive) { (action) in
+            self.deleteBook(at: index, bookPath: bookPath)
+        }
+        let cancle = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
+        alertVC.addAction(delete)
+        alertVC.addAction(cancle)
+        self.present(alertVC, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UICollectionView
+extension IRBookshelfViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return bookList.count

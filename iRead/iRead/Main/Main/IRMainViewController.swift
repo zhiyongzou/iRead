@@ -24,7 +24,7 @@ enum IRTabBarName: String {
 class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
 
     var initOnceAfterViewDidAppear = false
-    
+    lazy var bookshelfVC = IRBookshelfViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +93,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         case IRTabBarIndex.home.rawValue:
             vc = IRHomeViewController()
         case IRTabBarIndex.bookshelf.rawValue:
-            vc = IRBookshelfViewController()
+            vc = bookshelfVC
         case IRTabBarIndex.mine.rawValue:
             vc = IRExploreViewController()
         default:

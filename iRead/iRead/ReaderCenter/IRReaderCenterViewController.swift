@@ -11,8 +11,13 @@ import IRCommonLib
 import SnapKit
 import PKHUD
 
+protocol IRReaderCenterDelegate: NSObjectProtocol {
+    func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) -> Void
+}
+
 class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDelegate {
     
+    weak var delegate: IRReaderCenterDelegate?
     var shouldHideStatusBar = true
     var bookPath: String
     var book: IRBook!
@@ -73,15 +78,9 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        if let book = book {
+        if book != nil {
             self.saveReadingRecord()
-            if let pageModel = currentReadingVC.pageModel {
-                let currentChapter = book.chapter(at: pageModel.chapterIdx)
-                if let pageOffset = currentChapter.pageOffset {
-                    let progress: Int = Int(CGFloat((pageModel.pageIdx + pageOffset + 1)) / CGFloat(book.pageCount) * 100)
-                    IRBookshelfManager.updateBookPregress(progress, bookPath: bookPath.lastPathComponent)
-                }
-            }
+            self.updateBookReadingProgress()
         }
     }
 
@@ -103,6 +102,15 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     }
     
     //MARK: - Private
+    
+    func updateBookReadingProgress() {
+        guard let pageModel = currentReadingVC.pageModel else { return }
+        let currentChapter = book.chapter(at: pageModel.chapterIdx)
+        guard let pageOffset = currentChapter.pageOffset else { return }
+        let progress: Int = Int(CGFloat((pageModel.pageIdx + pageOffset + 1)) / CGFloat(book.pageCount) * 100)
+        IRBookshelfManager.updateBookPregress(progress, bookPath: bookPath.lastPathComponent)
+        self.delegate?.readerCenter(didUpdateReadingProgress: progress, bookPath: bookPath.lastPathComponent)
+    }
     
     func setupLoadingView() {
         let loadingView = UIActivityIndicatorView.init(style: .gray)

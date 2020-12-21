@@ -108,6 +108,32 @@ class IRBookCell: UICollectionViewCell {
         self.delegate?.bookCellDidClickOptionButton(self)
     }
     
+    func updateProgressLabelText() {
+        var textColor: UIColor?
+        var bgColor: UIColor?
+        var cornerRadius: CGFloat = 0
+        var textAlignment: NSTextAlignment?
+        if let progress = bookModel?.progress {
+            if progress <= 0 {
+                progressLabel.text = "新增"
+                bgColor = UIColor.rgba(255, 156, 0, 1)
+                textAlignment = .center
+                textColor = .white
+                cornerRadius = pogressH * 0.5
+            } else if progress >= 100 {
+                progressLabel.text = "已读完"
+            } else {
+                progressLabel.text = "\(progress)%"
+            }
+        } else {
+            progressLabel.text = ""
+        }
+        progressLabel.textColor = textColor ?? UIColor.hexColor("666666")
+        progressLabel.textAlignment = textAlignment ?? .left
+        progressLabel.layer.cornerRadius = cornerRadius
+        progressLabel.backgroundColor = bgColor ?? UIColor.clear
+    }
+    
     // MARK: - Public
     
     public class func cellHeightWithWidth(_ width: CGFloat) -> CGFloat {
@@ -115,32 +141,9 @@ class IRBookCell: UICollectionViewCell {
     }
     
     public var bookModel: IRBookModel? {
-        willSet {
-            bookCoverView.image = newValue?.coverImage
-            
-            var textColor: UIColor?
-            var bgColor: UIColor?
-            var cornerRadius: CGFloat = 0
-            var textAlignment: NSTextAlignment?
-            if let progress = newValue?.progress {
-                if progress <= 0 {
-                    progressLabel.text = "新增"
-                    bgColor = UIColor.rgba(255, 156, 0, 1)
-                    textAlignment = .center
-                    textColor = .white
-                    cornerRadius = pogressH * 0.5
-                } else if progress >= 100 {
-                    progressLabel.text = "已读完"
-                } else {
-                    progressLabel.text = "\(progress)%"
-                }
-            } else {
-                progressLabel.text = ""
-            }
-            progressLabel.textColor = textColor ?? UIColor.hexColor("666666")
-            progressLabel.textAlignment = textAlignment ?? .left
-            progressLabel.layer.cornerRadius = cornerRadius
-            progressLabel.backgroundColor = bgColor ?? UIColor.clear
+        didSet {
+            bookCoverView.image = bookModel?.coverImage
+            self.updateProgressLabelText()
         }
     }
 }

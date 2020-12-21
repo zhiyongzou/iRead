@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var rootViewController: IRNavigationController!
+    lazy var mainViewController = IRMainViewController()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
@@ -63,9 +64,8 @@ extension AppDelegate {
     func setupMainViewController() {
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = .black
-        let mainVC = IRMainViewController()
-        mainVC.view.backgroundColor = .white
-        rootViewController = IRNavigationController.init(rootViewController: mainVC)
+        mainViewController.view.backgroundColor = .white
+        rootViewController = IRNavigationController.init(rootViewController: mainViewController)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
         self.initReadConfig()
@@ -108,6 +108,7 @@ extension AppDelegate {
             }
             
             let readerCenter = IRReaderCenterViewController.init(withPath: bookPath)
+            readerCenter.delegate = self.mainViewController.bookshelfVC
             self.rootViewController.pushViewController(readerCenter, animated: true)
         }
     }

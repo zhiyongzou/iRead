@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRBookshelfViewController: IRBaseViewcontroller {
+class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     var collectionView: UICollectionView!
     var emptyView: IREmptyView?
@@ -56,6 +56,17 @@ class IRBookshelfViewController: IRBaseViewcontroller {
         let book = IRBookModel.model(with: bookMeta, path: bookPath)
         bookList.insert(book, at: 0)
         collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
+    }
+    
+    // MARK: - IRReaderCenterDelegate
+    func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) {
+        for bookModel in bookList {
+            if bookModel.bookPath == bookPath {
+                bookModel.progress = progress
+                break
+            }
+        }
+        collectionView.reloadData()
     }
     
     // MARK: - Private
@@ -197,6 +208,7 @@ extension IRBookshelfViewController: UICollectionViewDelegateFlowLayout, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let book = bookList[indexPath.item]
         let readerCenter = IRReaderCenterViewController.init(withPath: book.fullPath)
+        readerCenter.delegate = self
         self.navigationController?.pushViewController(readerCenter, animated: true)
     }
 }

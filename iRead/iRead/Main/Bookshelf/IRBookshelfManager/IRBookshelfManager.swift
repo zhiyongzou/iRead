@@ -69,6 +69,18 @@ class IRBookshelfManager: NSObject {
         IRDBManager.shared.close()
     }
     
+    class func updateBookPregress(_ progress: Int, bookPath: String) {
+        self.creatBookshelfTableIfNeeded()
+        let sql = "UPDATE \(kTableName) SET \(kProgress) = ? WHERE \(kBookPath) = ?"
+        let success = IRDBManager.shared.executeUpdate(sql, values: [progress, bookPath])
+        if !success {
+            IRDebugLog("Update failed")
+        } else {
+            IRDebugLog("Update succeed")
+        }
+        IRDBManager.shared.close()
+    }
+    
     class func loadBookList(completion: ([IRBookModel]?, Error?) -> Void) {
         self.creatBookshelfTableIfNeeded()
         let sql = "SELECT * FROM \(kTableName) ORDER BY \(kInsertTime) DESC"
@@ -81,7 +93,7 @@ class IRBookshelfManager: NSObject {
                     book.coverImage = UIImage.init(data: imgData)
                 }
                 book.insertTime = Double(resultSet.int(forColumn: kInsertTime))
-                book.progress = CGFloat(resultSet.int(forColumn: kProgress))
+                book.progress = Int(resultSet.int(forColumn: kProgress))
                 bookList.append(book)
             }
             completion(bookList, nil)

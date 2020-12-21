@@ -20,6 +20,7 @@ protocol IRBookCellDelegate: AnyObject {
 
 class IRBookCell: UICollectionViewCell {
     
+    let pogressH: CGFloat = 20
     var bookCoverView = UIImageView()
     var bookCoverShadow = UIView()
     var progressLabel = UILabel()
@@ -67,8 +68,9 @@ class IRBookCell: UICollectionViewCell {
         bookCoverView.frame = CGRect(x: coverX, y: coverY, width: coverW, height: coverH)
         bookCoverShadow.frame = bookCoverView.frame
         
-        let progressY = bookCoverView.frame.maxY
-        progressLabel.frame = CGRect(x: 0, y: progressY, width: 60, height: bookCellBottomHeight)
+        let progressY = bookCoverView.frame.maxY + (bookCellBottomHeight - pogressH) * 0.5
+        let progressW = ((progressLabel.text ?? "") as NSString).size(withAttributes: [.font: progressLabel.font!]).width + 12
+        progressLabel.frame = CGRect(x: 0, y: progressY, width: progressW, height: pogressH)
         let optionBtnW: CGFloat = 30
         optionButton.frame = CGRect(x: self.width - optionBtnW, y: progressY, width: optionBtnW, height: bookCellBottomHeight)
     }
@@ -91,8 +93,7 @@ class IRBookCell: UICollectionViewCell {
         bookCoverView.layer.cornerRadius = cornerRadius
         contentView.addSubview(bookCoverView)
 
-        progressLabel.text = "\(arc4random()%99)%"
-        progressLabel.textColor = UIColor.hexColor("666666")
+        progressLabel.layer.masksToBounds = true
         progressLabel.font = UIFont.systemFont(ofSize: 13)
         progressLabel.textAlignment = .left
         contentView.addSubview(progressLabel)
@@ -116,6 +117,30 @@ class IRBookCell: UICollectionViewCell {
     public var bookModel: IRBookModel? {
         willSet {
             bookCoverView.image = newValue?.coverImage
+            
+            var textColor: UIColor?
+            var bgColor: UIColor?
+            var cornerRadius: CGFloat = 0
+            var textAlignment: NSTextAlignment?
+            if let progress = newValue?.progress {
+                if progress <= 0 {
+                    progressLabel.text = "新增"
+                    bgColor = UIColor.rgba(255, 156, 0, 1)
+                    textAlignment = .center
+                    textColor = .white
+                    cornerRadius = pogressH * 0.5
+                } else if progress >= 100 {
+                    progressLabel.text = "已读完"
+                } else {
+                    progressLabel.text = "\(progress)%"
+                }
+            } else {
+                progressLabel.text = ""
+            }
+            progressLabel.textColor = textColor ?? UIColor.hexColor("666666")
+            progressLabel.textAlignment = textAlignment ?? .left
+            progressLabel.layer.cornerRadius = cornerRadius
+            progressLabel.backgroundColor = bgColor ?? UIColor.clear
         }
     }
 }

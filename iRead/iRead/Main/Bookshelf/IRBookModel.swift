@@ -13,7 +13,7 @@ class IRBookModel: NSObject {
     
     var coverImage: UIImage?
     var bookName: String
-    var progress: CGFloat = 0
+    var progress: Int = 0
     var bookPath: String
     lazy var insertTime: TimeInterval = NSDate().timeIntervalSince1970
     

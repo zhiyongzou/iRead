@@ -47,6 +47,12 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        if let book = book {
+            book.cancleAllParse()
+        }
+    }
+    
     //MARK: - Override
     
     override func viewDidLoad() {
@@ -69,7 +75,13 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         if let book = book {
             self.saveReadingRecord()
-            book.cancleAllParse()
+            if let pageModel = currentReadingVC.pageModel {
+                let currentChapter = book.chapter(at: pageModel.chapterIdx)
+                if let pageOffset = currentChapter.pageOffset {
+                    let progress: Int = Int(CGFloat((pageModel.pageIdx + pageOffset + 1)) / CGFloat(book.pageCount) * 100)
+                    IRBookshelfManager.updateBookPregress(progress, bookPath: bookPath.lastPathComponent)
+                }
+            }
         }
     }
 

@@ -15,13 +15,13 @@ iRead is an EPUB reader for iOS written in Swift.
 - [x] Reading Record
 - [x] Bookmark
 - [x] AirDrop File Sharing
+- [x] Book sharing 
+- [x] Bookshelf
 - [ ] Upload book by wifi
 - [ ] Reading Notes
 - [ ] Reading Goal
-- [ ] Bookshelf Edit/Delete/Sort
-- [ ] Bookshelf
 - [ ] Home
-- [ ] Mine
+- [ ] Explore
 
 ## Snapshot
 ![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot1.png)

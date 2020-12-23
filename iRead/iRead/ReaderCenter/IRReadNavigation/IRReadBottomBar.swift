@@ -120,7 +120,7 @@ class IRReadBottomBar: UIView {
         readSlider.minimumTrackTintColor = UIColor.clear
         readSlider.maximumTrackTintColor = UIColor.clear
         readSlider.touchPointOffset = 8
-        readSlider.setThumbImage(UIImage.init(named: "slider_thumb")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        readSlider.setThumbImage(UIImage.init(named: "slider_thumb")?.template, for: .normal)
         readSlider.addTarget(self, action: #selector(eadSliderValueDidChange(_:)), for: .valueChanged)
         readSlider.addTarget(self, action: #selector(readSliderValueDidEndChange(_:)), for: .touchUpInside)
         self.addSubview(readSlider)

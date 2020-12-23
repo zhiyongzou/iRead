@@ -87,7 +87,7 @@ class IRFontSelectCell: UICollectionViewCell, IRFontDownloadDelegate {
             return
         }
         
-        selectView = UIImageView.init(image: UIImage.init(named: "font_select")?.withRenderingMode(.alwaysTemplate))
+        selectView = UIImageView.init(image: UIImage.init(named: "font_select")?.template)
         selectView?.contentMode = .scaleAspectFit
         contentView.addSubview(selectView!)
         selectView!.snp.makeConstraints { (make) -> Void in
@@ -104,7 +104,7 @@ class IRFontSelectCell: UICollectionViewCell, IRFontDownloadDelegate {
         }
         
         downloadBtn = UIButton.init(type: .custom)
-        downloadBtn?.setImage(UIImage.init(named: "font_download")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        downloadBtn?.setImage(UIImage.init(named: "font_download")?.template, for: .normal)
         downloadBtn?.addTarget(self, action: #selector(didClickDownloadButton), for: .touchUpInside)
         contentView.addSubview(downloadBtn!)
         downloadBtn!.snp.makeConstraints { (make) -> Void in

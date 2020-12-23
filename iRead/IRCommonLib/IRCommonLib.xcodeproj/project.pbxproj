@@ -25,6 +25,7 @@
 		817A2C02247E6EC9007C5EF7 /* FRTocReference.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817A2BE7247E6914007C5EF7 /* FRTocReference.swift */; };
 		817A2C03247E6EC9007C5EF7 /* FRResources.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817A2BEC247E6914007C5EF7 /* FRResources.swift */; };
 		817A2C04247E6EC9007C5EF7 /* FRResource.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817A2BED247E6914007C5EF7 /* FRResource.swift */; };
+		81AEAEED2593308600AADC45 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEAEEC2593308600AADC45 /* UIImage+Extensions.swift */; };
 		81B7E1D8251CBD1900E84A37 /* IRBaseViewcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1D7251CBD1900E84A37 /* IRBaseViewcontroller.swift */; };
 		81B7E1DD251CC1A700E84A37 /* IRCommonUtilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1DC251CC1A700E84A37 /* IRCommonUtilites.swift */; };
 		81B7E1EA251DE9BA00E84A37 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */; };
@@ -69,6 +70,7 @@
 		817A2BEE247E6914007C5EF7 /* FRMediaType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRMediaType.swift; sourceTree = "<group>"; };
 		817A2BEF247E6914007C5EF7 /* FRSmilElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRSmilElement.swift; sourceTree = "<group>"; };
 		817A2BF0247E6914007C5EF7 /* FRMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FRMetadata.swift; sourceTree = "<group>"; };
+		81AEAEEC2593308600AADC45 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		81B7E1D7251CBD1900E84A37 /* IRBaseViewcontroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBaseViewcontroller.swift; sourceTree = "<group>"; };
 		81B7E1DC251CC1A700E84A37 /* IRCommonUtilites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRCommonUtilites.swift; sourceTree = "<group>"; };
 		81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				81B7E1E9251DE9BA00E84A37 /* UIColor+Extensions.swift */,
 				81B7E1EB251DF19B00E84A37 /* UIView+Extensions.swift */,
 				81FBDC16256D3E59009D7D02 /* String+Extensions.swift */,
+				81AEAEEC2593308600AADC45 /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				81B7E1EC251DF19B00E84A37 /* UIView+Extensions.swift in Sources */,
 				817A2BF2247E6914007C5EF7 /* FRParseError.swift in Sources */,
 				817A2BF1247E6914007C5EF7 /* FREpubParser.swift in Sources */,
+				81AEAEED2593308600AADC45 /* UIImage+Extensions.swift in Sources */,
 				817A2BF5247E6914007C5EF7 /* FRSpine.swift in Sources */,
 				817A2BF4247E6914007C5EF7 /* FRStringExtension.swift in Sources */,
 				81B7E1EA251DE9BA00E84A37 /* UIColor+Extensions.swift in Sources */,

@@ -45,7 +45,7 @@ class IRReadNavigationBar: UIView {
     func setupSubviews() {
         
         backButton = UIButton.init(type: .custom)
-        backButton.setImage(UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        backButton.setImage(UIImage.init(named: "arrow_back")?.template, for: .normal)
         backButton.addTarget(self, action: #selector(didClickBackButton), for: .touchUpInside)
         self.addSubview(backButton)
         backButton.snp.makeConstraints { (make) -> Void in
@@ -55,7 +55,7 @@ class IRReadNavigationBar: UIView {
         }
         
         chapterList = UIButton.init(type: .custom)
-        chapterList.setImage(UIImage.init(named: "bar_chapter_list")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        chapterList.setImage(UIImage.init(named: "bar_chapter_list")?.template, for: .normal)
         chapterList.addTarget(self, action: #selector(didClickChapterListButton), for: .touchUpInside)
         self.addSubview(chapterList)
         chapterList.snp.makeConstraints { (make) -> Void in
@@ -65,7 +65,7 @@ class IRReadNavigationBar: UIView {
         }
         
         bookmark = UIButton.init(type: .custom)
-        bookmark.setImage(UIImage.init(named: "read_setting_bookmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        bookmark.setImage(UIImage.init(named: "read_setting_bookmark")?.template, for: .normal)
         bookmark.setImage(UIImage.init(named: "bookmark"), for: .selected)
         bookmark.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
         self.addSubview(bookmark)
@@ -76,7 +76,7 @@ class IRReadNavigationBar: UIView {
         }
         
         readSetting = UIButton.init(type: .custom)
-        readSetting.setImage(UIImage.init(named: "bar_read_setting")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        readSetting.setImage(UIImage.init(named: "bar_read_setting")?.template, for: .normal)
         readSetting.addTarget(self, action: #selector(didClickReadSettingButton), for: .touchUpInside)
         self.addSubview(readSetting)
         readSetting.snp.makeConstraints { (make) -> Void in

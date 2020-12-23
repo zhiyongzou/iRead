@@ -63,7 +63,7 @@ class IRFontSelectView: UIView, UICollectionViewDataSource, UICollectionViewDele
     
     private func setupSubviews() {
         
-        backButton.setImage(UIImage.init(named: "arrow_back")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        backButton.setImage(UIImage.init(named: "arrow_back")?.template, for: .normal)
         backButton.addTarget(self, action: #selector(didClickBackButton), for: .touchUpInside)
         self.addSubview(backButton)
         backButton.snp.makeConstraints { (make) -> Void in

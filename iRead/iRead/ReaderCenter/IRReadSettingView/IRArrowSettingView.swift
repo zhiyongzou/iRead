@@ -74,7 +74,7 @@ class IRArrowSettingView: UIView {
             make.centerY.equalTo(self)
         }
         
-        arrowView.image = UIImage.init(named: "arrow_grey_right")?.withRenderingMode(.alwaysTemplate)
+        arrowView.image = UIImage.init(named: "arrow_grey_right")?.template
         arrowView.tintColor = UIColor.hexColor("BABABA")
         self.addSubview(arrowView)
         arrowView.snp.makeConstraints { (make) in

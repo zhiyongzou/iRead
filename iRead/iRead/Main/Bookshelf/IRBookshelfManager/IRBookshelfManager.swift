@@ -46,7 +46,7 @@ class IRBookshelfManager: NSObject {
     class func insertBook(_ book: IRBookModel) {
         self.creatBookshelfTableIfNeeded()
         let sql = "INSERT INTO \(kTableName)" + "(\(kCoverImage), \(kBookName), \(kInsertTime), \(kProgress), \(kBookPath))" + "VALUES (?,?,?,?,?)"
-        let imgData = book.coverImage?.jpegData(compressionQuality: 0.8)
+        let imgData = book.coverImage?.jpegData(compressionQuality: 0.9)
         let values: [Any] = [imgData ?? NSNull(), book.bookName, book.insertTime, book.progress, book.bookPath]
         let success = IRDBManager.shared.executeUpdate(sql, values: values)
         if !success {

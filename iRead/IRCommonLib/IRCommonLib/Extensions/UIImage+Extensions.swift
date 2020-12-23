@@ -13,4 +13,17 @@ public extension UIImage {
     var template: UIImage {
         return withRenderingMode(.alwaysTemplate)
     }
+    
+    // https://nshipster.com/image-resizing/
+    func scaled(toWidth: CGFloat, scale: CGFloat = UIScreen.main.scale) -> UIImage? {
+        let imgScale = toWidth / size.width
+        let newHeight = size.height * imgScale
+        let newSize = CGSize(width: toWidth, height: newHeight)
+        let format = UIGraphicsImageRendererFormat.init()
+        format.scale = scale
+        let renderer = UIGraphicsImageRenderer(size: newSize, format: format)
+        return renderer.image { (context) in
+            draw(in: CGRect(origin: .zero, size: newSize))
+        }
+    }
 }

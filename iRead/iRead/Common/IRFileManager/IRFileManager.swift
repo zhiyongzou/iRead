@@ -117,7 +117,7 @@ class IRFileManager: NSObject {
                 }
                 return
             }
-            let book = IRBookModel.model(with: bookMeta, path: bookPath)
+            let book = IRBookModel.model(with: bookMeta, path: bookPath, imageMaxWidth: IRScreenWidth * 0.5)
             IRBookshelfManager.insertBook(book)
             DispatchQueue.main.async {
                 completion(fullPath, true)

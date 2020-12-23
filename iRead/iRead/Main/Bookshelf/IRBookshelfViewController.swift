@@ -53,7 +53,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
         let epubParser: FREpubParser = FREpubParser()
         let fullPath = IRFileManager.bookUnzipPath + "/" + bookPath
         guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: fullPath, unzipPath: IRFileManager.bookUnzipPath) else { return }
-        let book = IRBookModel.model(with: bookMeta, path: bookPath)
+        let book = IRBookModel.model(with: bookMeta, path: bookPath, imageMaxWidth: IRScreenWidth * 0.5)
         bookList.insert(book, at: 0)
         collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
     }
@@ -254,7 +254,7 @@ extension IRBookshelfViewController {
         if let bookPath = bookPath {
             guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookPath, unzipPath: IRFileManager.bookUnzipPath) else { return nil}
             let bookPath = name + "." + IRFileType.Epub.rawValue
-            let book = IRBookModel.model(with: bookMeta, path: bookPath)
+            let book = IRBookModel.model(with: bookMeta, path: bookPath, imageMaxWidth: IRScreenWidth * 0.5)
             IRBookshelfManager.asyncInsertBook(book)
             return book
         }

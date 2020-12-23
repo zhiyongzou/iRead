@@ -24,9 +24,9 @@ iRead is an EPUB reader for iOS written in Swift.
 - [ ] Mine
 
 ## Snapshot
+![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot0.png)
 ![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot1.png)
 ![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot2.png)
 ![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot3.png)
-![](https://gitee.com/zhiyongzou/images/raw/master/iRead/ScreenShot4.png)
 
 ## To be continued

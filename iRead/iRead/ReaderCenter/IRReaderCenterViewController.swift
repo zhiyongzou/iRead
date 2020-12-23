@@ -8,12 +8,20 @@
 // Protocol Conformance: https://github.com/raywenderlich/swift-style-guide#protocol-conformance
 
 import IRCommonLib
+import SnapKit
+import PKHUD
+
+protocol IRReaderCenterDelegate: NSObjectProtocol {
+    func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) -> Void
+}
 
 class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDelegate {
     
+    weak var delegate: IRReaderCenterDelegate?
     var shouldHideStatusBar = true
+    var bookPath: String
     var book: IRBook!
-    var pageViewController: IRPageViewController!
+    var pageViewController: IRPageViewController?
     /// 当前阅读页VC
     var currentReadingVC: IRReadPageViewController!
     /// 上一页
@@ -30,15 +38,24 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     var readSettingView: CMPopTipView?
     var chapterTipView: IRChapterTipView?
     
-   
+    var loadingView: UIActivityIndicatorView?
+    
+    
     //MARK: - Init
     
-    convenience init(withBook book:IRBook) {
-        self.init()
-        self.book = book
-        IRReaderConfig.isChinese = book.isChinese
-        book.parseDelegate = self
-        book.parseBookMeta()
+    init(withPath path:String) {
+        self.bookPath = path
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        if let book = book {
+            book.cancleAllParse()
+        }
     }
     
     //MARK: - Override
@@ -47,7 +64,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         super.viewDidLoad()
         self.view.backgroundColor = IRReaderConfig.pageColor
         self.addNavigateTapGesture()
-        self.setupReadingRecord()
+        self.setupLoadingView()
+        self.parseBook()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,7 +78,10 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.saveReadingRecord()
+        if book != nil {
+            self.saveReadingRecord()
+            self.updateBookReadingProgress()
+        }
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -77,10 +98,61 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        pageViewController.view.frame = self.view.bounds
+        pageViewController?.view.frame = self.view.bounds
     }
     
     //MARK: - Private
+    
+    func updateBookReadingProgress() {
+        guard let pageModel = currentReadingVC.pageModel else { return }
+        let currentChapter = book.chapter(at: pageModel.chapterIdx)
+        guard let pageOffset = currentChapter.pageOffset else { return }
+        let progress: Int = Int(CGFloat((pageModel.pageIdx + pageOffset + 1)) / CGFloat(book.pageCount) * 100)
+        self.delegate?.readerCenter(didUpdateReadingProgress: progress, bookPath: bookPath.lastPathComponent)
+    }
+    
+    func setupLoadingView() {
+        let loadingView = UIActivityIndicatorView.init(style: .gray)
+        loadingView.hidesWhenStopped = true
+        loadingView.color = .lightGray
+        self.view.addSubview(loadingView)
+        self.loadingView = loadingView
+        loadingView.snp.makeConstraints { (make) in
+            make.center.equalTo(self.view)
+        }
+    }
+    
+    func parseBook() {
+        self.loadingView?.isHidden = false
+        self.loadingView?.startAnimating()
+        self.view.isUserInteractionEnabled = false
+        DispatchQueue.global().async {
+            if let bookMeta = try? FREpubParser().readEpub(epubPath: self.bookPath, unzipPath: IRFileManager.bookUnzipPath) {
+                DispatchQueue.main.async {
+                    self.handleBook(IRBook.init(bookMeta))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.loadingView?.stopAnimating()
+                    HUD.dimsBackground = false
+                    HUD.flash(.label("解析失败了，看看其他书吧～"), delay: 1) { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    func handleBook(_ book: IRBook) {
+        self.view.isUserInteractionEnabled = true
+        self.loadingView?.isHidden = true
+        self.book = book
+        IRReaderConfig.isChinese = book.isChinese
+        book.parseDelegate = self
+        book.loadBookmarkList()
+        book.parseBookMeta()
+        self.setupReadingRecord()
+    }
     
     func updateReadNavigationBarDispalyState(animated: Bool) {
         self.addNavigationContentViewIfNeeded()
@@ -132,7 +204,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         if #available(iOS 11.0, *) {
             safe = self.view.safeAreaInsets
         }
-        if safe == UIEdgeInsets.zero {
+        if safe.top <= 0 || safe.bottom <= 0 {
             safe = UIEdgeInsets.init(top: 20, left: 0, bottom: 20, right: 0)
         }
         let width = readNavigationContentView!.width
@@ -160,20 +232,20 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         
         if IRReaderConfig.transitionStyle == .pageCurl {
             pageViewController = IRPageViewController.init(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
-            pageViewController.isDoubleSided = true
+            pageViewController?.isDoubleSided = true
             beforePageVC = nil
         } else {
             pageViewController = IRPageViewController.init(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         }
         
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
-        self.addChild(pageViewController)
-        pageViewController.didMove(toParent: self)
+        pageViewController?.delegate = self
+        pageViewController?.dataSource = self
+        self.addChild(pageViewController!)
+        pageViewController?.didMove(toParent: self)
         if readNavigationContentView != nil {
-            self.view.insertSubview(pageViewController.view, belowSubview: readNavigationContentView!)
+            self.view.insertSubview(pageViewController!.view, belowSubview: readNavigationContentView!)
         } else {
-            self.view.addSubview(pageViewController.view)
+            self.view.addSubview(pageViewController!.view)
         }
         
         if currentReadingVC == nil {
@@ -187,7 +259,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             currentReadingVC.pageModel = pageModel
         }
         
-        pageViewController.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
+        pageViewController!.setViewControllers([currentReadingVC], direction: .forward, animated: false, completion: nil)
     }
     
     func previousPageModel(withReadVC readVc: IRReadPageViewController) -> IRBookPage? {
@@ -254,7 +326,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     }
     
     func saveReadingRecord() {
-        guard let pageModel = currentReadingVC.pageModel else { return }
+        guard let pageModel = self.currentReadingVC?.pageModel else { return }
         if readingRecord.chapterIdx == pageModel.chapterIdx && readingRecord.pageIdx == pageModel.pageIdx {
             return
         }
@@ -557,7 +629,7 @@ extension IRReaderCenterViewController: IRReadSettingViewDelegate {
         book.parseBookMeta()
     }
     
-    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChagne newValue: IRTransitionStyle) {
+    func readSettingView(_ view: IRReadSettingView, transitionStyleDidChange newValue: IRTransitionStyle) {
         self.setupPageViewControllerWithPageModel(self.currentReadingVC.pageModel)
     }
     

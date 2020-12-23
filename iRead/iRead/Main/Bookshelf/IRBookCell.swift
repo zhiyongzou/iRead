@@ -14,11 +14,19 @@ let bookCoverScale: CGFloat = 0.72
 /// 底部容器高度
 private let bookCellBottomHeight: CGFloat = 40
 
+protocol IRBookCellDelegate: AnyObject {
+    func bookCellDidClickOptionButton(_ cell: IRBookCell)
+}
+
 class IRBookCell: UICollectionViewCell {
     
-    var bookCoverView: UIImageView!
-    var progressLabel: UILabel!
-    var optionButton: UIButton!
+    let pogressH: CGFloat = 20
+    var bookCoverView = UIImageView()
+    var bookCoverShadow = UIView()
+    var progressLabel = UILabel()
+    var optionButton = UIButton.init(type: .custom)
+    
+    weak var delegate: IRBookCellDelegate?
     
     // MARK: - Override
     
@@ -40,32 +48,90 @@ class IRBookCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.bookCoverView.frame = CGRect.init(x: 0, y: 0, width: self.width, height: self.width / bookCoverScale)
+        var coverH: CGFloat = 0
+        var coverW: CGFloat = 0
+        if let coverImg = bookCoverView.image {
+            let imageScale = coverImg.size.width / coverImg.size.height
+            if imageScale <= bookCoverScale {
+                coverH = self.width / bookCoverScale
+                coverW = coverH * imageScale
+            } else {
+                coverW = self.width
+                coverH = coverW / imageScale
+            }
+        } else {
+            coverH = self.width / bookCoverScale
+            coverW = self.width
+        }
+        let coverX: CGFloat = (self.width - coverW) * 0.5
+        let coverY: CGFloat = self.height - coverH - bookCellBottomHeight
+        bookCoverView.frame = CGRect(x: coverX, y: coverY, width: coverW, height: coverH)
+        bookCoverShadow.frame = bookCoverView.frame
         
-        let progressY = self.bookCoverView.frame.maxY
-        self.progressLabel.frame = CGRect.init(x: 0, y: progressY, width: 60, height: bookCellBottomHeight)
+        let progressY = bookCoverView.frame.maxY + (bookCellBottomHeight - pogressH) * 0.5
+        let progressW = ((progressLabel.text ?? "") as NSString).size(withAttributes: [.font: progressLabel.font!]).width + 12
+        progressLabel.frame = CGRect(x: 0, y: progressY, width: progressW, height: pogressH)
+        let optionBtnW: CGFloat = 30
+        optionButton.frame = CGRect(x: self.width - optionBtnW, y: progressY, width: optionBtnW, height: bookCellBottomHeight)
     }
     
     // MARK: - Private
     
     private func setupSubviews() {
         
-        self.contentView.backgroundColor = UIColor.white
+        contentView.backgroundColor = .white
         
-        bookCoverView = UIImageView()
-        bookCoverView.contentMode = .scaleAspectFit
-#if DEBUG
-        bookCoverView.layer.borderWidth = 1
-        bookCoverView.layer.borderColor = UIColor.randomColor().cgColor
-#endif
-        self.contentView.addSubview(bookCoverView)
+        // https://stackoverflow.com/questions/3690972/why-maskstobounds-yes-prevents-calayer-shadow
+        let cornerRadius: CGFloat = 3
+        bookCoverShadow.backgroundColor = .white
+        bookCoverShadow.layer.cornerRadius = cornerRadius
+        bookCoverShadow.layer.shadowOpacity = 0.25
+        bookCoverShadow.layer.shadowOffset = CGSize.init(width: 0, height: 10)
+        contentView.addSubview(bookCoverShadow)
         
-        progressLabel = UILabel()
-        progressLabel.text = "\(arc4random()%99)%"
-        progressLabel.textColor = UIColor.hexColor("666666")
+        bookCoverView.layer.masksToBounds = true
+        bookCoverView.layer.cornerRadius = cornerRadius
+        contentView.addSubview(bookCoverView)
+
+        progressLabel.layer.masksToBounds = true
         progressLabel.font = UIFont.systemFont(ofSize: 13)
         progressLabel.textAlignment = .left
-        self.contentView.addSubview(progressLabel)
+        contentView.addSubview(progressLabel)
+        
+        optionButton.setImage(UIImage.init(named: "more_icon"), for: .normal)
+        optionButton.contentHorizontalAlignment = .right
+        optionButton.addTarget(self, action: #selector(didClickOptionButton(_:)), for: .touchUpInside)
+        contentView.addSubview(optionButton)
+    }
+    
+    @objc func didClickOptionButton(_ button: UIButton) {
+        self.delegate?.bookCellDidClickOptionButton(self)
+    }
+    
+    func updateProgressLabelText() {
+        var textColor: UIColor?
+        var bgColor: UIColor?
+        var cornerRadius: CGFloat = 0
+        var textAlignment: NSTextAlignment?
+        if let progress = bookModel?.progress {
+            if progress <= 0 {
+                progressLabel.text = "新增"
+                bgColor = UIColor.rgba(255, 156, 0, 1)
+                textAlignment = .center
+                textColor = .white
+                cornerRadius = pogressH * 0.5
+            } else if progress >= 100 {
+                progressLabel.text = "已读完"
+            } else {
+                progressLabel.text = "\(progress)%"
+            }
+        } else {
+            progressLabel.text = ""
+        }
+        progressLabel.textColor = textColor ?? UIColor.hexColor("666666")
+        progressLabel.textAlignment = textAlignment ?? .left
+        progressLabel.layer.cornerRadius = cornerRadius
+        progressLabel.backgroundColor = bgColor ?? UIColor.clear
     }
     
     // MARK: - Public
@@ -74,9 +140,10 @@ class IRBookCell: UICollectionViewCell {
         return width / bookCoverScale + bookCellBottomHeight
     }
     
-    public var bookModel: IRBook? {
-        willSet {
-            bookCoverView.image = newValue?.coverImage
+    public var bookModel: IRBookModel? {
+        didSet {
+            bookCoverView.image = bookModel?.coverImage
+            self.updateProgressLabelText()
         }
     }
 }

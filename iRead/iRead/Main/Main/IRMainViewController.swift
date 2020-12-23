@@ -18,13 +18,13 @@ enum IRTabBarIndex: Int {
 enum IRTabBarName: String {
     case home      = "首页"
     case bookshelf = "书架"
-    case mine      = "我的"
+    case explore   = "探索"
 }
 
 class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
 
     var initOnceAfterViewDidAppear = false
-    
+    lazy var bookshelfVC = IRBookshelfViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,25 +49,6 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
             return
         }
         initOnceAfterViewDidAppear = true
-        self.updateReadPageSzie()
-        IRReaderConfig.initReaderConfig()
-    }
-    
-    func updateReadPageSzie() {
-        
-        var safeInsets = UIEdgeInsets.zero
-        if #available(iOS 11.0, *) {
-            safeInsets = self.view.safeAreaInsets
-        }
-        
-        if safeInsets.bottom == 0 || safeInsets.top == 0 {
-            safeInsets = UIEdgeInsets.init(top: 30, left: 0, bottom: 30, right: 0)
-        }
-        
-        let width = self.view.width - IRReaderConfig.horizontalSpacing * 2
-        let height = self.view.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
-        
-        IRReaderConfig.pageSzie = CGSize.init(width: width, height: height)
     }
     
     func commonInit() {
@@ -78,7 +59,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     func setupTabbarItems() {
         self.tabBar.tintColor = IRAppThemeColor
         
-        let tabbarTitles = [IRTabBarName.home.rawValue, IRTabBarName.bookshelf.rawValue, IRTabBarName.mine.rawValue]
+        let tabbarTitles = [IRTabBarName.home.rawValue, IRTabBarName.bookshelf.rawValue, IRTabBarName.explore.rawValue]
         var childViewControllers = [UIViewController]()
         
         for (index, _) in tabbarTitles.enumerated() {
@@ -94,7 +75,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
             case IRTabBarIndex.bookshelf.rawValue:
                 normalName = "tabbar_bookshelf_n"; selectName = "tabbar_bookshelf_s"
             case IRTabBarIndex.mine.rawValue:
-                normalName = "tabbar_mine_n"; selectName = "tabbar_mine_s"
+                normalName = "tabbar_explore_n"; selectName = "tabbar_explore_s"
             default:
                 IRDebugLog("TabIndex: (\(index)) undefine")
             }
@@ -112,9 +93,9 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         case IRTabBarIndex.home.rawValue:
             vc = IRHomeViewController()
         case IRTabBarIndex.bookshelf.rawValue:
-            vc = IRBookshelfViewController()
+            vc = bookshelfVC
         case IRTabBarIndex.mine.rawValue:
-            vc = IRMineViewController()
+            vc = IRExploreViewController()
         default:
             vc = UIViewController()
         }

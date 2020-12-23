@@ -18,6 +18,8 @@
 		8136A2D92536D1D8005C1646 /* IRFontSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */; };
 		8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */; };
 		8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */; };
+		813D395E258A2DC800A3CABE /* IRBookshelfManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */; };
+		813D3966258A2EC000A3CABE /* IRBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D3965258A2EC000A3CABE /* IRBookModel.swift */; };
 		8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4A8256404E7007BDDA2 /* IRWebServer.swift */; };
 		8162E4B72565122E007BDDA2 /* IRReadingRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4B62565122E007BDDA2 /* IRReadingRecordManager.swift */; };
 		8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4C125654520007BDDA2 /* IRReadingRecordModel.swift */; };
@@ -40,11 +42,14 @@
 		819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819422FB253702B4002B5D62 /* IRArrowSettingView.swift */; };
 		81A14FA7256AA75700539590 /* IRBookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A14FA6256AA75700539590 /* IRBookmarkCell.swift */; };
 		81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A7C6232579CE92004CDA01 /* IRFileManager.swift */; };
+		81A7C650257A31E6004CDA01 /* IREmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A7C64F257A31E6004CDA01 /* IREmptyView.swift */; };
+		81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A93BDA257F580C008C18A8 /* IRActivity.swift */; };
+		81A93BE6257FA545008C18A8 /* IRActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A93BE5257FA545008C18A8 /* IRActivityItemProvider.swift */; };
 		81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78BD6253E969B00353157 /* IRFontModel.swift */; };
 		81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78EA52541847000353157 /* IRReadNavigationContentView.swift */; };
 		81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */; };
 		81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */; };
-		81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E3251DE1CB00E84A37 /* IRMineViewController.swift */; };
+		81B7E1E4251DE1CB00E84A37 /* IRExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E3251DE1CB00E84A37 /* IRExploreViewController.swift */; };
 		81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1E5251DE32600E84A37 /* IRBookCell.swift */; };
 		81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C13AF12538492300B78BC2 /* IRReadColorCell.swift */; };
 		81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C13AF72538497B00B78BC2 /* IRReadColorModel.swift */; };
@@ -88,6 +93,8 @@
 		8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorSettingView.swift; sourceTree = "<group>"; };
 		8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBrightnessSettingView.swift; sourceTree = "<group>"; };
 		813C380B2464134E002578FD /* iRead-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iRead-Bridging-Header.h"; sourceTree = "<group>"; };
+		813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfManager.swift; sourceTree = "<group>"; };
+		813D3965258A2EC000A3CABE /* IRBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookModel.swift; sourceTree = "<group>"; };
 		8162E4A8256404E7007BDDA2 /* IRWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWebServer.swift; sourceTree = "<group>"; };
 		8162E4B62565122E007BDDA2 /* IRReadingRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadingRecordManager.swift; sourceTree = "<group>"; };
 		8162E4C125654520007BDDA2 /* IRReadingRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadingRecordModel.swift; sourceTree = "<group>"; };
@@ -116,11 +123,14 @@
 		819422FB253702B4002B5D62 /* IRArrowSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRArrowSettingView.swift; sourceTree = "<group>"; };
 		81A14FA6256AA75700539590 /* IRBookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookmarkCell.swift; sourceTree = "<group>"; };
 		81A7C6232579CE92004CDA01 /* IRFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFileManager.swift; sourceTree = "<group>"; };
+		81A7C64F257A31E6004CDA01 /* IREmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IREmptyView.swift; sourceTree = "<group>"; };
+		81A93BDA257F580C008C18A8 /* IRActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRActivity.swift; sourceTree = "<group>"; };
+		81A93BE5257FA545008C18A8 /* IRActivityItemProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRActivityItemProvider.swift; sourceTree = "<group>"; };
 		81B78BD6253E969B00353157 /* IRFontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontModel.swift; sourceTree = "<group>"; };
 		81B78EA52541847000353157 /* IRReadNavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationContentView.swift; sourceTree = "<group>"; };
 		81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMainViewController.swift; sourceTree = "<group>"; };
 		81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeViewController.swift; sourceTree = "<group>"; };
-		81B7E1E3251DE1CB00E84A37 /* IRMineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMineViewController.swift; sourceTree = "<group>"; };
+		81B7E1E3251DE1CB00E84A37 /* IRExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRExploreViewController.swift; sourceTree = "<group>"; };
 		81B7E1E5251DE32600E84A37 /* IRBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookCell.swift; sourceTree = "<group>"; };
 		81C13AF12538492300B78BC2 /* IRReadColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorCell.swift; sourceTree = "<group>"; };
 		81C13AF72538497B00B78BC2 /* IRReadColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorModel.swift; sourceTree = "<group>"; };
@@ -179,8 +189,10 @@
 		8126CF742545ABAA00C71415 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
+				813D395C258A2D9100A3CABE /* IRBookshelfManager */,
 				81B7E1E5251DE32600E84A37 /* IRBookCell.swift */,
 				8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */,
+				813D3965258A2EC000A3CABE /* IRBookModel.swift */,
 			);
 			path = Bookshelf;
 			sourceTree = "<group>";
@@ -206,6 +218,14 @@
 				819422FB253702B4002B5D62 /* IRArrowSettingView.swift */,
 			);
 			path = IRReadSettingView;
+			sourceTree = "<group>";
+		};
+		813D395C258A2D9100A3CABE /* IRBookshelfManager */ = {
+			isa = PBXGroup;
+			children = (
+				813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */,
+			);
+			path = IRBookshelfManager;
 			sourceTree = "<group>";
 		};
 		8162E4A7256404BF007BDDA2 /* IRWebServer */ = {
@@ -309,7 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				8126CF742545ABAA00C71415 /* Bookshelf */,
-				81B7E1E0251DE0A400E84A37 /* Mine */,
+				81B7E1E0251DE0A400E84A37 /* Explore */,
 				81B7E1DF251DE09E00E84A37 /* Home */,
 				81B7E1DE251DE09500E84A37 /* Main */,
 			);
@@ -339,6 +359,8 @@
 		8193A44525480A3300501F8F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				81A93BD9257F57F3008C18A8 /* IRActivity */,
+				81A7C64E257A31C9004CDA01 /* IREmptyView */,
 				81A7C6222579CE2B004CDA01 /* IRFileManager */,
 				8162E4A7256404BF007BDDA2 /* IRWebServer */,
 				8193A44C25480AAB00501F8F /* IRDBManager */,
@@ -362,6 +384,23 @@
 			path = IRFileManager;
 			sourceTree = "<group>";
 		};
+		81A7C64E257A31C9004CDA01 /* IREmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				81A7C64F257A31E6004CDA01 /* IREmptyView.swift */,
+			);
+			path = IREmptyView;
+			sourceTree = "<group>";
+		};
+		81A93BD9257F57F3008C18A8 /* IRActivity */ = {
+			isa = PBXGroup;
+			children = (
+				81A93BDA257F580C008C18A8 /* IRActivity.swift */,
+				81A93BE5257FA545008C18A8 /* IRActivityItemProvider.swift */,
+			);
+			path = IRActivity;
+			sourceTree = "<group>";
+		};
 		81B7E1DE251DE09500E84A37 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,12 +418,12 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		81B7E1E0251DE0A400E84A37 /* Mine */ = {
+		81B7E1E0251DE0A400E84A37 /* Explore */ = {
 			isa = PBXGroup;
 			children = (
-				81B7E1E3251DE1CB00E84A37 /* IRMineViewController.swift */,
+				81B7E1E3251DE1CB00E84A37 /* IRExploreViewController.swift */,
 			);
-			path = Mine;
+			path = Explore;
 			sourceTree = "<group>";
 		};
 		81C13AF62538494000B78BC2 /* IRReadColorSetting */ = {
@@ -606,7 +645,8 @@
 				818F99C3253BEDB800C47427 /* IRBook.swift in Sources */,
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
 				81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */,
-				81B7E1E4251DE1CB00E84A37 /* IRMineViewController.swift in Sources */,
+				81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */,
+				81B7E1E4251DE1CB00E84A37 /* IRExploreViewController.swift in Sources */,
 				8162E4D92566AF41007BDDA2 /* IRBookmarkModel.swift in Sources */,
 				81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */,
 				8133228F254BB01400820AA5 /* IRReadBottomBar.swift in Sources */,
@@ -629,6 +669,7 @@
 				8136A2D42536D1BA005C1646 /* IRSwitchSettingView.swift in Sources */,
 				816DFBE52404D8010030E55B /* IRNavigationController.swift in Sources */,
 				81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */,
+				81A7C650257A31E6004CDA01 /* IREmptyView.swift in Sources */,
 				81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */,
 				8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */,
 				818040A12521951400F31442 /* IRReaderConfig.swift in Sources */,
@@ -639,8 +680,11 @@
 				816DFBB12404D39B0030E55B /* AppDelegate.swift in Sources */,
 				818040A3252195CD00F31442 /* IRReaderCenterViewController.swift in Sources */,
 				81C97760253DB83800E9CCCB /* IRFontSelectView.swift in Sources */,
+				813D3966258A2EC000A3CABE /* IRBookModel.swift in Sources */,
 				8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */,
 				81CB116A254EECB70084E991 /* IRChapterTipView.swift in Sources */,
+				813D395E258A2DC800A3CABE /* IRBookshelfManager.swift in Sources */,
+				81A93BE6257FA545008C18A8 /* IRActivityItemProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

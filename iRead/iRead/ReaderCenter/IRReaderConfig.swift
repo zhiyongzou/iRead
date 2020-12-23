@@ -137,12 +137,12 @@ class IRReaderConfig: NSObject {
     /// 默认字体大小
     static var defaultTextSize: CGFloat = 15
     static let minTextSizeMultiplier: Int = 6
-    static let maxTextSizeMultiplier: Int = 20
+    static let maxTextSizeMultiplier: Int = 22
     /// 字体大小倍数
     static var textSizeMultiplier: Int = {
         var multiplier = UserDefaults.standard.integer(forKey: kReadTextSizeMultiplier)
         if multiplier == 0 {
-            multiplier = 10
+            multiplier = 12
         }
         return multiplier
     }()

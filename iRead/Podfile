@@ -44,8 +44,7 @@ target 'iRead' do
   # for iRead
   pod 'SnapKit', '~> 5.0.1'
   pod 'CMPopTipView', '~> 2.3.2'
-  pod 'HGCircularSlider', '~> 2.2.0'
-  pod 'NVActivityIndicatorView', '~> 5.1.1'
+  pod 'PKHUD', '~> 5.3.0'
 
 end
 

@@ -96,7 +96,7 @@ open class FREpubParser: NSObject, SSZipArchiveDelegate {
         bookBasePath = bookBasePath.appendingPathComponent(bookName)
         
         IRDebugLog(bookBasePath)
-
+        
         guard fileManager.fileExists(atPath: withEpubPath) else {
             throw FRParseError.bookNotAvailable
         }

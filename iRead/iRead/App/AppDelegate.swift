@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 import IRCommonLib
 
 @UIApplicationMain
@@ -18,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var rootViewController: IRNavigationController!
-    
+    lazy var mainViewController = IRMainViewController()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
@@ -52,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        IRFileManager.shared.addEpubBookByShareUrl(url)
+        self.addEpubBookByShareUrl(url)
         return true
     }
 }
@@ -62,11 +63,54 @@ extension AppDelegate {
     
     func setupMainViewController() {
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
-        self.window?.backgroundColor = UIColor.white
-        let mainVC = IRMainViewController()
-        rootViewController = IRNavigationController.init(rootViewController: mainVC)
+        self.window?.backgroundColor = .black
+        mainViewController.view.backgroundColor = .white
+        rootViewController = IRNavigationController.init(rootViewController: mainViewController)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
+        self.initReadConfig()
+    }
+    
+    func initReadConfig() {
+        var safeInsets = UIEdgeInsets.zero
+        if #available(iOS 11.0, *) {
+            safeInsets = self.window!.safeAreaInsets
+        }
+        
+        if safeInsets.bottom == 0 || safeInsets.top == 0 {
+            safeInsets = UIEdgeInsets.init(top: 30, left: 0, bottom: 30, right: 0)
+        }
+        
+        let width = self.window!.width - IRReaderConfig.horizontalSpacing * 2
+        let height = self.window!.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
+        let maxSize: CGFloat = 1000
+        IRReaderConfig.pageSzie = CGSize.init(width: min(maxSize, width), height: min(maxSize, height))
+        IRReaderConfig.initReaderConfig()
+    }
+    
+    func addEpubBookByShareUrl(_ url: URL) {
+        let indicatorView = UIActivityIndicatorView.init(style: .gray)
+        indicatorView.hidesWhenStopped = true
+        indicatorView.startAnimating()
+        indicatorView.frame = CGRect.init(x: 0, y: 0, width: 50, height: 50)
+        HUD.show(.customView(view: indicatorView))
+        IRFileManager.shared.addEpubBookByShareUrl(url) { bookPath, success in
+            defer {
+                HUD.hide()
+            }
+            guard let bookPath = bookPath, success else {
+                return
+            }
+            if let topViewController = self.rootViewController.topViewController {
+                if topViewController.isMember(of: IRReaderCenterViewController.self) {
+                    topViewController.navigationController?.popViewController(animated: false)
+                }
+            }
+            
+            let readerCenter = IRReaderCenterViewController.init(withPath: bookPath)
+            readerCenter.delegate = self.mainViewController.bookshelfVC
+            self.rootViewController.pushViewController(readerCenter, animated: true)
+        }
     }
 }
 

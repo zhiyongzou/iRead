@@ -19,7 +19,7 @@ class IRBookmarkManager: NSObject {
         return tablePrefix + "_bookmark_table"
     }
 
-    class func creatBookmarkTable(withName name: String) {
+    class func creatBookmarkTableIfNeeded(withName name: String) {
         var hasCreated = false
         if let value = tableListdMap[name] {
             hasCreated = value
@@ -38,7 +38,9 @@ class IRBookmarkManager: NSObject {
         
         let success = IRDBManager.shared.executeUpdate(sql, values: nil)
         if success {
+            objc_sync_enter(self)
             tableListdMap[name] = true
+            objc_sync_exit(self)
             IRDebugLog("Bookmark table creat succeed")
         } else {
             IRDebugLog("Bookmark table creat failed")
@@ -47,9 +49,9 @@ class IRBookmarkManager: NSObject {
     
     class func insertBookmark(_ mark: IRBookmarkModel, into bookName: String) {
         let tableName = self.tableName(withBookName: bookName)
-        self.creatBookmarkTable(withName: tableName)
+        self.creatBookmarkTableIfNeeded(withName: tableName)
         let sql = "INSERT INTO \(tableName)" + "(chapterIdx, textLoction, markTime, chapterName, content)" + "VALUES (?,?,?,?,?)"
-        let values: [Any] = [mark.chapterIdx, mark.textLoction, mark.markTime, mark.chapterName == nil ? NSNull() : mark.chapterName!, mark.content == nil ? NSNull() : mark.content!]
+        let values: [Any] = [mark.chapterIdx, mark.textLoction, mark.markTime, mark.chapterName ?? NSNull(), mark.content ?? NSNull()]
         let success = IRDBManager.shared.executeUpdate(sql, values: values)
         if !success {
             IRDebugLog("Insert failed")
@@ -65,7 +67,7 @@ class IRBookmarkManager: NSObject {
      */
     class func deleteBookmark(from bookName: String, chapterIdx: Int, textRange: NSRange) {
         let tableName = self.tableName(withBookName: bookName)
-        self.creatBookmarkTable(withName: tableName)
+        self.creatBookmarkTableIfNeeded(withName: tableName)
         
         let sql = "DELETE FROM \(tableName) WHERE chapterIdx = ? AND textLoction >= ? AND textLoction < ?"
         let success = IRDBManager.shared.executeUpdate(sql, values: [chapterIdx, textRange.location, textRange.location + textRange.length])
@@ -81,8 +83,10 @@ class IRBookmarkManager: NSObject {
 // MARK: Public
 extension IRBookmarkManager {
     
-    class func loadBookmarkList(withBookName name: String, completion: ([IRBookmarkModel]?, Error?) -> Void) {
+    class func loadBookmarkList(withBookName name: String?, completion: ([IRBookmarkModel]?, Error?) -> Void) {
+        guard let name = name else { return }
         let tableName = self.tableName(withBookName: name)
+        self.creatBookmarkTableIfNeeded(withName: tableName)
         let sql = "SELECT * FROM \(tableName)"
         IRDBManager.shared.executeQuery(sql) {
             

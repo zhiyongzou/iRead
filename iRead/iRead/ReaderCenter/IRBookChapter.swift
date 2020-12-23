@@ -173,6 +173,12 @@ class IRBookChapter: NSObject {
         let textRect = CGRect.init(origin: CGPoint.zero, size: IRReaderConfig.pageSzie)
         var layoutFrame = textLayout?.layoutFrame(with: textRect, range: NSMakeRange(0, htmlString.length))
         var visibleRange: NSRange! = layoutFrame?.visibleStringRange()
+        if visibleRange == NSRange(location: 0, length: 0) {
+            let pageModel = IRBookPage.bookPage(withPageIdx: 0, chapterIdx: self.chapterIdx)
+            pageModel.textColorHex = textColorHex
+            self.pageList = [pageModel]
+            return
+        }
         var pageOffset = visibleRange.location + visibleRange.length
         var pageCount: Int = 0
         var pageList = [IRBookPage]()

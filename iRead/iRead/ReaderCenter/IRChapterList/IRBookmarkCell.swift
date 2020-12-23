@@ -42,6 +42,7 @@ class IRBookmarkCell: UITableViewCell {
     // MARK: - Private
     
     private func setupSubviews() {
+        self.backgroundColor = .clear
         
         let spacing = 20
         titleLabel.textColor = UIColor.rgba(255, 156, 0, 1)

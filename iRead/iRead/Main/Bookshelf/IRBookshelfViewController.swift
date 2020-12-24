@@ -22,10 +22,10 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = IRTabBarName.bookshelf.rawValue
-        self.setupCollectionView()
-        self.addNotifications()
-        self.loadLocalBooks()
+        navigationItem.title = IRTabBarName.bookshelf.rawValue
+        setupCollectionView()
+        addNotifications()
+        loadLocalBooks()
     }
     
     override func viewWillAppear(_ animated: Bool) {

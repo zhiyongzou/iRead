@@ -80,7 +80,6 @@ class IRHomeViewController: IRBaseViewcontroller {
         collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .hexColor("EEEEEE")
         collectionView.alwaysBounceVertical = true
         collectionView.register(IRHomeTaskCell.self, forCellWithReuseIdentifier: "IRHomeTaskCell")

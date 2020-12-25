@@ -93,6 +93,7 @@ open class KYCircularProgress: UIView {
         didSet {
             progressView.shapeLayer.path = path?.cgPath
             guideView.shapeLayer.path = path?.cgPath
+            setNeedsLayout()
         }
     }
     
@@ -199,14 +200,12 @@ open class KYCircularProgress: UIView {
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setNeedsLayout()
-        
         update(colors: colors)
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        setNeedsLayout()
+        update(colors: colors)
     }
     
     /**

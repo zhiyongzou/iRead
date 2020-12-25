@@ -49,7 +49,7 @@ class IRHomeTaskCell: UICollectionViewCell {
         paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 5
         let titleText = NSMutableAttributedString.init(string: "今日阅读", attributes: [.font: UIFont.boldSystemFont(ofSize: 20), .foregroundColor: UIColor.black, .paragraphStyle: paragraphStyle])
-        let descText = NSAttributedString.init(string: "\n坚持每天阅读，您将获取更多的知识和乐趣~", attributes: [.font: UIFont.boldSystemFont(ofSize: 15), .foregroundColor: UIColor.lightGray, .paragraphStyle: paragraphStyle])
+        let descText = NSAttributedString.init(string: "\n坚持每天阅读，您将获得更多的知识和乐趣~", attributes: [.font: UIFont.boldSystemFont(ofSize: 15), .foregroundColor: UIColor.lightGray, .paragraphStyle: paragraphStyle])
         titleText.append(descText)
         return titleText
     }()

@@ -253,8 +253,8 @@ open class KYCircularProgress: UIView {
         super.layoutSubviews()
         
         let lineHalf = CGFloat(lineWidth / 2)
-        progressView.scale = (x: (bounds.width - lineHalf) / progressView.frame.width, y: (bounds.height - lineHalf) / progressView.frame.height)
-        progressView.frame = CGRect(x: bounds.origin.x + lineHalf, y: bounds.origin.y + lineHalf, width: bounds.width - lineHalf, height: bounds.height - lineHalf)
+        progressView.scale = (x: (bounds.width - lineHalf) / max(1, progressView.frame.width), y: (bounds.height - lineHalf) / max(1, progressView.frame.height))
+        progressView.frame = CGRect(x: bounds.origin.x, y: bounds.origin.y + lineHalf, width: bounds.width - lineHalf, height: bounds.height - lineHalf)
         progressLayer.frame = bounds
         guideView.scale = progressView.scale
         guideView.frame = progressView.frame

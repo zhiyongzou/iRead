@@ -11,7 +11,8 @@ import UIKit
 class IRHomeCurrentReadingModel: NSObject {
 
     var isReading = false
-    var bookName = ""
-    var author = ""
+    var coverImage: UIImage?
+    var bookName: String?
+    var author: String?
     var progress: Int = 0
 }

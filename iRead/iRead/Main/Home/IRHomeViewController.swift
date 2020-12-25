@@ -24,10 +24,15 @@ class IRHomeViewController: IRBaseViewcontroller {
     
     var homeList: NSArray = {
         let taskModel = IRHomeTaskModel()
-        #if DEBUG
+        let readingModel = IRHomeCurrentReadingModel()
+#if DEBUG
         taskModel.progress = Double((arc4random() % 100)) / 100.0
-        #endif
-        return NSArray.init(objects: taskModel)
+        readingModel.isReading = (arc4random() % 100) > 50
+        readingModel.bookName = "我是书名～～"
+        readingModel.author = "佚名"
+        readingModel.progress = Int(arc4random() % 100)
+#endif
+        return NSArray.init(objects: taskModel, readingModel)
     }()
     
     override func viewDidLoad() {
@@ -75,7 +80,7 @@ class IRHomeViewController: IRBaseViewcontroller {
     
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumLineSpacing = 30
         flowLayout.minimumInteritemSpacing = 0
         collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
         collectionView.dataSource = self
@@ -83,6 +88,7 @@ class IRHomeViewController: IRBaseViewcontroller {
         collectionView.backgroundColor = .hexColor("EEEEEE")
         collectionView.alwaysBounceVertical = true
         collectionView.register(IRHomeTaskCell.self, forCellWithReuseIdentifier: "IRHomeTaskCell")
+        collectionView.register(IRHomeCurrentReadingCell.self, forCellWithReuseIdentifier: "IRHomeCurrentReadingCell")
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
         view.insertSubview(collectionView, belowSubview: statusBarBlurView)
     }
@@ -97,18 +103,33 @@ extension IRHomeViewController: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellModel = homeList.object(at: indexPath.item)
+        var cell: UICollectionViewCell
         if cellModel is IRHomeTaskModel {
             let taskCell: IRHomeTaskCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRHomeTaskCell", for: indexPath) as! IRHomeTaskCell
             taskCell.taskModel = cellModel as? IRHomeTaskModel
-            return taskCell
+            cell = taskCell
+        } else if cellModel is IRHomeCurrentReadingModel {
+            let readingCell: IRHomeCurrentReadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRHomeCurrentReadingCell", for: indexPath) as! IRHomeCurrentReadingCell
+            readingCell.readingModel = cellModel as? IRHomeCurrentReadingModel
+            cell = readingCell
         } else {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "UICollectionViewCell", for: indexPath)
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UICollectionViewCell", for: indexPath)
         }
+        return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellModel = homeList.object(at: indexPath.item)
         let cellWidth = collectionView.width - sectionEdgeInsetLR * 2
-        return CGSize.init(width: cellWidth, height: IRHomeTaskCell.cellHeight(with: cellWidth))
+        var cellSize: CGSize
+        if cellModel is IRHomeTaskModel {
+            cellSize = CGSize.init(width: cellWidth, height: IRHomeTaskCell.cellHeight(with: cellWidth))
+        } else if cellModel is IRHomeCurrentReadingModel {
+            cellSize = CGSize(width: cellWidth, height: 185.5)
+        } else {
+            cellSize = CGSize.zero
+        }
+        return cellSize
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

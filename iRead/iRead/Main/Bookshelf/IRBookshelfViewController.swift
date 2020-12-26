@@ -30,10 +30,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationItem.largeTitleDisplayMode = .automatic
-        }
+        enableLargeTitles()
     }
     
     override func viewDidLayoutSubviews() {

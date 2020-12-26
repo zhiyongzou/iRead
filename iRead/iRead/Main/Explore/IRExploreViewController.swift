@@ -16,8 +16,6 @@ class IRExploreViewController: IRBaseViewcontroller {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = false
-        }
+        disableLargeTitles()
     }
 }

@@ -44,10 +44,9 @@ class IRHomeViewController: IRBaseViewcontroller {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // NOTE: 必须先禁用大标题，否则书架向上滑后再切回首页滑动会出现跳动
+        disableLargeTitles()
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = false
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,23 +58,6 @@ class IRHomeViewController: IRBaseViewcontroller {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
         statusBarBlurView.frame = UIApplication.shared.statusBarFrame
-    }
-    
-    @available(iOS 11.0, *)
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-        updateCollectionViewTopInset()
-    }
-    
-    func updateCollectionViewTopInset() {
-        var topInsert = UIApplication.shared.statusBarFrame.height
-        if #available(iOS 11.0, *) {
-            collectionView.contentInsetAdjustmentBehavior = .never
-            if let safeInsets = UIApplication.shared.keyWindow?.safeAreaInsets {
-                topInsert = safeInsets.top
-            }
-        }
-        collectionView.contentInset = UIEdgeInsets(top: topInsert, left: 0, bottom: 0, right: 0)
     }
     
     private func setupCollectionView() {
@@ -134,9 +116,5 @@ extension IRHomeViewController: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets.init(top: 10, left: sectionEdgeInsetLR, bottom: 10, right: sectionEdgeInsetLR)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
 }

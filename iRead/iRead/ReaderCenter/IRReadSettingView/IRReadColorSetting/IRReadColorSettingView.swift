@@ -16,7 +16,7 @@ protocol IRReadColorSettingViewDelegate: AnyObject {
     func readColorSettingView(_ view: IRReadColorSettingView, isFollowSystemTheme isFollow: Bool)
 }
 
-class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class IRReadColorSettingView: UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     static let bottomSapcing: CGFloat = 5
     static let colorViewHeight: CGFloat = 60
@@ -122,12 +122,5 @@ class IRReadColorSettingView: UIView, IRSwitchSettingViewDeleagte, UICollectionV
         if let colorModel = currentSelectCell?.colorModel {
             self.delegate?.readColorSettingView(self, didChangeSelectColor: colorModel)
         }
-    }
-
-    
-    //MARK: - IRSwitchSettingViewDeleagte
-    func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
-        UserDefaults.standard.set(isOn, forKey: kReadFollowSystemTheme)
-        self.delegate?.readColorSettingView(self, isFollowSystemTheme: isOn)
     }
 }

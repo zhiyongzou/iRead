@@ -9,5 +9,5 @@
 import UIKit
 
 class IRHomeTaskModel: NSObject {
-    var progress: Double = 0
+    var readingTime: Int = 0
 }

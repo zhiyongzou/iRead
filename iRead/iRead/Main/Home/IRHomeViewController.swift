@@ -22,11 +22,10 @@ class IRHomeViewController: IRBaseViewcontroller {
         return UIScreen.main.bounds.width > 375 ? 20 : 15
     }()
     
-    var homeList: NSArray = {
-        let taskModel = IRHomeTaskModel()
-        let readingModel = IRHomeCurrentReadingModel()
+    lazy var taskModel = IRHomeTaskModel()
+    lazy var readingModel = IRHomeCurrentReadingModel()
+    lazy var homeList: NSArray = {
 #if DEBUG
-        taskModel.progress = Double((arc4random() % 100)) / 100.0
         readingModel.isReading = (arc4random() % 100) > 50
         readingModel.bookName = "我是书名～～"
         readingModel.author = "佚名"
@@ -47,6 +46,15 @@ class IRHomeViewController: IRBaseViewcontroller {
         // NOTE: 必须先禁用大标题，否则书架向上滑后再切回首页滑动会出现跳动
         disableLargeTitles()
         navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 更新今日阅读时长
+        if taskModel.readingTime != IRReaderConfig.readingTime {
+            taskModel.readingTime = IRReaderConfig.readingTime
+            collectionView.reloadData()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

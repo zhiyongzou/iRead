@@ -74,8 +74,15 @@ class IRReaderConfig: NSObject {
     /// 阅读页面水平边距
     static var horizontalSpacing: CGFloat = 26;
     
-    /// 是否跟随系统夜间主题
-    static var isFollowSystemTheme: Bool = UserDefaults.standard.bool(forKey: kReadFollowSystemTheme);
+    /// 阅读时长
+    static var readingTime: Int {
+        set {
+            UserDefaults.standard.set(newValue, forKey: String.currentDateString)
+        }
+        get {
+            UserDefaults.standard.integer(forKey: String.currentDateString)
+        }
+    }
     
     static var linkColorHex = "#536FFA"
     
@@ -213,7 +220,6 @@ class IRReaderConfig: NSObject {
 
 //MARK: - Keys
 let kReadTransitionStyle    = "kReadTransitionStyle"
-let kReadFollowSystemTheme  = "kReadFollowSystemTheme"
 let kReadTextSizeMultiplier = "kReadTextSizeMultiplier"
 let kReadPageColorHex       = "kReadPageColorHex"
 let kReadZHFontName         = "kReadZHFontName"

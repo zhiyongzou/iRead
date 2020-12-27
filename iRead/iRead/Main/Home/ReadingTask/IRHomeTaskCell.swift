@@ -40,7 +40,11 @@ class IRHomeTaskCell: UICollectionViewCell {
     
     public var taskModel: IRHomeTaskModel? {
         didSet {
-            taskProgress.progress = taskModel?.progress ?? 0
+            let readingTime = taskModel?.readingTime ?? 0
+            taskProgress.progress = min(1, Double(readingTime) / 3600)
+            let minute = readingTime / 60
+            let sceondString = String(format: "%02d", readingTime - minute * 60)
+            timeLabel.text = "\(minute):\(sceondString)"
         }
     }
     
@@ -48,8 +52,8 @@ class IRHomeTaskCell: UICollectionViewCell {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 5
-        let titleText = NSMutableAttributedString.init(string: "今日阅读", attributes: [.font: UIFont.boldSystemFont(ofSize: 20), .foregroundColor: UIColor.black, .paragraphStyle: paragraphStyle])
-        let descText = NSAttributedString.init(string: "\n坚持每天阅读，您将获得更多的知识和乐趣~", attributes: [.font: UIFont.boldSystemFont(ofSize: 15), .foregroundColor: UIColor.lightGray, .paragraphStyle: paragraphStyle])
+        let titleText = NSMutableAttributedString.init(string: "每日阅读", attributes: [.font: UIFont.boldSystemFont(ofSize: 22), .foregroundColor: UIColor.black, .paragraphStyle: paragraphStyle])
+        let descText = NSAttributedString.init(string: "\n每天阅读1小时，积少成多，聚沙成塔~", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.hexColor("999999"), .paragraphStyle: paragraphStyle])
         titleText.append(descText)
         return titleText
     }()

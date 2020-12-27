@@ -106,7 +106,13 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.rightBarButtonItems = nil
         self.navigationItem.leftBarButtonItems = nil
         
-        self.navigationItem.title = self.selectedViewController?.navigationItem.title
+        if let titleView = self.selectedViewController?.navigationItem.titleView {
+            self.navigationItem.titleView = titleView
+            self.navigationItem.title = nil
+        } else {
+            self.navigationItem.title = self.selectedViewController?.navigationItem.title
+            self.navigationItem.titleView = nil
+        }
     }
     
     // MARK: - UITabBarControllerDelegate

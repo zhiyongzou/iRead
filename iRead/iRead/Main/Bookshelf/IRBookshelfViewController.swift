@@ -22,7 +22,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = IRTabBarName.bookshelf.rawValue
+        title = IRTabBarName.bookshelf.rawValue
         setupCollectionView()
         addNotifications()
         loadLocalBooks()

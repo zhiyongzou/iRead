@@ -12,6 +12,7 @@ class IRExploreViewController: IRBaseViewcontroller {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = IRTabBarName.explore.rawValue
     }
 
     override func viewWillAppear(_ animated: Bool) {

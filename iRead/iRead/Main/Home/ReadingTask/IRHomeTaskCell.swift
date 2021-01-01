@@ -42,8 +42,13 @@ class IRHomeTaskCell: UICollectionViewCell {
         didSet {
             let readingTime = taskModel?.readingTime ?? 0
             taskProgress.progress = min(1, Double(readingTime) / 3600)
-            let minute = readingTime / 60
-            let sceondString = String(format: "%02d", readingTime - minute * 60)
+            let minute = min(60, readingTime / 60)
+            var sceondString: String
+            if minute < 60 {
+                sceondString = String(format: "%02d", readingTime - minute * 60)
+            } else {
+                sceondString = "00"
+            }
             timeLabel.text = "\(minute):\(sceondString)"
         }
     }
@@ -107,7 +112,7 @@ class IRHomeTaskCell: UICollectionViewCell {
         timeDescLabel.textColor = .black
         timeDescLabel.textAlignment = .center
         timeDescLabel.font = .boldSystemFont(ofSize: 16)
-        timeDescLabel.text = "今日阅读时长"
+        timeDescLabel.text = "今日阅读进度"
         contentView.addSubview(timeDescLabel)
         timeDescLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(taskProgress)

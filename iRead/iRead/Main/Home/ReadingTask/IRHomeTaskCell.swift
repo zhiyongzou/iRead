@@ -72,7 +72,6 @@ class IRHomeTaskCell: UICollectionViewCell {
     private func setupSubviews() {
         backgroundColor = .white
         layer.cornerRadius = 10
-        layer.masksToBounds = true
         
         titleLabel.attributedText = IRHomeTaskCell.titleAttributedText
         titleLabel.numberOfLines = 0

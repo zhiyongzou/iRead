@@ -11,9 +11,10 @@ import SnapKit
 
 class IRHomeCurrentReadingCell: UICollectionViewCell {
     
+    static let cellHeight: CGFloat = 187.5
     var bookContentView: UIView?
     var bookCover: UIImageView?
-    var titleLabel: UILabel?
+    var bookNameLabel: UILabel?
     var authorLabel: UILabel?
     var progressLabel: UILabel?
     var emptyLabel: UILabel?
@@ -34,10 +35,10 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
                 addBookContentViewIfNeeded()
                 emptyLabel?.isHidden = true
                 bookContentView?.isHidden = false
-                readingBtn.setTitle("开始阅读", for: .normal)
+                readingBtn.setTitle("继续阅读", for: .normal)
                 
                 bookCover?.image = readingModel?.coverImage
-                titleLabel?.text = readingModel?.bookName
+                bookNameLabel?.text = readingModel?.bookName
                 authorLabel?.text = readingModel?.author
                 
                 var progressText: String?
@@ -110,7 +111,7 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
         }
         
         let titleLabel = UILabel()
-        self.titleLabel = titleLabel
+        self.bookNameLabel = titleLabel
         titleLabel.font = .boldSystemFont(ofSize: 18)
         titleLabel.textColor = .black
         bookContentView!.addSubview(titleLabel)
@@ -133,13 +134,12 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     func setupSubviews() {
         backgroundColor = .white
         layer.cornerRadius = 10
-        layer.masksToBounds = true
         
-        let readingBtnH: CGFloat = 42
+        let readingBtnH: CGFloat = 44
         readingBtn.addTarget(self, action: #selector(didClickReadingButton), for: .touchUpInside)
-        readingBtn.backgroundColor = .systemBlue
+        readingBtn.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        readingBtn.backgroundColor = .black
         readingBtn.layer.cornerRadius = readingBtnH / 2
-        readingBtn.layer.masksToBounds = true
         addSubview(readingBtn)
         readingBtn.snp.makeConstraints { (make) in
             make.height.equalTo(readingBtnH)

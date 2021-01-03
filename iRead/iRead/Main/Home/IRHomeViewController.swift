@@ -75,7 +75,7 @@ class IRHomeViewController: IRBaseViewcontroller {
         collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = .hexColor("EEEEEE")
+        collectionView.backgroundColor = .hexColor("F5F5F5")
         collectionView.alwaysBounceVertical = true
         collectionView.register(IRHomeTaskCell.self, forCellWithReuseIdentifier: "IRHomeTaskCell")
         collectionView.register(IRHomeCurrentReadingCell.self, forCellWithReuseIdentifier: "IRHomeCurrentReadingCell")
@@ -115,7 +115,7 @@ extension IRHomeViewController: UICollectionViewDelegateFlowLayout, UICollection
         if cellModel is IRHomeTaskModel {
             cellSize = CGSize.init(width: cellWidth, height: IRHomeTaskCell.cellHeight(with: cellWidth))
         } else if cellModel is IRHomeCurrentReadingModel {
-            cellSize = CGSize(width: cellWidth, height: 185.5)
+            cellSize = CGSize(width: cellWidth, height: IRHomeCurrentReadingCell.cellHeight)
         } else {
             cellSize = CGSize.zero
         }

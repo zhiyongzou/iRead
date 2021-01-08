@@ -1,3 +1,6 @@
+![Swift](https://img.shields.io/badge/language-Swift-red.svg)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=zhiyongzou.iread.read.me)
+
 # iRead
 iRead is an EPUB reader for iOS written in Swift.
 

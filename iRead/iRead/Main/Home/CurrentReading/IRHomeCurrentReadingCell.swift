@@ -11,13 +11,14 @@ import SnapKit
 
 class IRHomeCurrentReadingCell: UICollectionViewCell {
     
-    static let cellHeight: CGFloat = 187.5
+    static let cellHeight: CGFloat = 225.5
     var bookContentView: UIView?
     var bookCover: UIImageView?
     var bookNameLabel: UILabel?
     var authorLabel: UILabel?
     var progressLabel: UILabel?
     var emptyLabel: UILabel?
+    var titleLabel = UILabel()
     var readingBtn = UIButton.init(type: .custom)
     
     override init(frame: CGRect) {
@@ -61,14 +62,14 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
         }
         let emptyLabel = UILabel()
         self.emptyLabel = emptyLabel
-        emptyLabel.textAlignment = .center
         emptyLabel.numberOfLines = 0
         emptyLabel.font = .systemFont(ofSize: 16)
         emptyLabel.textColor = .hexColor("666666")
         emptyLabel.text = "您暂无正在阅读的图书，快去添加一本好书看看吧～"
         addSubview(emptyLabel)
         emptyLabel.snp.makeConstraints { (make) in
-            make.left.top.equalTo(self).offset(20)
+            make.left.equalTo(self).offset(20)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
             make.right.equalTo(self).offset(-20)
             make.bottom.equalTo(readingBtn.snp.top).offset(-20)
         }
@@ -83,7 +84,8 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
         bookContentView = UIView()
         addSubview(bookContentView!)
         bookContentView!.snp.makeConstraints { (make) in
-            make.left.top.equalTo(self).offset(20)
+            make.left.equalTo(self).offset(20)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
             make.right.equalTo(self).offset(-20)
             make.height.equalTo(bookContentH)
         }
@@ -134,6 +136,15 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     func setupSubviews() {
         backgroundColor = .white
         layer.cornerRadius = 10
+        
+        titleLabel.textColor = .hexColor("666666")
+        titleLabel.text = "当前阅读"
+        titleLabel.font = .systemFont(ofSize: 16)
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { (make) in
+            make.height.equalTo(18)
+            make.top.left.equalTo(self).offset(20)
+        }
         
         let readingBtnH: CGFloat = 44
         readingBtn.addTarget(self, action: #selector(didClickReadingButton), for: .touchUpInside)

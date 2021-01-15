@@ -149,7 +149,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     //MARK: - IRSwitchSettingViewDeleagte
     func switchSettingView(_ view: IRSwitchSettingView, isOn: Bool) {
         IRReaderConfig.transitionStyle = isOn ? .scroll : .pageCurl
-        UserDefaults.standard.set(IRReaderConfig.transitionStyle.rawValue, forKey: kReadTransitionStyle)
+        UserDefaults.standard.set(IRReaderConfig.transitionStyle.rawValue, forKey: IRReadConfigKey.TransitionStyle.rawValue)
         self.deleage?.readSettingView(self, transitionStyleDidChange: IRReaderConfig.transitionStyle)
     }
     
@@ -167,7 +167,7 @@ class IRReadSettingView: UIView, IRSwitchSettingViewDeleagte, IRReadColorSetting
     //MARK: - IRFontSettingViewDelegate
     func fontSettingView(_ view: IRFontSettingView, didChangeTextSizeMultiplier textSizeMultiplier: Int) {
         self.deleage?.readSettingView(self, didChangeTextSizeMultiplier: textSizeMultiplier)
-        UserDefaults.standard.set(textSizeMultiplier, forKey: kReadTextSizeMultiplier)
+        UserDefaults.standard.set(textSizeMultiplier, forKey: IRReadConfigKey.TextSizeMultiplier.rawValue)
     }
     
     func fontSettingViewDidClickFontSelect(_ view: IRFontSettingView) {

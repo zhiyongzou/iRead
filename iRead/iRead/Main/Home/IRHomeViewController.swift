@@ -8,7 +8,7 @@
 
 import IRCommonLib
 
-class IRHomeViewController: IRBaseViewcontroller {
+class IRHomeViewController: IRBaseViewcontroller, IRHomeCurrentReadingDelegate {
     
     var collectionView: UICollectionView!
     var currentreadingBookPath: String?
@@ -99,6 +99,20 @@ class IRHomeViewController: IRBaseViewcontroller {
             readingModel.isReading = false
         }
     }
+    
+    // MARK: - IRHomeCurrentReadingDelegate
+    
+    func homeCurrentReadingCellDidClickKeepReading() {
+        guard let currentreadingBookPath = currentreadingBookPath else { return }
+        let bookPath = IRFileManager.bookUnzipPath + "/" + currentreadingBookPath
+        let readerCenter = IRReaderCenterViewController.init(withPath: bookPath)
+        readerCenter.delegate = (UIApplication.shared.delegate as? AppDelegate)?.mainViewController.bookshelfVC
+        self.navigationController?.pushViewController(readerCenter, animated: true)
+    }
+    
+    func homeCurrentReadingCellDidClickFindBook() {
+        
+    }
 }
 
 // MARK: - UICollectionView
@@ -118,6 +132,7 @@ extension IRHomeViewController: UICollectionViewDelegateFlowLayout, UICollection
         } else if cellModel is IRHomeCurrentReadingModel {
             let readingCell: IRHomeCurrentReadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRHomeCurrentReadingCell", for: indexPath) as! IRHomeCurrentReadingCell
             readingCell.readingModel = cellModel as? IRHomeCurrentReadingModel
+            readingCell.delegate = self
             cell = readingCell
         } else {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UICollectionViewCell", for: indexPath)

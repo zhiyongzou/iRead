@@ -9,6 +9,11 @@
 import UIKit
 import SnapKit
 
+protocol IRHomeCurrentReadingDelegate: NSObjectProtocol {
+    func homeCurrentReadingCellDidClickKeepReading()
+    func homeCurrentReadingCellDidClickFindBook()
+}
+
 class IRHomeCurrentReadingCell: UICollectionViewCell {
     
     static let bookCoverH: CGFloat = 70
@@ -22,6 +27,8 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     var progressLabel: UILabel?
     var emptyLabel: UILabel?
     var titleLabel = UILabel()
+    weak var delegate: IRHomeCurrentReadingDelegate?
+    
     
     var readingBtn = UIButton.init(type: .custom)
     
@@ -191,6 +198,11 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     }
     
     @objc func didClickReadingButton() {
-        
+        guard let readingModel = readingModel else { return }
+        if readingModel.isReading {
+            delegate?.homeCurrentReadingCellDidClickKeepReading()
+        } else {
+            delegate?.homeCurrentReadingCellDidClickFindBook()
+        }
     }
 }

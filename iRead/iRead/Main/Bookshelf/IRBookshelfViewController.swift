@@ -56,6 +56,10 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     // MARK: - IRReaderCenterDelegate
     func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) {
+        if !self.isViewLoaded {
+            IRBookshelfManager.updateBookPregress(progress, bookPath: bookPath)
+            return
+        }
         var shouldUpdate = false
         for bookModel in bookList {
             if bookModel.bookPath == bookPath && bookModel.progress != progress {

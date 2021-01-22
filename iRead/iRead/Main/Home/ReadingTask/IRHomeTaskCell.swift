@@ -89,7 +89,6 @@ class IRHomeTaskCell: UICollectionViewCell {
         taskProgress.guideColor = .hexColor("99CCCCCC")
         taskProgress.progressChanged {
             (progress: Double, circularProgress: KYCircularProgress) in
-            print("progress: \(progress)")
         }
         contentView.addSubview(taskProgress)
         taskProgress.snp.makeConstraints { (make) in

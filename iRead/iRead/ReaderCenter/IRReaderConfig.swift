@@ -17,6 +17,7 @@ public enum IRReadConfigKey: String {
     case ENFontName         = "ENFontName"
     case ReadTimeDate       = "ReadTimeDate"
     case TodayReadTime      = "TodayReadTime"
+    case CurrentReadingBookPath = "CurrentReadingBookPath"
 }
 
 public enum IRReadPageColorHex: String {
@@ -82,7 +83,7 @@ class IRReaderConfig: NSObject {
     /// 阅读页面尺寸
     static var pageSzie: CGSize = CGSize.zero
     /// 阅读页面水平边距
-    static var horizontalSpacing: CGFloat = 26;
+    static var horizontalSpacing: CGFloat = 26
     
     /// 阅读时长
     static var readingTime: Int {
@@ -91,6 +92,17 @@ class IRReaderConfig: NSObject {
         }
         get {
             UserDefaults.standard.integer(forKey: IRReadConfigKey.TodayReadTime.rawValue)
+        }
+    }
+    
+    static var currentreadingBookPath: String? = {
+        UserDefaults.standard.string(forKey: IRReadConfigKey.CurrentReadingBookPath.rawValue)
+    }()
+    
+    static func updateCurrentreadingBookPath(_ path: String?) {
+        if currentreadingBookPath == nil || currentreadingBookPath != path {
+            currentreadingBookPath = path
+            UserDefaults.standard.set(path, forKey: IRReadConfigKey.CurrentReadingBookPath.rawValue)
         }
     }
     

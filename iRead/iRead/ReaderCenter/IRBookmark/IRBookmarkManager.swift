@@ -88,7 +88,7 @@ extension IRBookmarkManager {
         let tableName = self.tableName(withBookName: name)
         self.creatBookmarkTableIfNeeded(withName: tableName)
         let sql = "SELECT * FROM \(tableName)"
-        IRDBManager.shared.executeQuery(sql) {
+        IRDBManager.shared.executeQuery(sql, values: nil) {
             
             guard let resultSet = $0 else {
                 completion(nil, $1)

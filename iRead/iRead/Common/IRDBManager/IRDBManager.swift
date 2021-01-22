@@ -66,10 +66,10 @@ class IRDBManager: NSObject {
      1. executeQuery("SELECT x, y, z FROM test", values: nil)
      2. 获取所有可用的字段: SELECT * FROM table_name
      */
-    func executeQuery(_ sql: String, completion: (FMResultSet?, Error?) -> Void) {
+    func executeQuery(_ sql: String, values: [Any]?, completion: (FMResultSet?, Error?) -> Void) {
         fmdbQueue?.inDatabase({ (db) in
             do {
-                let resultSet = try db.executeQuery(sql, values: nil)
+                let resultSet = try db.executeQuery(sql, values: values)
                 completion(resultSet, nil)
             } catch {
                 completion(nil, error)

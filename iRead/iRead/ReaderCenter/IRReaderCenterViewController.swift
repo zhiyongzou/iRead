@@ -46,6 +46,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
     
     init(withPath path:String) {
         bookPath = path
+        IRReaderConfig.updateCurrentreadingBookPath(path.lastPathComponent)
         super.init(nibName: nil, bundle: nil)
     }
     

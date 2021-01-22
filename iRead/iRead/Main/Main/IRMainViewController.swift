@@ -54,6 +54,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     func commonInit() {
         self.delegate = self
         self.setupTabbarItems()
+        updateNavigationItems(withIndex: IRTabBarIndex.home.rawValue)
     }
     
     func setupTabbarItems() {

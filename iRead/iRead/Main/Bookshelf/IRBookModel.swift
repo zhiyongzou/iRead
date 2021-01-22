@@ -15,6 +15,8 @@ class IRBookModel: NSObject {
     var bookName: String
     var progress: Int = 0
     var bookPath: String
+    var authorName: String?
+    
     lazy var insertTime: TimeInterval = NSDate().timeIntervalSince1970
     
     var fullPath: String {
@@ -30,7 +32,7 @@ class IRBookModel: NSObject {
     }
     
     class func model(with bookMeta: FRBook, path: String, imageMaxWidth: CGFloat?) -> IRBookModel {
-        let book = IRBookModel.init(with: bookMeta.title ?? "佚名", path: path)
+        let book = IRBookModel.init(with: bookMeta.title ?? "无书名", path: path)
         if let coverUrl = bookMeta.coverImage?.fullHref {
             if let imageMaxWidth = imageMaxWidth {
                 book.coverImage = UIImage.init(contentsOfFile: coverUrl)?.scaled(toWidth:imageMaxWidth, scale: 2)
@@ -38,6 +40,7 @@ class IRBookModel: NSObject {
                 book.coverImage = UIImage.init(contentsOfFile: coverUrl)
             }
         }
+        book.authorName = bookMeta.authorName
         return book
     }
 }

@@ -11,7 +11,10 @@ import SnapKit
 
 class IRHomeCurrentReadingCell: UICollectionViewCell {
     
-    static let cellHeight: CGFloat = 225.5
+    static let bookCoverH: CGFloat = 70
+    static let bookContentH: CGFloat = bookCoverH / bookCoverScale
+    static let cellHeight: CGFloat = 153.5 + bookContentH
+    let pogressH: CGFloat = 20
     var bookContentView: UIView?
     var bookCover: UIImageView?
     var bookNameLabel: UILabel?
@@ -19,6 +22,7 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     var progressLabel: UILabel?
     var emptyLabel: UILabel?
     var titleLabel = UILabel()
+    
     var readingBtn = UIButton.init(type: .custom)
     
     override init(frame: CGRect) {
@@ -28,6 +32,15 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if bookContentView != nil {
+            let progressY = authorLabel!.frame.maxY + 10
+            let progressW = ((progressLabel!.text ?? "") as NSString).size(withAttributes: [.font: progressLabel!.font!]).width + 12
+            progressLabel!.frame = CGRect(x: authorLabel!.x, y: progressY, width: progressW, height: pogressH)
+        }
     }
     
     var readingModel: IRHomeCurrentReadingModel? {
@@ -40,13 +53,9 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
                 
                 bookCover?.image = readingModel?.coverImage
                 bookNameLabel?.text = readingModel?.bookName
-                authorLabel?.text = readingModel?.author
+                authorLabel?.text = readingModel?.author ?? "佚名"
                 
-                var progressText: String?
-                if let progress = readingModel?.progress {
-                    progressText = progress > 0 ? "\(progress)%" : "新增"
-                }
-                progressLabel?.text = progressText
+                updateProgressLabelText()
             } else {
                 addEmptyLabelIfNeeded()
                 bookContentView?.isHidden = true
@@ -54,6 +63,29 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
                 readingBtn.setTitle("添加图书", for: .normal)
             }
         }
+    }
+    
+    func updateProgressLabelText() {
+        var textColor: UIColor?
+        var bgColor: UIColor?
+        var textAlignment: NSTextAlignment?
+        if let progress = readingModel?.progress {
+            if progress <= 0 {
+                progressLabel!.text = "新增"
+                bgColor = UIColor.rgba(255, 156, 0, 1)
+                textAlignment = .center
+                textColor = .white
+            } else if progress >= 100 {
+                progressLabel!.text = "已读完"
+            } else {
+                progressLabel!.text = "\(progress)%"
+            }
+        } else {
+            progressLabel!.text = ""
+        }
+        progressLabel!.textColor = textColor ?? UIColor.hexColor("666666")
+        progressLabel!.textAlignment = textAlignment ?? .left
+        progressLabel!.backgroundColor = bgColor ?? UIColor.clear
     }
     
     func addEmptyLabelIfNeeded() {
@@ -65,7 +97,7 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
         emptyLabel.numberOfLines = 0
         emptyLabel.font = .systemFont(ofSize: 16)
         emptyLabel.textColor = .hexColor("666666")
-        emptyLabel.text = "您暂无正在阅读的图书，快去添加一本好书看看吧～"
+        emptyLabel.text = "亲，你暂无正在阅读的图书，快去添加一本好书看看吧～"
         addSubview(emptyLabel)
         emptyLabel.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(20)
@@ -80,26 +112,24 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
             return
         }
         
-        let bookContentH: CGFloat = 83.5
         bookContentView = UIView()
         addSubview(bookContentView!)
         bookContentView!.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(20)
             make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
             make.right.equalTo(self).offset(-20)
-            make.height.equalTo(bookContentH)
+            make.height.equalTo(IRHomeCurrentReadingCell.bookContentH)
         }
         
         let bookCover = UIImageView()
         self.bookCover = bookCover
         bookCover.contentMode = .scaleAspectFit
-        bookCover.backgroundColor = .hexColor("EEEEEE")
         bookCover.layer.cornerRadius = 3
         bookCover.layer.masksToBounds = true
         bookContentView!.addSubview(bookCover)
         bookCover.snp.makeConstraints { (make) in
             make.left.top.bottom.equalTo(bookContentView!)
-            make.width.equalTo(60)
+            make.width.equalTo(IRHomeCurrentReadingCell.bookCoverH)
         }
         
         let authorLabel = UILabel()
@@ -108,45 +138,45 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
         authorLabel.textColor = .hexColor("333333")
         bookContentView!.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { (make) in
-            make.centerY.equalTo(bookContentView!)
+            make.centerY.right.equalTo(bookContentView!)
             make.left.equalTo(bookCover.snp.right).offset(10)
         }
         
         let titleLabel = UILabel()
         self.bookNameLabel = titleLabel
-        titleLabel.font = .boldSystemFont(ofSize: 18)
+        titleLabel.numberOfLines = 1
+        titleLabel.font = .systemFont(ofSize: 18)
         titleLabel.textColor = .black
         bookContentView!.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(authorLabel.snp.top).offset(-6)
+            make.bottom.equalTo(authorLabel.snp.top).offset(-10)
             make.left.equalTo(authorLabel)
+            make.right.equalTo(bookContentView!)
         }
         
         let progressLabel = UILabel()
         self.progressLabel = progressLabel
         progressLabel.font = .systemFont(ofSize: 15)
         progressLabel.textColor = .hexColor("999999")
+        progressLabel.layer.cornerRadius = pogressH * 0.5
+        progressLabel.layer.masksToBounds = true
         bookContentView!.addSubview(progressLabel)
-        progressLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(authorLabel.snp.bottom).offset(6)
-            make.left.equalTo(authorLabel)
-        }
     }
     
     func setupSubviews() {
         backgroundColor = .white
         layer.cornerRadius = 10
         
-        titleLabel.textColor = .hexColor("666666")
+        titleLabel.textColor = .black
         titleLabel.text = "当前阅读"
-        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.font = .boldSystemFont(ofSize: 20)
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
-            make.height.equalTo(18)
+            make.height.equalTo(24)
             make.top.left.equalTo(self).offset(20)
         }
         
-        let readingBtnH: CGFloat = 44
+        let readingBtnH: CGFloat = 49.5
         readingBtn.addTarget(self, action: #selector(didClickReadingButton), for: .touchUpInside)
         readingBtn.titleLabel?.font = .boldSystemFont(ofSize: 16)
         readingBtn.backgroundColor = .black

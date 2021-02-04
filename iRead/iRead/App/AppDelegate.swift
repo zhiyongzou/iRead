@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #if DEBUG
         setupDebugConfig()
 #endif
-        self.setupMainViewController()
+        setupMainViewController()
         
         return true
     }
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        self.addEpubBookByShareUrl(url)
+        addEpubBookByShareUrl(url)
         return true
     }
 }
@@ -62,27 +62,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     func setupMainViewController() {
-        self.window = UIWindow.init(frame: UIScreen.main.bounds)
-        self.window?.backgroundColor = .black
+        window = UIWindow.init(frame: UIScreen.main.bounds)
+        window?.backgroundColor = .black
         mainViewController.view.backgroundColor = .white
         rootViewController = IRNavigationController.init(rootViewController: mainViewController)
-        self.window?.rootViewController = rootViewController
-        self.window?.makeKeyAndVisible()
-        self.initReadConfig()
+        window?.rootViewController = rootViewController
+        window?.makeKeyAndVisible()
+        initReadConfig()
     }
     
     func initReadConfig() {
         var safeInsets = UIEdgeInsets.zero
         if #available(iOS 11.0, *) {
-            safeInsets = self.window!.safeAreaInsets
+            safeInsets = window!.safeAreaInsets
         }
         
         if safeInsets.bottom == 0 || safeInsets.top == 0 {
             safeInsets = UIEdgeInsets.init(top: 30, left: 0, bottom: 30, right: 0)
         }
         
-        let width = self.window!.width - IRReaderConfig.horizontalSpacing * 2
-        let height = self.window!.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
+        let width = window!.width - IRReaderConfig.horizontalSpacing * 2
+        let height = window!.height - safeInsets.top - safeInsets.bottom - IRReaderConfig.pageIndexSpacing
         let maxSize: CGFloat = 1000
         IRReaderConfig.pageSzie = CGSize.init(width: min(maxSize, width), height: min(maxSize, height))
         IRReaderConfig.initReaderConfig()

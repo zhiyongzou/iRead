@@ -37,4 +37,12 @@ public extension String {
         formateter.dateFormat = dateFormat
         return formateter.string(from: targetDate)
     }
+    
+    /// yyyy-MM-dd
+    static var currentDateString: String {
+        get {
+            formateter.dateFormat = "yyyy-MM-dd"
+            return formateter.string(from: Date())
+        }
+    }
 }

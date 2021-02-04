@@ -10,7 +10,7 @@ import IRCommonLib
 import IRHexColor
 
 /// 书封面比例(width/height)
-let bookCoverScale: CGFloat = 0.72
+public let bookCoverScale: CGFloat = 0.72
 /// 底部容器高度
 private let bookCellBottomHeight: CGFloat = 40
 
@@ -93,6 +93,7 @@ class IRBookCell: UICollectionViewCell {
         bookCoverView.layer.cornerRadius = cornerRadius
         contentView.addSubview(bookCoverView)
 
+        progressLabel.layer.cornerRadius = pogressH * 0.5
         progressLabel.layer.masksToBounds = true
         progressLabel.font = UIFont.systemFont(ofSize: 13)
         progressLabel.textAlignment = .left
@@ -111,7 +112,6 @@ class IRBookCell: UICollectionViewCell {
     func updateProgressLabelText() {
         var textColor: UIColor?
         var bgColor: UIColor?
-        var cornerRadius: CGFloat = 0
         var textAlignment: NSTextAlignment?
         if let progress = bookModel?.progress {
             if progress <= 0 {
@@ -119,7 +119,6 @@ class IRBookCell: UICollectionViewCell {
                 bgColor = UIColor.rgba(255, 156, 0, 1)
                 textAlignment = .center
                 textColor = .white
-                cornerRadius = pogressH * 0.5
             } else if progress >= 100 {
                 progressLabel.text = "已读完"
             } else {
@@ -130,7 +129,6 @@ class IRBookCell: UICollectionViewCell {
         }
         progressLabel.textColor = textColor ?? UIColor.hexColor("666666")
         progressLabel.textAlignment = textAlignment ?? .left
-        progressLabel.layer.cornerRadius = cornerRadius
         progressLabel.backgroundColor = bgColor ?? UIColor.clear
     }
     

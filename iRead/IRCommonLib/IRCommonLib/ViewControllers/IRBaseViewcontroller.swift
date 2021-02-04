@@ -33,6 +33,20 @@ open class IRBaseViewcontroller: UIViewController {
         return super.viewDidDisappear(animated)
     }
     
+    open func disableLargeTitles() {
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+            self.navigationItem.largeTitleDisplayMode = .never
+        }
+    }
+    
+    open func enableLargeTitles() {
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.navigationItem.largeTitleDisplayMode = .automatic
+        }
+    }
+    
     open func setupLeftBackBarButton() {
         let backImg = UIImage.init(named: "arrow_back")?.template
         backButtonItem = UIBarButtonItem.init(image: backImg, style: .plain, target: self, action: #selector(didClickedLeftBackItem(item:)))

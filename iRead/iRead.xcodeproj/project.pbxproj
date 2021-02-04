@@ -45,6 +45,11 @@
 		81A7C650257A31E6004CDA01 /* IREmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A7C64F257A31E6004CDA01 /* IREmptyView.swift */; };
 		81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A93BDA257F580C008C18A8 /* IRActivity.swift */; };
 		81A93BE6257FA545008C18A8 /* IRActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A93BE5257FA545008C18A8 /* IRActivityItemProvider.swift */; };
+		81AEAEFB259442ED00AADC45 /* KYCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEAEFA259442ED00AADC45 /* KYCircularProgress.swift */; };
+		81AEAF1F2594C35000AADC45 /* IRHomeTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEAF1E2594C35000AADC45 /* IRHomeTaskCell.swift */; };
+		81AEAF272594C3E200AADC45 /* IRHomeTaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEAF262594C3E200AADC45 /* IRHomeTaskModel.swift */; };
+		81AEAF872595CCEC00AADC45 /* IRHomeCurrentReadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEAF862595CCEB00AADC45 /* IRHomeCurrentReadingCell.swift */; };
+		81AEAF8F2595CD0D00AADC45 /* IRHomeCurrentReadingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AEAF8E2595CD0D00AADC45 /* IRHomeCurrentReadingModel.swift */; };
 		81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78BD6253E969B00353157 /* IRFontModel.swift */; };
 		81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B78EA52541847000353157 /* IRReadNavigationContentView.swift */; };
 		81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */; };
@@ -126,6 +131,11 @@
 		81A7C64F257A31E6004CDA01 /* IREmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IREmptyView.swift; sourceTree = "<group>"; };
 		81A93BDA257F580C008C18A8 /* IRActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRActivity.swift; sourceTree = "<group>"; };
 		81A93BE5257FA545008C18A8 /* IRActivityItemProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRActivityItemProvider.swift; sourceTree = "<group>"; };
+		81AEAEFA259442ED00AADC45 /* KYCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KYCircularProgress.swift; sourceTree = "<group>"; };
+		81AEAF1E2594C35000AADC45 /* IRHomeTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeTaskCell.swift; sourceTree = "<group>"; };
+		81AEAF262594C3E200AADC45 /* IRHomeTaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeTaskModel.swift; sourceTree = "<group>"; };
+		81AEAF862595CCEB00AADC45 /* IRHomeCurrentReadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeCurrentReadingCell.swift; sourceTree = "<group>"; };
+		81AEAF8E2595CD0D00AADC45 /* IRHomeCurrentReadingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeCurrentReadingModel.swift; sourceTree = "<group>"; };
 		81B78BD6253E969B00353157 /* IRFontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontModel.swift; sourceTree = "<group>"; };
 		81B78EA52541847000353157 /* IRReadNavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadNavigationContentView.swift; sourceTree = "<group>"; };
 		81B7E1D9251CBF2C00E84A37 /* IRMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRMainViewController.swift; sourceTree = "<group>"; };
@@ -359,6 +369,7 @@
 		8193A44525480A3300501F8F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				81AEAEF9259442D900AADC45 /* KYCircularProgress */,
 				81A93BD9257F57F3008C18A8 /* IRActivity */,
 				81A7C64E257A31C9004CDA01 /* IREmptyView */,
 				81A7C6222579CE2B004CDA01 /* IRFileManager */,
@@ -401,6 +412,32 @@
 			path = IRActivity;
 			sourceTree = "<group>";
 		};
+		81AEAEF9259442D900AADC45 /* KYCircularProgress */ = {
+			isa = PBXGroup;
+			children = (
+				81AEAEFA259442ED00AADC45 /* KYCircularProgress.swift */,
+			);
+			path = KYCircularProgress;
+			sourceTree = "<group>";
+		};
+		81AEAF2B2594C40200AADC45 /* ReadingTask */ = {
+			isa = PBXGroup;
+			children = (
+				81AEAF1E2594C35000AADC45 /* IRHomeTaskCell.swift */,
+				81AEAF262594C3E200AADC45 /* IRHomeTaskModel.swift */,
+			);
+			path = ReadingTask;
+			sourceTree = "<group>";
+		};
+		81AEAF852595CCB900AADC45 /* CurrentReading */ = {
+			isa = PBXGroup;
+			children = (
+				81AEAF862595CCEB00AADC45 /* IRHomeCurrentReadingCell.swift */,
+				81AEAF8E2595CD0D00AADC45 /* IRHomeCurrentReadingModel.swift */,
+			);
+			path = CurrentReading;
+			sourceTree = "<group>";
+		};
 		81B7E1DE251DE09500E84A37 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -413,6 +450,8 @@
 		81B7E1DF251DE09E00E84A37 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				81AEAF852595CCB900AADC45 /* CurrentReading */,
+				81AEAF2B2594C40200AADC45 /* ReadingTask */,
 				81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */,
 			);
 			path = Home;
@@ -643,6 +682,7 @@
 				8162E4D12566AF2F007BDDA2 /* IRBookmarkManager.swift in Sources */,
 				81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */,
 				818F99C3253BEDB800C47427 /* IRBook.swift in Sources */,
+				81AEAEFB259442ED00AADC45 /* KYCircularProgress.swift in Sources */,
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
 				81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */,
 				81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */,
@@ -657,7 +697,10 @@
 				8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */,
 				8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */,
 				8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */,
+				81AEAF1F2594C35000AADC45 /* IRHomeTaskCell.swift in Sources */,
 				818040A52521967800F31442 /* IRBookChapter.swift in Sources */,
+				81AEAF8F2595CD0D00AADC45 /* IRHomeCurrentReadingModel.swift in Sources */,
+				81AEAF872595CCEC00AADC45 /* IRHomeCurrentReadingCell.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,
 				81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */,
@@ -670,6 +713,7 @@
 				816DFBE52404D8010030E55B /* IRNavigationController.swift in Sources */,
 				81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */,
 				81A7C650257A31E6004CDA01 /* IREmptyView.swift in Sources */,
+				81AEAF272594C3E200AADC45 /* IRHomeTaskModel.swift in Sources */,
 				81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */,
 				8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */,
 				818040A12521951400F31442 /* IRReaderConfig.swift in Sources */,
@@ -851,6 +895,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMPILER_INDEX_STORE_ENABLE = NO;
 				DEVELOPMENT_TEAM = 5F24R2G835;
@@ -864,6 +909,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = zzyong.iRead;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iRead/App/iRead-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -878,6 +924,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMPILER_INDEX_STORE_ENABLE = NO;
 				COPY_PHASE_STRIP = YES;
@@ -891,6 +938,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = zzyong.iRead;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iRead/App/iRead-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

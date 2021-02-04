@@ -22,18 +22,14 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = IRTabBarName.bookshelf.rawValue
-        self.setupCollectionView()
-        self.addNotifications()
-        self.loadLocalBooks()
+        title = IRTabBarName.bookshelf.rawValue
+        setupCollectionView()
+        addNotifications()
+        loadLocalBooks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationItem.largeTitleDisplayMode = .automatic
-        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -60,6 +56,10 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     // MARK: - IRReaderCenterDelegate
     func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) {
+        if !self.isViewLoaded {
+            IRBookshelfManager.updateBookPregress(progress, bookPath: bookPath)
+            return
+        }
         var shouldUpdate = false
         for bookModel in bookList {
             if bookModel.bookPath == bookPath && bookModel.progress != progress {
@@ -207,7 +207,7 @@ extension IRBookshelfViewController: UICollectionViewDelegateFlowLayout, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 10, left: sectionEdgeInsetsLR, bottom: 10, right: sectionEdgeInsetsLR)
+        return UIEdgeInsets.init(top: 15, left: sectionEdgeInsetsLR, bottom: 15, right: sectionEdgeInsetsLR)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

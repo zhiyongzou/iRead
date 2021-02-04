@@ -9,6 +9,17 @@
 import UIKit
 import IRCommonLib
 
+public enum IRReadConfigKey: String {
+    case TransitionStyle    = "TransitionStyle"
+    case TextSizeMultiplier = "TextSizeMultiplier"
+    case PageColorHex       = "PageColorHex"
+    case ZHFontName         = "ZHFontName"
+    case ENFontName         = "ENFontName"
+    case ReadTimeDate       = "ReadTimeDate"
+    case TodayReadTime      = "TodayReadTime"
+    case CurrentReadingBookPath = "CurrentReadingBookPath"
+}
+
 public enum IRReadPageColorHex: String {
     case HexF8F8F8 = "F8F8F8"
     case HexE9E6D7 = "E9E6D7"
@@ -72,10 +83,28 @@ class IRReaderConfig: NSObject {
     /// 阅读页面尺寸
     static var pageSzie: CGSize = CGSize.zero
     /// 阅读页面水平边距
-    static var horizontalSpacing: CGFloat = 26;
+    static var horizontalSpacing: CGFloat = 26
     
-    /// 是否跟随系统夜间主题
-    static var isFollowSystemTheme: Bool = UserDefaults.standard.bool(forKey: kReadFollowSystemTheme);
+    /// 阅读时长
+    static var readingTime: Int {
+        set {
+            UserDefaults.standard.set(newValue, forKey: IRReadConfigKey.TodayReadTime.rawValue)
+        }
+        get {
+            UserDefaults.standard.integer(forKey: IRReadConfigKey.TodayReadTime.rawValue)
+        }
+    }
+    
+    static var currentreadingBookPath: String? = {
+        UserDefaults.standard.string(forKey: IRReadConfigKey.CurrentReadingBookPath.rawValue)
+    }()
+    
+    static func updateCurrentreadingBookPath(_ path: String?) {
+        if currentreadingBookPath == nil || currentreadingBookPath != path {
+            currentreadingBookPath = path
+            UserDefaults.standard.set(path, forKey: IRReadConfigKey.CurrentReadingBookPath.rawValue)
+        }
+    }
     
     static var linkColorHex = "#536FFA"
     
@@ -87,7 +116,7 @@ class IRReaderConfig: NSObject {
     static var pageColor: UIColor!
     static var pageColorHex: String! {
         willSet {
-            UserDefaults.standard.set(newValue, forKey: kReadPageColorHex)
+            UserDefaults.standard.set(newValue, forKey: IRReadConfigKey.PageColorHex.rawValue)
             self.updateReadColorConfig(pageColorHex: newValue)
         }
     }
@@ -117,20 +146,20 @@ class IRReaderConfig: NSObject {
     }
     
     static var zhFontName: IRReadZHFontName = {
-        let font: IRReadZHFontName = IRReadZHFontName(rawValue: UserDefaults.standard.string(forKey: kReadZHFontName) ?? IRReadZHFontName.PingFangSC.rawValue) ?? IRReadZHFontName.PingFangSC
+        let font: IRReadZHFontName = IRReadZHFontName(rawValue: UserDefaults.standard.string(forKey: IRReadConfigKey.ZHFontName.rawValue) ?? IRReadZHFontName.PingFangSC.rawValue) ?? IRReadZHFontName.PingFangSC
         return font
     }() {
         willSet {
-            UserDefaults.standard.set(newValue.rawValue, forKey: kReadZHFontName)
+            UserDefaults.standard.set(newValue.rawValue, forKey: IRReadConfigKey.ZHFontName.rawValue)
         }
     }
     
     static var enFontName: IRReadENFontName = {
-        let font: IRReadENFontName = IRReadENFontName(rawValue: UserDefaults.standard.string(forKey: kReadENFontName) ?? IRReadENFontName.TimesNewRoman.rawValue) ?? IRReadENFontName.TimesNewRoman
+        let font: IRReadENFontName = IRReadENFontName(rawValue: UserDefaults.standard.string(forKey: IRReadConfigKey.ENFontName.rawValue) ?? IRReadENFontName.TimesNewRoman.rawValue) ?? IRReadENFontName.TimesNewRoman
         return font
     }() {
         willSet {
-            UserDefaults.standard.set(newValue.rawValue, forKey: kReadENFontName)
+            UserDefaults.standard.set(newValue.rawValue, forKey: IRReadConfigKey.ENFontName.rawValue)
         }
     }
     
@@ -140,7 +169,7 @@ class IRReaderConfig: NSObject {
     static let maxTextSizeMultiplier: Int = 22
     /// 字体大小倍数
     static var textSizeMultiplier: Int = {
-        var multiplier = UserDefaults.standard.integer(forKey: kReadTextSizeMultiplier)
+        var multiplier = UserDefaults.standard.integer(forKey: IRReadConfigKey.TextSizeMultiplier.rawValue)
         if multiplier == 0 {
             multiplier = 12
         }
@@ -157,7 +186,7 @@ class IRReaderConfig: NSObject {
     static var paragraphSpacing: CGFloat = 10
     
     /// 翻页模式，默认横向仿真翻页
-    static var transitionStyle = IRTransitionStyle(rawValue: UserDefaults.standard.integer(forKey: kReadTransitionStyle)) ?? .pageCurl
+    static var transitionStyle = IRTransitionStyle(rawValue: UserDefaults.standard.integer(forKey: IRReadConfigKey.TransitionStyle.rawValue)) ?? .pageCurl
     
     //MARK: - UI Color Theme
     static var separatorColor: UIColor!
@@ -196,8 +225,12 @@ class IRReaderConfig: NSObject {
     }
     
     static func initReaderConfig() {
-        pageColorHex = UserDefaults.standard.string(forKey: kReadPageColorHex) ?? IRReadPageColorHex.HexF8F8F8.rawValue
+        pageColorHex = UserDefaults.standard.string(forKey: IRReadConfigKey.PageColorHex.rawValue) ?? IRReadPageColorHex.HexF8F8F8.rawValue
         IRReaderConfig.updateReadColorConfig(pageColorHex: pageColorHex)
+        if String.currentDateString != UserDefaults.standard.string(forKey: IRReadConfigKey.ReadTimeDate.rawValue) {
+            UserDefaults.standard.set(0, forKey: IRReadConfigKey.TodayReadTime.rawValue)
+            UserDefaults.standard.set(String.currentDateString, forKey: IRReadConfigKey.ReadTimeDate.rawValue)
+        }
         
         if UserDefaults.standard.bool(forKey: IRReadZHFontName.STSong.rawValue) {
             IRFontDownload.loadFontWithName(IRReadZHFontName.STSong.rawValue)
@@ -210,12 +243,4 @@ class IRReaderConfig: NSObject {
         }
     }
 }
-
-//MARK: - Keys
-let kReadTransitionStyle    = "kReadTransitionStyle"
-let kReadFollowSystemTheme  = "kReadFollowSystemTheme"
-let kReadTextSizeMultiplier = "kReadTextSizeMultiplier"
-let kReadPageColorHex       = "kReadPageColorHex"
-let kReadZHFontName         = "kReadZHFontName"
-let kReadENFontName         = "kReadENFontName"
 

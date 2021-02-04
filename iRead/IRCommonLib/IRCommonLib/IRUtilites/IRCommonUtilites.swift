@@ -14,7 +14,7 @@ public func IRDebugLog<T>(_ message: T, file: String = #file, function: String =
 #endif
 }
 
-/// App 主题颜色
+/// App 主题颜色: ff9c00
 public let IRAppThemeColor = UIColor.init(red: 1, green: 156/255.0, blue: 0, alpha: 1)
 
 /// App 分割线颜色

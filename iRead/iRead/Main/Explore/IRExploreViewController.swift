@@ -12,12 +12,10 @@ class IRExploreViewController: IRBaseViewcontroller {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = IRTabBarName.explore.rawValue
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = false
-        }
     }
 }

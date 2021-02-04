@@ -18,6 +18,7 @@ class IRBookshelfManager: NSObject {
     static let kProgress   = "progress"
     static let kBookPath   = "bookPath"
     static let kInsertTime = "insertTime"
+    static let kAuthorName = "authorName"
     
     class func creatBookshelfTableIfNeeded() {
         if hasCreated {
@@ -25,6 +26,7 @@ class IRBookshelfManager: NSObject {
         }
         let sql = "CREATE TABLE IF NOT EXISTS \(kTableName)" + "(\(kCoverImage) \(IRDBType.BLOB.rawValue)," +
                                                          "\(kBookName) \(IRDBType.TEXT.rawValue)," +
+                                                         "\(kAuthorName) \(IRDBType.TEXT.rawValue)," +
                                                          "\(kProgress) \(IRDBType.INTEGER.rawValue)," +
                                                          "\(kInsertTime) \(IRDBType.REAL.rawValue)," +
                                                          "\(kBookPath) \(IRDBType.TEXT.rawValue))"
@@ -45,9 +47,9 @@ class IRBookshelfManager: NSObject {
     
     class func insertBook(_ book: IRBookModel) {
         self.creatBookshelfTableIfNeeded()
-        let sql = "INSERT INTO \(kTableName)" + "(\(kCoverImage), \(kBookName), \(kInsertTime), \(kProgress), \(kBookPath))" + "VALUES (?,?,?,?,?)"
+        let sql = "INSERT INTO \(kTableName)" + "(\(kCoverImage), \(kBookName), \(kAuthorName), \(kInsertTime), \(kProgress), \(kBookPath))" + "VALUES (?,?,?,?,?,?)"
         let imgData = book.coverImage?.jpegData(compressionQuality: 0.8)
-        let values: [Any] = [imgData ?? NSNull(), book.bookName, book.insertTime, book.progress, book.bookPath]
+        let values: [Any] = [imgData ?? NSNull(), book.bookName, book.authorName ?? NSNull(), book.insertTime, book.progress, book.bookPath]
         let success = IRDBManager.shared.executeUpdate(sql, values: values)
         if !success {
             IRDebugLog("Insert failed")
@@ -81,10 +83,10 @@ class IRBookshelfManager: NSObject {
         IRDBManager.shared.close()
     }
     
-    class func loadBookList(completion: ([IRBookModel]?, Error?) -> Void) {
+    class func loadBookWithPath(_ path: String, completion: (IRBookModel?, Error?) -> Void) {
         self.creatBookshelfTableIfNeeded()
-        let sql = "SELECT * FROM \(kTableName) ORDER BY \(kInsertTime) DESC"
-        IRDBManager.shared.executeQuery(sql) {
+        let sql = "SELECT * FROM \(kTableName) WHERE \(kBookPath) = ?"
+        IRDBManager.shared.executeQuery(sql, values: [path]) {
             guard let resultSet = $0 else { completion(nil, $1); return }
             var bookList = [IRBookModel]()
             while resultSet.next() {
@@ -92,6 +94,28 @@ class IRBookshelfManager: NSObject {
                 if let imgData = resultSet.data(forColumn: kCoverImage) {
                     book.coverImage = UIImage.init(data: imgData)
                 }
+                book.authorName = resultSet.string(forColumn: kAuthorName)
+                book.insertTime = Double(resultSet.int(forColumn: kInsertTime))
+                book.progress = Int(resultSet.int(forColumn: kProgress))
+                bookList.append(book)
+            }
+            completion(bookList.first, nil)
+        }
+        IRDBManager.shared.close()
+    }
+    
+    class func loadBookList(completion: ([IRBookModel]?, Error?) -> Void) {
+        self.creatBookshelfTableIfNeeded()
+        let sql = "SELECT * FROM \(kTableName) ORDER BY \(kInsertTime) DESC"
+        IRDBManager.shared.executeQuery(sql, values: nil) {
+            guard let resultSet = $0 else { completion(nil, $1); return }
+            var bookList = [IRBookModel]()
+            while resultSet.next() {
+                let book = IRBookModel.init(with: resultSet.string(forColumn: kBookName)!, path: resultSet.string(forColumn: kBookPath)!)
+                if let imgData = resultSet.data(forColumn: kCoverImage) {
+                    book.coverImage = UIImage.init(data: imgData)
+                }
+                book.authorName = resultSet.string(forColumn: kAuthorName)
                 book.insertTime = Double(resultSet.int(forColumn: kInsertTime))
                 book.progress = Int(resultSet.int(forColumn: kProgress))
                 bookList.append(book)

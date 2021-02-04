@@ -52,6 +52,7 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func commonInit() {
+        view.backgroundColor = .white
         self.delegate = self
         self.setupTabbarItems()
         updateNavigationItems(withIndex: IRTabBarIndex.home.rawValue)
@@ -104,15 +105,15 @@ class IRMainViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func updateNavigationItems(withIndex index: Int) {
-        self.navigationItem.rightBarButtonItems = nil
-        self.navigationItem.leftBarButtonItems = nil
+        navigationItem.rightBarButtonItems = selectedViewController?.navigationItem.rightBarButtonItems
+        navigationItem.leftBarButtonItems = selectedViewController?.navigationItem.leftBarButtonItems
         
-        if let titleView = self.selectedViewController?.navigationItem.titleView {
-            self.navigationItem.titleView = titleView
-            self.navigationItem.title = nil
+        if let titleView = selectedViewController?.navigationItem.titleView {
+            navigationItem.titleView = titleView
+            navigationItem.title = nil
         } else {
-            self.navigationItem.title = self.selectedViewController?.navigationItem.title
-            self.navigationItem.titleView = nil
+            navigationItem.title = selectedViewController?.navigationItem.title
+            navigationItem.titleView = nil
         }
     }
     

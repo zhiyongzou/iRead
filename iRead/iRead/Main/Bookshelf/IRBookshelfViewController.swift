@@ -23,6 +23,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = IRTabBarName.bookshelf.rawValue
+        setupBarButtonItems()
         setupCollectionView()
         addNotifications()
         loadLocalBooks()
@@ -34,8 +35,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.collectionView.frame = self.view.bounds
-        self.emptyView?.frame = self.view.bounds
+        collectionView.frame = view.bounds
+        emptyView?.frame = view.bounds
     }
     
     // MARK: - Notifications
@@ -74,7 +75,19 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
         }
     }
     
+    // MARK: - Actions
+    
+    @objc func wifiButtonDidClick() {
+        let wifiVC = IRWifiUploadViewController()
+        navigationController?.pushViewController(wifiVC, animated: true)
+    }
+    
     // MARK: - Private
+    
+    func setupBarButtonItems() {
+        let wifiItem = UIBarButtonItem.init(image: UIImage(named: "file_upload")?.original, style: .plain, target: self, action: #selector(wifiButtonDidClick))
+        navigationItem.rightBarButtonItems = [wifiItem]
+    }
     
     func loadLocalBooks() {
         self.updateEmptyViewState(.loading)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		811BEE7125CC4DF600F672B8 /* IRWifiUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811BEE7025CC4DF600F672B8 /* IRWifiUploadViewController.swift */; };
 		8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126CF6C2545888500C71415 /* IRChapterListViewController.swift */; };
 		8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */; };
 		812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E49732531A4050082D902 /* IRReadPageViewController.swift */; };
@@ -86,6 +87,7 @@
 		00DD04FE011F463B67348768 /* Pods-iRead.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.release.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.release.xcconfig"; sourceTree = "<group>"; };
 		3DA102CBABD9ED364C525C64 /* libPods-iRead.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iRead.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B7166AED0711D73236BE22 /* Pods-iRead.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.debug.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.debug.xcconfig"; sourceTree = "<group>"; };
+		811BEE7025CC4DF600F672B8 /* IRWifiUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWifiUploadViewController.swift; sourceTree = "<group>"; };
 		8126CF6C2545888500C71415 /* IRChapterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRChapterListViewController.swift; sourceTree = "<group>"; };
 		8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfViewController.swift; sourceTree = "<group>"; };
 		812E49732531A4050082D902 /* IRReadPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadPageViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +188,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		811BEE6F25CC4D8700F672B8 /* WifiUpload */ = {
+			isa = PBXGroup;
+			children = (
+				811BEE7025CC4DF600F672B8 /* IRWifiUploadViewController.swift */,
+			);
+			path = WifiUpload;
+			sourceTree = "<group>";
+		};
 		8126CF6B2545884900C71415 /* IRChapterList */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +209,7 @@
 		8126CF742545ABAA00C71415 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
+				811BEE6F25CC4D8700F672B8 /* WifiUpload */,
 				813D395C258A2D9100A3CABE /* IRBookshelfManager */,
 				81B7E1E5251DE32600E84A37 /* IRBookCell.swift */,
 				8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */,
@@ -695,6 +706,7 @@
 				8162E4B72565122E007BDDA2 /* IRReadingRecordManager.swift in Sources */,
 				81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */,
 				8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */,
+				811BEE7125CC4DF600F672B8 /* IRWifiUploadViewController.swift in Sources */,
 				8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */,
 				8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */,
 				81AEAF1F2594C35000AADC45 /* IRHomeTaskCell.swift in Sources */,

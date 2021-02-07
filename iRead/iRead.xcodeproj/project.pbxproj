@@ -21,7 +21,6 @@
 		8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */; };
 		813D395E258A2DC800A3CABE /* IRBookshelfManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */; };
 		813D3966258A2EC000A3CABE /* IRBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D3965258A2EC000A3CABE /* IRBookModel.swift */; };
-		8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4A8256404E7007BDDA2 /* IRWebServer.swift */; };
 		8162E4B72565122E007BDDA2 /* IRReadingRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4B62565122E007BDDA2 /* IRReadingRecordManager.swift */; };
 		8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4C125654520007BDDA2 /* IRReadingRecordModel.swift */; };
 		8162E4D12566AF2F007BDDA2 /* IRBookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4D02566AF2F007BDDA2 /* IRBookmarkManager.swift */; };
@@ -102,7 +101,6 @@
 		813C380B2464134E002578FD /* iRead-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iRead-Bridging-Header.h"; sourceTree = "<group>"; };
 		813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfManager.swift; sourceTree = "<group>"; };
 		813D3965258A2EC000A3CABE /* IRBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookModel.swift; sourceTree = "<group>"; };
-		8162E4A8256404E7007BDDA2 /* IRWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWebServer.swift; sourceTree = "<group>"; };
 		8162E4B62565122E007BDDA2 /* IRReadingRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadingRecordManager.swift; sourceTree = "<group>"; };
 		8162E4C125654520007BDDA2 /* IRReadingRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadingRecordModel.swift; sourceTree = "<group>"; };
 		8162E4D02566AF2F007BDDA2 /* IRBookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookmarkManager.swift; sourceTree = "<group>"; };
@@ -249,14 +247,6 @@
 			path = IRBookshelfManager;
 			sourceTree = "<group>";
 		};
-		8162E4A7256404BF007BDDA2 /* IRWebServer */ = {
-			isa = PBXGroup;
-			children = (
-				8162E4A8256404E7007BDDA2 /* IRWebServer.swift */,
-			);
-			path = IRWebServer;
-			sourceTree = "<group>";
-		};
 		8162E4B5256511DF007BDDA2 /* IRReadingRecord */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,7 +374,6 @@
 				81A93BD9257F57F3008C18A8 /* IRActivity */,
 				81A7C64E257A31C9004CDA01 /* IREmptyView */,
 				81A7C6222579CE2B004CDA01 /* IRFileManager */,
-				8162E4A7256404BF007BDDA2 /* IRWebServer */,
 				8193A44C25480AAB00501F8F /* IRDBManager */,
 			);
 			path = Common;
@@ -716,7 +705,6 @@
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81B7E1DA251CBF2C00E84A37 /* IRMainViewController.swift in Sources */,
 				81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */,
-				8162E4A9256404E7007BDDA2 /* IRWebServer.swift in Sources */,
 				8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */,
 				81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */,
 				8136A28A25369C33005C1646 /* IRReadSettingView.swift in Sources */,

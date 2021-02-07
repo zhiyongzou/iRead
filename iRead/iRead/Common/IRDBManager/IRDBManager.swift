@@ -23,6 +23,7 @@ SQLite 命令
     SELECT    |  从一个或多个表中检索某些记录。
 */
 
+import FMDB
 import IRCommonLib
 
 /**

@@ -6,6 +6,7 @@
 //  Copyright © 2020 zzyong. All rights reserved.
 //
 
+import UIKit
 import IRCommonLib
 
 class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {

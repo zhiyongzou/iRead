@@ -10,7 +10,7 @@ workspace 'iRead.xcworkspace'
 
 # debug_pods
 def debug_pods
-  pod 'FLEX', '~> 4.1.1', :configurations => ['Debug']
+  pod 'FLEX', '~> 4.1.1', :configurations => ['Debug'], :modular_headers => true
   pod 'EpubBooks', :git => 'https://github.com/zhiyongzou/EpubBooks.git', :branch => 'main', :configurations => ['Debug']
 end
 
@@ -19,15 +19,16 @@ def common_pods
   pod 'IRHexColor', '~> 0.0.4'
   pod 'AEXML', '~> 4.5.0'
   pod 'SSZipArchive', '~> 2.2.2'
-  pod 'FMDB', '~> 2.7.5'
+  pod 'FMDB', '~> 2.7.5', :modular_headers => true
 end
 
 # local_pods
 # " ./ " 表示当前文件所在目录下
 # " ../ " 表示当前文件所在目录下的上一级目录
 def local_pods
-  pod 'DTCoreText', :path => './DTCoreText'
-  pod 'DTFoundation', :path => './DTFoundation'
+  pod 'DTCoreText', :path => './DTCoreText', :modular_headers => true
+  pod 'DTFoundation', :path => './DTFoundation', :modular_headers => true
+  pod "GCDWebServer/WebUploader", :path => './GCDWebServer', :modular_headers => true
 end
 
 # common_pods
@@ -43,9 +44,8 @@ target 'iRead' do
   
   # for iRead
   pod 'SnapKit', '~> 5.0.1'
-  pod 'CMPopTipView', '~> 2.3.2'
+  pod 'CMPopTipView', '~> 2.3.2', :modular_headers => true
   pod 'PKHUD', '~> 5.3.0'
-  pod "GCDWebServer", "~> 3.5.4"
 
 end
 

@@ -7,9 +7,10 @@
 //
 // Protocol Conformance: https://github.com/raywenderlich/swift-style-guide#protocol-conformance
 
-import IRCommonLib
-import SnapKit
 import PKHUD
+import SnapKit
+import IRCommonLib
+import CMPopTipView
 
 protocol IRReaderCenterDelegate: NSObjectProtocol {
     func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) -> Void

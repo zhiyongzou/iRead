@@ -32,9 +32,9 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GCDWebServer (3.5.4):
-    - GCDWebServer/Core (= 3.5.4)
   - GCDWebServer/Core (3.5.4)
+  - GCDWebServer/WebUploader (3.5.4):
+    - GCDWebServer/Core
   - IRHexColor (0.0.4)
   - PKHUD (5.3.0)
   - SnapKit (5.0.1)
@@ -48,7 +48,7 @@ DEPENDENCIES:
   - EpubBooks (from `https://github.com/zhiyongzou/EpubBooks.git`, branch `main`)
   - FLEX (~> 4.1.1)
   - FMDB (~> 2.7.5)
-  - GCDWebServer (~> 3.5.4)
+  - GCDWebServer/WebUploader (from `./GCDWebServer`)
   - IRHexColor (~> 0.0.4)
   - PKHUD (~> 5.3.0)
   - SnapKit (~> 5.0.1)
@@ -60,7 +60,6 @@ SPEC REPOS:
     - CMPopTipView
     - FLEX
     - FMDB
-    - GCDWebServer
     - IRHexColor
     - PKHUD
     - SnapKit
@@ -74,6 +73,8 @@ EXTERNAL SOURCES:
   EpubBooks:
     :branch: main
     :git: https://github.com/zhiyongzou/EpubBooks.git
+  GCDWebServer:
+    :path: "./GCDWebServer"
 
 CHECKOUT OPTIONS:
   EpubBooks:
@@ -88,12 +89,12 @@ SPEC CHECKSUMS:
   EpubBooks: 5f6071d471fb0d26ce1cfc770037cb9b76507aaa
   FLEX: 81096107977a09836eb440173010ceeef01105d6
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
+  GCDWebServer: f5590602d75d912fb63660e57c4939d57b8fe85b
   IRHexColor: 9bee3c935b1654246589933274a55e590ec24700
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: 6d80224c33888c5f3121fc8683b36f5c8c835edf
+PODFILE CHECKSUM: 0b926e100a09fac96f181e5de96e1491aaa73bd9
 
 COCOAPODS: 1.9.3

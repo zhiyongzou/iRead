@@ -7,6 +7,8 @@
 //
 // EPUB Doc：https://www.w3.org/publishing/epub3/epub-packages.html#sec-introduction
 
+import UIKit
+import Foundation
 import IRCommonLib
 
 protocol IRBookParseDelegate: AnyObject {

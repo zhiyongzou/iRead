@@ -6,6 +6,9 @@
 //  Copyright © 2020 zzyong. All rights reserved.
 //
 
+#if DEBUG
+    import FLEX
+#endif
 import UIKit
 import PKHUD
 import IRCommonLib

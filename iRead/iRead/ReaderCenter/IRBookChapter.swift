@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DTCoreText
 import IRCommonLib
 
 class IRBookChapter: NSObject {

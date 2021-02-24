@@ -1,3 +1,3 @@
-"PROLOGUE" = "<p>Drag &amp; drop files on this window or use the \"Upload Files&hellip;\" button to upload new files.</p>";
+"PROLOGUE" = "<p>请将文件拖拽到该窗口或者使用\“文件上传\"按钮上传文件</p>";
 "EPILOGUE" = "";
 "FOOTER_FORMAT" = "%@ %@";

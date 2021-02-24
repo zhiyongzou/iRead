@@ -13,7 +13,7 @@ import GCDWebServer
 class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
 
     var webUploader: GCDWebUploader?
-    lazy var wifiView = UIImageView.init(image: UIImage(named: "wifi"))
+    lazy var wifiView = UIImageView.init(image: UIImage(named: "wifi")?.template)
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -51,6 +51,7 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
             make.right.equalTo(view).offset(-10)
         }
         
+        wifiView.tintColor = .hexColor("999999")
         view.addSubview(wifiView)
         wifiView.snp.makeConstraints { (make) in
             make.top.equalTo(titleLabel.snp.bottom).offset(150)
@@ -99,5 +100,21 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
         warning.append(link)
         warning.append(sameWifi)
         warningLabel.attributedText = warning
+    }
+    
+    func webServerDidConnect(_ server: GCDWebServer) {
+        let titleStyle = NSMutableParagraphStyle()
+        titleStyle.alignment = .center
+        titleStyle.lineSpacing = 15
+        let titleText = NSMutableAttributedString.init(string: "已连接请传输\n", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.lightGray, .paragraphStyle: titleStyle])
+        let descText = NSAttributedString.init(string: "传输过程中不要关闭此界面或锁屏", attributes: [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.red, .paragraphStyle: titleStyle])
+        titleText.append(descText)
+        titleLabel.attributedText = titleText
+        
+        wifiView.tintColor = .hexColor("73F873")
+    }
+    
+    func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
+        
     }
 }

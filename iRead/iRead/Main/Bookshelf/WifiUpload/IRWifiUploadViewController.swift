@@ -6,6 +6,7 @@
 //  Copyright © 2021 zzyong. All rights reserved.
 //
 
+import PKHUD
 import SnapKit
 import IRCommonLib
 import GCDWebServer
@@ -41,7 +42,7 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
     
     func commonInit() {
         view.backgroundColor = .white
-        title = "WiFi传书"
+        title = "WiFi-传书"
         
         view.addSubview(titleLabel)
         let top = (navigationController?.navigationBar.frame.maxY ?? 0) + 20
@@ -115,6 +116,7 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
     }
     
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
-        
+        HUD.dimsBackground = false
+        HUD.flash(.labeledSuccess(title: "上传成功", subtitle: path.lastPathComponent), delay: 1)
     }
 }

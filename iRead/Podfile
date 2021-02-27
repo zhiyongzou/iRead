@@ -46,6 +46,7 @@ target 'iRead' do
   pod 'SnapKit', '~> 5.0.1'
   pod 'CMPopTipView', '~> 2.3.2', :modular_headers => true
   pod 'PKHUD', '~> 5.3.0'
+  pod 'ReachabilitySwift', '~> 5.0.0'
 
 end
 

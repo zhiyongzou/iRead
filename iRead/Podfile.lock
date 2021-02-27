@@ -37,6 +37,7 @@ PODS:
     - GCDWebServer/Core
   - IRHexColor (0.0.4)
   - PKHUD (5.3.0)
+  - ReachabilitySwift (5.0.0)
   - SnapKit (5.0.1)
   - SSZipArchive (2.2.3)
 
@@ -51,6 +52,7 @@ DEPENDENCIES:
   - GCDWebServer/WebUploader (from `./GCDWebServer`)
   - IRHexColor (~> 0.0.4)
   - PKHUD (~> 5.3.0)
+  - ReachabilitySwift (~> 5.0.0)
   - SnapKit (~> 5.0.1)
   - SSZipArchive (~> 2.2.2)
 
@@ -62,6 +64,7 @@ SPEC REPOS:
     - FMDB
     - IRHexColor
     - PKHUD
+    - ReachabilitySwift
     - SnapKit
     - SSZipArchive
 
@@ -92,9 +95,10 @@ SPEC CHECKSUMS:
   GCDWebServer: f5590602d75d912fb63660e57c4939d57b8fe85b
   IRHexColor: 9bee3c935b1654246589933274a55e590ec24700
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: 0b926e100a09fac96f181e5de96e1491aaa73bd9
+PODFILE CHECKSUM: 458ee65986a762f07f4918330d38203aeb306be9
 
 COCOAPODS: 1.9.3

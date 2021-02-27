@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #if DEBUG
         setupDebugConfig()
 #endif
+        IRNetworkManager.shared.startNotifier()
         setupMainViewController()
         
         return true

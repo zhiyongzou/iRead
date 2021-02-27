@@ -47,6 +47,14 @@ class IRFileManager: NSObject {
         return path
     }()
     
+    static let wifiUploadPath: String = {
+        let path = IRCachesDirectoryPath + "/wifiupload"
+        if !FileManager.default.fileExists(atPath: path) {
+            try? FileManager.default.createDirectory(at: URL.init(fileURLWithPath: path), withIntermediateDirectories: true, attributes: nil)
+        }
+        return path
+    }()
+    
     var fileQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "ir_file_queue"

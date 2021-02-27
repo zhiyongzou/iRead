@@ -30,7 +30,11 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
         super.viewDidLoad()
         commonInit()
         setupLeftBackBarButton()
-        setupWebUploader()
+        if IRNetworkManager.shared.networkState == .wifi {
+            setupWebUploader()
+        } else {
+            setupOpenErrorState()
+        }
     }
     
     deinit {
@@ -45,7 +49,7 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
         title = "WiFi-传书"
         
         view.addSubview(titleLabel)
-        let top = (navigationController?.navigationBar.frame.maxY ?? 0) + 20
+        let top = (navigationController?.navigationBar.frame.maxY ?? 0) + 30
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view).offset(top)
             make.left.equalTo(view).offset(10)
@@ -70,11 +74,29 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
     }
     
     func setupWebUploader() {
-        webUploader = GCDWebUploader.init(uploadDirectory: IRCachesDirectoryPath)
+        webUploader = GCDWebUploader.init(uploadDirectory: IRFileManager.wifiUploadPath)
         webUploader?.delegate = self
         webUploader?.title = title!
         webUploader?.header = "iRead"
         webUploader?.start()
+    }
+    
+    func setupOpenErrorState() {
+        let titleStyle = NSMutableParagraphStyle()
+        titleStyle.alignment = .center
+        titleStyle.lineSpacing = 15
+        let font = UIFont.systemFont(ofSize: 16)
+        let titleText = NSMutableAttributedString.init(string: "HTTP服务器启动失败", attributes: [.font: font, .foregroundColor: UIColor.lightGray, .paragraphStyle: titleStyle])
+        titleLabel.attributedText = titleText
+        
+        let warningStyle = NSMutableParagraphStyle()
+        warningStyle.alignment = .center
+        warningStyle.lineSpacing = 5
+        let warningColor = UIColor.hexColor("999999")
+        let warning = NSMutableAttributedString.init(string: "Wi-Fi服务未连接\n", attributes: [.font: font, .foregroundColor: warningColor, .paragraphStyle: warningStyle])
+        let unlink = NSAttributedString.init(string: "请确认您的设备的连接状态", attributes: [.font:  UIFont.systemFont(ofSize: 13), .foregroundColor: warningColor, .paragraphStyle: warningStyle])
+        warning.append(unlink)
+        warningLabel.attributedText = warning
     }
     
     // MARK: GCDWebUploaderDelegate

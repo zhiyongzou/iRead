@@ -133,4 +133,31 @@ class IRFileManager: NSObject {
             }
         }
     }
+    
+    func addEpubBookByWifiUploadBookPath(_ path: String) {
+        let bookUrl = URL.init(fileURLWithPath: path)
+        let isEpub = bookUrl.pathExtension == IRFileType.Epub.rawValue
+        if !isEpub { return }
+        
+        fileQueue.addOperation {
+            
+            let bookPath = bookUrl.lastPathComponent
+            let fullPath = IRFileManager.bookUnzipPath + "/" + bookPath
+            
+            if FileManager.default.fileExists(atPath: fullPath) {
+                IRDebugLog("Exist file \(bookPath)")
+                return
+            }
+            let epubParser: FREpubParser = FREpubParser()
+            guard let bookMeta: FRBook = try? epubParser.readEpub(epubPath: bookUrl.path, unzipPath: IRFileManager.bookUnzipPath) else {
+                IRDebugLog("Import failed")
+                return
+            }
+            let book = IRBookModel.model(with: bookMeta, path: bookPath, imageMaxWidth: IRScreenWidth * 0.5)
+            IRBookshelfManager.insertBook(book)
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.IRImportEpubBookNotification, object: bookPath)
+            }
+        }
+    }
 }

@@ -140,5 +140,11 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
         HUD.dimsBackground = false
         HUD.flash(.labeledSuccess(title: "上传成功", subtitle: path.lastPathComponent), delay: 1)
+        IRFileManager.shared.addEpubBookByWifiUploadBookPath(path)
+    }
+    
+    func webUploader(_ uploader: GCDWebUploader, didDeleteItemAtPath path: String) {
+        HUD.dimsBackground = false
+        HUD.flash(.labeledSuccess(title: "删除成功", subtitle: path.lastPathComponent), delay: 1)
     }
 }

@@ -21,7 +21,7 @@ iRead is an EPUB reader for iOS written in Swift.
 - [x] AirDrop File Sharing
 - [x] Book sharing / delete
 - [x] Bookshelf
-- [ ] Upload book by wifi
+- [x] Upload book by wifi
 - [ ] Reading Notes
 - [ ] Reading Goal
 - [ ] Home

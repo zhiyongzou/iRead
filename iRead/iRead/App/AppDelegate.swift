@@ -13,6 +13,8 @@ import UIKit
 import PKHUD
 import IRCommonLib
 
+let IRAppDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

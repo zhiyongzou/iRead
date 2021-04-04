@@ -8,14 +8,16 @@
 
 import UIKit
 import IRCommonLib
+import CMPopTipView
 
-class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
+class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, BSMenuViewDelegate {
     
     var collectionView: UICollectionView!
     var emptyView: IREmptyView?
     var bookList = [IRBookModel]()
     let sectionEdgeInsetsLR: CGFloat = 30
     let minimumInteritemSpacing: CGFloat = 25
+    var menuPopView: CMPopTipView?
     
     var rowCount: CGFloat = {
         return UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2
@@ -76,18 +78,50 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate {
         }
     }
     
+    // MARK: - BSMenuViewDelegate
+    func menuView(_ menuView: BSMenuView, didSelect menu: BSMenuModel) {
+        if menu.type == BSMenuModel.MenuType.wifi {
+            navigationController?.pushViewController(IRWifiUploadViewController(), animated: true)
+        } else if menu.type == BSMenuModel.MenuType.style {
+            let isList = UserDefaults.standard.bool(forKey: BSMenuView.kBookshelfListStyle)
+            UserDefaults.standard.set(!isList, forKey: BSMenuView.kBookshelfListStyle)
+        } else {
+            
+        }
+        self.menuPopView?.dismiss(animated: true)
+        self.menuPopView = nil
+    }
+    
     // MARK: - Actions
     
-    @objc func wifiButtonDidClick() {
-        let wifiVC = IRWifiUploadViewController()
-        navigationController?.pushViewController(wifiVC, animated: true)
+    @objc func moreButtonDidClick(_ item: UIBarButtonItem) {
+        addMenuPopViewIfNeeded()
+        menuPopView?.presentPointing(at: item, animated: true)
     }
     
     // MARK: - Private
     
+    func addMenuPopViewIfNeeded() {
+        if menuPopView == nil {
+            let menuView = BSMenuView.init(frame: CGRect(x: 0, y: 0, width: 130, height: BSMenuView.cellHeight * CGFloat(BSMenuView.menuList.count)))
+            menuView.delegate = self
+            let popTipView = CMPopTipView.init(customView: menuView)!
+            popTipView.has3DStyle = false
+            popTipView.animation = .slide
+            popTipView.cornerRadius = 5
+            popTipView.bubblePaddingX = 5
+            popTipView.backgroundColor = .white
+            popTipView.sidePadding = 6
+            popTipView.borderColor = .hexColor("eeeeee")
+            popTipView.disableTapToDismiss = true
+            popTipView.dismissTapAnywhere = true
+            menuPopView = popTipView
+        }
+    }
+    
     func setupBarButtonItems() {
-        let wifiItem = UIBarButtonItem.init(image: UIImage(named: "file_upload")?.original, style: .plain, target: self, action: #selector(wifiButtonDidClick))
-        navigationItem.rightBarButtonItems = [wifiItem]
+        let moreItem = UIBarButtonItem.init(image: UIImage(named: "bookshelf_setting")?.original, style: .plain, target: self, action: #selector(moreButtonDidClick(_:)))
+        navigationItem.rightBarButtonItems = [moreItem]
     }
     
     func loadLocalBooks() {

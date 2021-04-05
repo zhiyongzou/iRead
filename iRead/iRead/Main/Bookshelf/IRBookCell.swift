@@ -20,13 +20,23 @@ protocol IRBookCellDelegate: AnyObject {
 
 class IRBookCell: UICollectionViewCell {
     
+    enum CellStyle: Int {
+        case Square
+        case Row
+    }
+    
     let pogressH: CGFloat = 20
     var bookCoverView = UIImageView()
     var bookCoverShadow = UIView()
     var progressLabel = UILabel()
+    var style = CellStyle.Square
     var optionButton = UIButton.init(type: .custom)
     
     weak var delegate: IRBookCellDelegate?
+    
+    var authorLabel: UILabel?
+    var bookNameLabel: UILabel?
+    var bottomLine: UIView?
     
     // MARK: - Override
     
@@ -48,31 +58,11 @@ class IRBookCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var coverH: CGFloat = 0
-        var coverW: CGFloat = 0
-        if let coverImg = bookCoverView.image {
-            let imageScale = coverImg.size.width / coverImg.size.height
-            if imageScale <= bookCoverScale {
-                coverH = self.width / bookCoverScale
-                coverW = coverH * imageScale
-            } else {
-                coverW = self.width
-                coverH = coverW / imageScale
-            }
+        if style == .Square {
+            updateSquareCellLayout()
         } else {
-            coverH = self.width / bookCoverScale
-            coverW = self.width
+            updateRowCellLayout()
         }
-        let coverX: CGFloat = (self.width - coverW) * 0.5
-        let coverY: CGFloat = self.height - coverH - bookCellBottomHeight
-        bookCoverView.frame = CGRect(x: coverX, y: coverY, width: coverW, height: coverH)
-        bookCoverShadow.frame = bookCoverView.frame
-        
-        let progressY = bookCoverView.frame.maxY + (bookCellBottomHeight - pogressH) * 0.5
-        let progressW = ((progressLabel.text ?? "") as NSString).size(withAttributes: [.font: progressLabel.font!]).width + 12
-        progressLabel.frame = CGRect(x: 0, y: progressY, width: progressW, height: pogressH)
-        let optionBtnW: CGFloat = 30
-        optionButton.frame = CGRect(x: self.width - optionBtnW, y: progressY, width: optionBtnW, height: bookCellBottomHeight)
     }
     
     // MARK: - Private
@@ -90,6 +80,7 @@ class IRBookCell: UICollectionViewCell {
         contentView.addSubview(bookCoverShadow)
         
         bookCoverView.layer.masksToBounds = true
+        bookCoverView.contentMode = .scaleAspectFit
         bookCoverView.layer.cornerRadius = cornerRadius
         contentView.addSubview(bookCoverView)
 
@@ -101,6 +92,7 @@ class IRBookCell: UICollectionViewCell {
         
         optionButton.setImage(UIImage.init(named: "more_icon"), for: .normal)
         optionButton.contentHorizontalAlignment = .right
+        optionButton.touchPointOffset = 10
         optionButton.addTarget(self, action: #selector(didClickOptionButton(_:)), for: .touchUpInside)
         contentView.addSubview(optionButton)
     }
@@ -142,6 +134,103 @@ class IRBookCell: UICollectionViewCell {
         didSet {
             bookCoverView.image = bookModel?.coverImage
             self.updateProgressLabelText()
+            let isRowStyle = style == .Row
+            if isRowStyle {
+                addRowCellSubviewsIfNeeded()
+                bookNameLabel?.text = bookModel?.bookName
+                authorLabel?.text = bookModel?.authorName
+            }
+            bookNameLabel?.isHidden = !isRowStyle
+            authorLabel?.isHidden = !isRowStyle
+            bottomLine?.isHidden = !isRowStyle
+            bookCoverShadow.isHidden = isRowStyle
+        }
+    }
+}
+
+// MARK: Square Cell
+
+extension IRBookCell {
+    
+    func updateSquareCellLayout() {
+        var coverH: CGFloat = 0
+        var coverW: CGFloat = 0
+        if let coverImg = bookCoverView.image {
+            let imageScale = coverImg.size.width / coverImg.size.height
+            if imageScale <= bookCoverScale {
+                coverH = self.width / bookCoverScale
+                coverW = coverH * imageScale
+            } else {
+                coverW = self.width
+                coverH = coverW / imageScale
+            }
+        } else {
+            coverH = self.width / bookCoverScale
+            coverW = self.width
+        }
+        let coverX: CGFloat = (self.width - coverW) * 0.5
+        let coverY: CGFloat = self.height - coverH - bookCellBottomHeight
+        bookCoverView.frame = CGRect(x: coverX, y: coverY, width: coverW, height: coverH)
+        bookCoverShadow.frame = bookCoverView.frame
+        
+        let progressY = bookCoverView.frame.maxY + (bookCellBottomHeight - pogressH) * 0.5
+        let progressW = ((progressLabel.text ?? "") as NSString).size(withAttributes: [.font: progressLabel.font!]).width + 12
+        progressLabel.frame = CGRect(x: 0, y: progressY, width: progressW, height: pogressH)
+        let optionBtnW: CGFloat = 30
+        optionButton.frame = CGRect(x: self.width - optionBtnW, y: progressY, width: optionBtnW, height: bookCellBottomHeight)
+    }
+}
+
+// MARK: Row Cell
+
+extension IRBookCell {
+    
+    func updateRowCellLayout() {
+
+        let spacing: CGFloat = 15
+        let contentW = contentView.width - spacing
+        bookCoverView.frame = CGRect(x: spacing, y: 0, width: 50, height: contentView.height)
+        
+        let authorX = bookCoverView.frame.maxX + 10
+        let authorH: CGFloat = 18
+        let authorY = (contentView.height - authorH) / 2.0
+        let authorW = contentW - authorX
+        authorLabel?.frame = CGRect(x: authorX, y: authorY, width: authorW, height: authorH)
+        
+        let bookNameH: CGFloat = 20
+        let bookNameY = authorY - bookNameH - 5
+        bookNameLabel?.frame = CGRect(x: authorX, y: bookNameY, width: authorW, height: bookNameH)
+        
+        let progressY = authorY + authorH + 5
+        let progressW = ((progressLabel.text ?? "") as NSString).size(withAttributes: [.font: progressLabel.font!]).width + 12
+        progressLabel.frame = CGRect(x: authorX, y: progressY, width: progressW, height: pogressH)
+        
+        let optionSize: CGFloat = pogressH
+        optionButton.frame = CGRect(x: contentW - optionSize, y: progressY, width: optionSize, height: optionSize)
+         
+        bottomLine?.frame = CGRect(x: spacing, y: contentView.height - 0.5, width: contentW - spacing, height: 0.5)
+    }
+    
+    func addRowCellSubviewsIfNeeded() {
+        
+        if authorLabel == nil {
+            authorLabel = UILabel()
+            authorLabel!.font = .systemFont(ofSize: 12)
+            authorLabel!.textColor = .hexColor("999999")
+            contentView.addSubview(authorLabel!)
+        }
+        
+        if bookNameLabel == nil {
+            bookNameLabel = UILabel()
+            bookNameLabel!.font = .systemFont(ofSize: 15)
+            bookNameLabel!.textColor = .hexColor("333333")
+            contentView.addSubview(bookNameLabel!)
+        }
+        
+        if bottomLine == nil {
+            bottomLine = UIView()
+            bottomLine!.backgroundColor = .hexColor("e0e0e0")
+            contentView.addSubview(bottomLine!)
         }
     }
 }

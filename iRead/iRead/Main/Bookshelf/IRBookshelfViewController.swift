@@ -23,6 +23,13 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         return UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2
     }()
     
+    var isListStyle: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: BSMenuView.kBookshelfListStyle)
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = IRTabBarName.bookshelf.rawValue
@@ -83,8 +90,8 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         if menu.type == BSMenuModel.MenuType.wifi {
             navigationController?.pushViewController(IRWifiUploadViewController(), animated: true)
         } else if menu.type == BSMenuModel.MenuType.style {
-            let isList = UserDefaults.standard.bool(forKey: BSMenuView.kBookshelfListStyle)
-            UserDefaults.standard.set(!isList, forKey: BSMenuView.kBookshelfListStyle)
+            UserDefaults.standard.set(!isListStyle, forKey: BSMenuView.kBookshelfListStyle)
+            collectionView.reloadData()
         } else {
             
         }
@@ -150,8 +157,6 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
 
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = minimumInteritemSpacing
         collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: flowLayout)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -244,18 +249,33 @@ extension IRBookshelfViewController: UICollectionViewDelegateFlowLayout, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let bookCell: IRBookCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRBookCell", for: indexPath) as! IRBookCell
+        bookCell.style = isListStyle ? .Row : .Square
         bookCell.bookModel = bookList[indexPath.item]
         bookCell.delegate = self
         return bookCell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if isListStyle {
+            return CGSize(width: collectionView.width, height: 100)
+        }
         let width = floor((collectionView.width - minimumInteritemSpacing * (rowCount - 1) - sectionEdgeInsetsLR * 2) / rowCount)
-        return CGSize.init(width: width, height: IRBookCell.cellHeightWithWidth(width))
+        return CGSize(width: width, height: IRBookCell.cellHeightWithWidth(width))
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if isListStyle {
+            return UIEdgeInsets.init(top: 5, left: 0, bottom: 5, right: 0)
+        }
         return UIEdgeInsets.init(top: 15, left: sectionEdgeInsetsLR, bottom: 15, right: sectionEdgeInsetsLR)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return isListStyle ? 0 : 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return isListStyle ? 0 : minimumInteritemSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

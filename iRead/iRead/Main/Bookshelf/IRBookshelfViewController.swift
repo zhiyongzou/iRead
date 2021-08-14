@@ -115,6 +115,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
             popTipView.cornerRadius = 5
             popTipView.bubblePaddingX = 5
             popTipView.backgroundColor = .white
+            popTipView.pointerSize = 8
             popTipView.sidePadding = 6
             popTipView.borderColor = .hexColor("eeeeee")
             popTipView.disableTapToDismiss = true

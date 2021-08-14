@@ -25,7 +25,7 @@ class IRBookCell: UICollectionViewCell {
         case Row
     }
     
-    let pogressH: CGFloat = 20
+    let pogressH: CGFloat = 18
     var bookCoverView = UIImageView()
     var bookCoverShadow = UIView()
     var progressLabel = UILabel()
@@ -86,7 +86,7 @@ class IRBookCell: UICollectionViewCell {
 
         progressLabel.layer.cornerRadius = pogressH * 0.5
         progressLabel.layer.masksToBounds = true
-        progressLabel.font = UIFont.systemFont(ofSize: 13)
+        progressLabel.font = UIFont.systemFont(ofSize: 12)
         progressLabel.textAlignment = .left
         contentView.addSubview(progressLabel)
         

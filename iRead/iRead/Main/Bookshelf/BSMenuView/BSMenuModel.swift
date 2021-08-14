@@ -12,7 +12,6 @@ class BSMenuModel: NSObject {
     
     enum MenuType: Int {
         case wifi
-        case modify
         case style
     }
     

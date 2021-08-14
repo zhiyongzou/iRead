@@ -29,7 +29,6 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = IRTabBarName.bookshelf.rawValue
@@ -92,8 +91,6 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         } else if menu.type == BSMenuModel.MenuType.style {
             UserDefaults.standard.set(!isListStyle, forKey: BSMenuView.kBookshelfListStyle)
             collectionView.reloadData()
-        } else {
-            
         }
         self.menuPopView?.dismiss(animated: true)
         self.menuPopView = nil

@@ -19,7 +19,7 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
     static let bookCoverH: CGFloat = 70
     static let bookContentH: CGFloat = bookCoverH / bookCoverScale
     static let cellHeight: CGFloat = 153.5 + bookContentH
-    let pogressH: CGFloat = 20
+    let pogressH: CGFloat = 18
     var bookContentView: UIView?
     var bookCover: UIImageView?
     var bookNameLabel: UILabel?
@@ -163,7 +163,7 @@ class IRHomeCurrentReadingCell: UICollectionViewCell {
         
         let progressLabel = UILabel()
         self.progressLabel = progressLabel
-        progressLabel.font = .systemFont(ofSize: 15)
+        progressLabel.font = .systemFont(ofSize: 12)
         progressLabel.textColor = .hexColor("999999")
         progressLabel.layer.cornerRadius = pogressH * 0.5
         progressLabel.layer.masksToBounds = true

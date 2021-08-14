@@ -45,8 +45,7 @@ class BSMenuView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFl
     static var menuList: [BSMenuModel] {
         get {
             let wifi = BSMenuModel(title: "Wi-Fi传书", imageName: "wifi_upload", type: .wifi)
-            let batch = BSMenuModel(title: "批量管理", imageName: "batch_modify", type: .modify)
-            return [wifi, batch, listStyle]
+            return [wifi, listStyle]
         }
     }
     

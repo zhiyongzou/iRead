@@ -939,7 +939,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = zzyong.iRead;
+				PRODUCT_BUNDLE_IDENTIFIER = zzy.iRead;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iRead/App/iRead-Bridging-Header.h";
@@ -968,7 +968,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = zzyong.iRead;
+				PRODUCT_BUNDLE_IDENTIFIER = zzy.iRead;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iRead/App/iRead-Bridging-Header.h";

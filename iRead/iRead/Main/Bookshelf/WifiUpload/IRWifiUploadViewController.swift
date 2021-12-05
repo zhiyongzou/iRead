@@ -15,9 +15,9 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
 
     var webUploader: GCDWebUploader?
     lazy var wifiView = UIImageView.init(image: UIImage(named: "wifi")?.template)
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
+    lazy var titleLabel: UITextView = {
+        let label = UITextView()
+        label.isEditable = false
         return label
     }()
     lazy var warningLabel: UILabel = {
@@ -25,6 +25,8 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
         label.numberOfLines = 0
         return label
     }()
+    
+    // MARK: Override
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,8 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
         }
     }
     
+    // MARK: Private
+    
     func commonInit() {
         view.backgroundColor = .white
         title = "WiFi-传书"
@@ -52,6 +56,7 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
         let top = (navigationController?.navigationBar.frame.maxY ?? 0) + 30
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view).offset(top)
+            make.height.equalTo(80)
             make.left.equalTo(view).offset(10)
             make.right.equalTo(view).offset(-10)
         }

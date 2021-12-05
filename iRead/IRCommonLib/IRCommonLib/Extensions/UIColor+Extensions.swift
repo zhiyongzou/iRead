@@ -19,7 +19,7 @@ public extension UIColor {
         return self.init(red: red, green: green, blue: blue, alpha: 1)
     }
     
-    class func rgba(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat) -> UIColor {
+    class func rgba(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat = 1) -> UIColor {
         return self.init(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
     }
 }

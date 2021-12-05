@@ -6,9 +6,6 @@
 //  Copyright © 2020 zzyong. All rights reserved.
 //
 
-#if DEBUG
-    import FLEX
-#endif
 import UIKit
 import PKHUD
 import IRCommonLib
@@ -18,20 +15,16 @@ let IRAppDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-#if DEBUG
-    lazy var flexWindow: UIWindow = UIWindow()
-#endif
-    
     var window: UIWindow?
     var rootViewController: IRNavigationController!
-    lazy var mainViewController = IRMainViewController()
+    lazy var homeViewController = IRHomeViewController()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
         setupDebugConfig()
 #endif
         IRNetworkManager.shared.startNotifier()
-        setupMainViewController()
+        setupHomeViewController()
         
         return true
     }
@@ -67,11 +60,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: Private
 extension AppDelegate {
     
-    func setupMainViewController() {
+    func setupHomeViewController() {
         window = UIWindow.init(frame: UIScreen.main.bounds)
         window?.backgroundColor = .black
-        mainViewController.view.backgroundColor = .white
-        rootViewController = IRNavigationController.init(rootViewController: mainViewController)
+        homeViewController.view.backgroundColor = .white
+        rootViewController = IRNavigationController.init(rootViewController: homeViewController)
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
         initReadConfig()
@@ -107,52 +100,16 @@ extension AppDelegate {
             guard let bookPath = bookPath, success else {
                 return
             }
-            if let topViewController = self.rootViewController.topViewController {
-                if topViewController.isMember(of: IRReaderCenterViewController.self) {
-                    topViewController.navigationController?.popViewController(animated: false)
-                }
+            
+            guard let topViewController = self.rootViewController.topViewController else { return }
+            
+            if topViewController.isMember(of: IRReaderCenterViewController.self) {
+                topViewController.navigationController?.popViewController(animated: false)
             }
             
             let readerCenter = IRReaderCenterViewController.init(withPath: bookPath)
-            readerCenter.delegate = self.mainViewController.bookshelfVC
+            readerCenter.delegate = IRNavigationController.bookshelfViewController
             self.rootViewController.pushViewController(readerCenter, animated: true)
         }
     }
 }
-
-#if DEBUG
-
-extension AppDelegate {
-    
-    func setupDebugConfig() {
-        addFlexDebugView()
-    }
-    
-    func addFlexDebugView() {
-        
-        flexWindow.backgroundColor = .clear
-        flexWindow.rootViewController = .init()
-        flexWindow.windowLevel = UIWindow.Level.statusBar + 50;
-        
-        let flexY = UIApplication.shared.statusBarFrame.maxY
-        let flexW: CGFloat = 30
-        let flexX = (UIScreen.main.bounds.width - flexW) * 0.5
-        flexWindow.frame = CGRect.init(x: flexX, y: flexY, width: flexW, height: 13)
-        
-        flexWindow.makeKeyAndVisible()
-        
-        let flexBtn: UIButton = .init(type: UIButton.ButtonType.custom)
-        flexBtn.titleLabel?.font = .systemFont(ofSize: 12);
-        flexBtn.setTitle("FLEX", for: UIControl.State.normal)
-        flexBtn.setTitleColor(.blue, for: UIControl.State.normal)
-        flexBtn.addTarget(self, action:#selector(AppDelegate.showFlexDebugView), for: UIControl.Event.touchUpInside)
-        flexBtn.frame = flexWindow.bounds
-        flexWindow.addSubview(flexBtn)
-    }
-    
-    @objc func showFlexDebugView() {
-        FLEXManager.shared.showExplorer()
-    }
-}
-
-#endif

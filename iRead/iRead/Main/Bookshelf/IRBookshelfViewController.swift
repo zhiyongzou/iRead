@@ -31,8 +31,9 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = IRTabBarName.bookshelf.rawValue
+        title = "书库"
         setupBarButtonItems()
+        setupLeftBackBarButton()
         setupCollectionView()
         addNotifications()
         loadLocalBooks()

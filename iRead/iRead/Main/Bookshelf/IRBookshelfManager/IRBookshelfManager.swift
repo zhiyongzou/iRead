@@ -9,9 +9,16 @@
 import UIKit
 import IRCommonLib
 
+public extension Notification {
+    static let IRBookCountChangeNotification = Notification.Name("IRBookCountChange")
+    static let IRBookCountKey = "bookCount"
+}
+
 class IRBookshelfManager: NSObject {
 
-    static var hasCreated = false
+    static var hasCreated  = false
+    /// 数本数
+    static let kBookCount  = "bookCount"
     static let kTableName  = "bookshelf_table"
     static let kCoverImage = "coverImage"
     static let kBookName   = "bookName"
@@ -19,6 +26,18 @@ class IRBookshelfManager: NSObject {
     static let kBookPath   = "bookPath"
     static let kInsertTime = "insertTime"
     static let kAuthorName = "authorName"
+    
+    static var bookCount: Int = {
+        UserDefaults.standard.integer(forKey: kBookCount)
+    }()
+    
+    class func bookCountAdd(_ count: Int) {
+        OperationQueue.main.addOperation {
+            bookCount += count
+            UserDefaults.standard.set(bookCount, forKey: kBookCount)
+            NotificationCenter.default.post(name: Notification.IRBookCountChangeNotification, object: nil, userInfo: [Notification.IRBookCountKey: bookCount])
+        }
+    }
     
     class func creatBookshelfTableIfNeeded() {
         if hasCreated {
@@ -52,9 +71,10 @@ class IRBookshelfManager: NSObject {
         let values: [Any] = [imgData ?? NSNull(), book.bookName, book.authorName ?? NSNull(), book.insertTime, book.progress, book.bookPath]
         let success = IRDBManager.shared.executeUpdate(sql, values: values)
         if !success {
-            IRDebugLog("Insert failed")
+            IRDebugLog("\(book.bookName) Insert failed")
         } else {
-            IRDebugLog("Insert succeed")
+            bookCountAdd(1)
+            IRDebugLog("\(book.bookName) Insert succeed")
         }
         IRDBManager.shared.close()
     }

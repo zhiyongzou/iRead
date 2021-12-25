@@ -76,7 +76,9 @@ class IRFontDownload: NSObject {
                             self.delegate?.fontDownloadDidFail(self, error: error)
                         }
                     } else {
+#if DEBUG
                         print("ERROR MESSAGE IS NOT AVAILABLE")
+#endif
                     }
                 }
                     

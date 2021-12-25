@@ -112,7 +112,8 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
         guard let pageModel = currentReadingVC.pageModel else { return }
         let currentChapter = book.chapter(at: pageModel.chapterIdx)
         guard let pageOffset = currentChapter.pageOffset else { return }
-        let progress: Int = Int(CGFloat((pageModel.pageIdx + pageOffset + 1)) / CGFloat(book.pageCount) * 100)
+        let progress: Int = Int(ceilf(Float(pageModel.pageIdx + pageOffset + 1) / Float(book.pageCount) * 100.0))
+        IRDebugLog("[\(book.bookName)] reading progress: \(progress)")
         
         if delegate == nil {
             IRBookshelfManager.updateBookPregress(progress, bookPath: bookPath.lastPathComponent)

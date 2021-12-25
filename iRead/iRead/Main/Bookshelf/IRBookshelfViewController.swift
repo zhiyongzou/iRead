@@ -36,7 +36,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         setupLeftBackBarButton()
         setupCollectionView()
         addNotifications()
-        loadLocalBooks()
+        loadBookList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,7 +130,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         navigationItem.rightBarButtonItems = [moreItem]
     }
     
-    func loadLocalBooks() {
+    func loadBookList() {
         self.updateEmptyViewState(.loading)
         DispatchQueue.global().async {
             var bookList: [IRBookModel]?

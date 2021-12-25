@@ -51,6 +51,7 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         bookshelfModel.title = "书库"
         bookshelfModel.iconName = "bookshelf"
         bookshelfModel.iconBgColor = .systemOrange
+        bookshelfModel.bookCount = IRBookshelfManager.bookCount
         
         return NSArray.init(objects: todayReadModel, objectiveModel, bookshelfModel, readingModel)
     }()
@@ -60,6 +61,7 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addNotifications()
         setupBarButtonItems()
         setupCollectionView()
     }
@@ -81,6 +83,18 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
+    }
+    
+    // MARK: - Notification
+    
+    func addNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(bookCountDidChange(_:)), name: Notification.IRBookCountChangeNotification, object: nil)
+    }
+    
+    @objc func bookCountDidChange(_ notification: Notification) {
+        guard let bookCount: Int = notification.userInfo?[Notification.IRBookCountKey] as? Int else { return }
+        bookshelfModel.bookCount = bookCount
+        collectionView.reloadData()
     }
     
     // MARK: - Privte

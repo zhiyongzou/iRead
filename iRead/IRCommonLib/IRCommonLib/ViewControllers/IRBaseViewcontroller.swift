@@ -20,6 +20,7 @@ open class IRBaseViewcontroller: UIViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         IRDebugLog(self)
     }
 

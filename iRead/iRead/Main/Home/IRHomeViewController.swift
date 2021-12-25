@@ -113,6 +113,10 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         wifiBtn.sizeToFit()
         let wifiItem = UIBarButtonItem.init(customView: wifiBtn)
         navigationItem.rightBarButtonItem = wifiItem
+        
+        let settingItem = UIBarButtonItem(image: UIImage(named: "setting"), target: self, action: #selector(didClickSettingButton))
+        settingItem?.tintColor = .init(white: 0.1, alpha: 1)
+        navigationItem.leftBarButtonItem = settingItem
     }
     
     private func setupCollectionView() {
@@ -175,6 +179,10 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     
     @objc func didClickWifiUploadButton() {
         navigationController?.pushViewController(IRWifiUploadViewController(), animated: true)
+    }
+    
+    @objc func didClickSettingButton() {
+        navigationController?.pushViewController(IRSettingViewController(), animated: true)
     }
     
     // MARK: - IRHomeCurrentReadingDelegate

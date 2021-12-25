@@ -67,6 +67,13 @@
 		81C97760253DB83800E9CCCB /* IRFontSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C9775F253DB83800E9CCCB /* IRFontSelectView.swift */; };
 		81C97765253DB86300E9CCCB /* IRFontSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C97764253DB86300E9CCCB /* IRFontSelectCell.swift */; };
 		81CB116A254EECB70084E991 /* IRChapterTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB1169254EECB70084E991 /* IRChapterTipView.swift */; };
+		81D360E327774FEC009B518C /* IRSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D360E227774FEC009B518C /* IRSettingViewController.swift */; };
+		81D360E62777535D009B518C /* IRSettingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D360E52777535D009B518C /* IRSettingDataSource.swift */; };
+		81D360E927775459009B518C /* IRAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D360E727775459009B518C /* IRAboutViewController.swift */; };
+		81D360EA27775459009B518C /* IRAboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81D360E827775459009B518C /* IRAboutViewController.xib */; };
+		81D360EE277754E4009B518C /* IRSettingArrowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D360EC277754E4009B518C /* IRSettingArrowCell.swift */; };
+		81D360EF277754E4009B518C /* IRSettingArrowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81D360ED277754E4009B518C /* IRSettingArrowCell.xib */; };
+		81D360F32777581C009B518C /* IRSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D360F22777581C009B518C /* IRSettingModel.swift */; };
 		81D4725325FE4158004C050D /* BSMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D4725225FE4158004C050D /* BSMenuView.swift */; };
 		81D4725B25FE4B44004C050D /* BSMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D4725A25FE4B44004C050D /* BSMenuModel.swift */; };
 		81D4726025FE4B5C004C050D /* BSMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D4725F25FE4B5C004C050D /* BSMenuCell.swift */; };
@@ -161,6 +168,13 @@
 		81C9775F253DB83800E9CCCB /* IRFontSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontSelectView.swift; sourceTree = "<group>"; };
 		81C97764253DB86300E9CCCB /* IRFontSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontSelectCell.swift; sourceTree = "<group>"; };
 		81CB1169254EECB70084E991 /* IRChapterTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRChapterTipView.swift; sourceTree = "<group>"; };
+		81D360E227774FEC009B518C /* IRSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSettingViewController.swift; sourceTree = "<group>"; };
+		81D360E52777535D009B518C /* IRSettingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSettingDataSource.swift; sourceTree = "<group>"; };
+		81D360E727775459009B518C /* IRAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRAboutViewController.swift; sourceTree = "<group>"; };
+		81D360E827775459009B518C /* IRAboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IRAboutViewController.xib; sourceTree = "<group>"; };
+		81D360EC277754E4009B518C /* IRSettingArrowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSettingArrowCell.swift; sourceTree = "<group>"; };
+		81D360ED277754E4009B518C /* IRSettingArrowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IRSettingArrowCell.xib; sourceTree = "<group>"; };
+		81D360F22777581C009B518C /* IRSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSettingModel.swift; sourceTree = "<group>"; };
 		81D4725225FE4158004C050D /* BSMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSMenuView.swift; sourceTree = "<group>"; };
 		81D4725A25FE4B44004C050D /* BSMenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSMenuModel.swift; sourceTree = "<group>"; };
 		81D4725F25FE4B5C004C050D /* BSMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSMenuCell.swift; sourceTree = "<group>"; };
@@ -350,7 +364,7 @@
 				8193A44525480A3300501F8F /* Common */,
 				8180406325206A5C00F31442 /* ReaderCenter */,
 				816DFBE22404D77D0030E55B /* Resources */,
-				816DFBBE2404D3A00030E55B /* Info.plist */,
+				81D360E427775060009B518C /* Other */,
 			);
 			path = iRead;
 			sourceTree = "<group>";
@@ -398,6 +412,7 @@
 				816DFBE42404D8010030E55B /* IRNavigationController.swift */,
 				8126CF742545ABAA00C71415 /* Bookshelf */,
 				81B7E1DF251DE09E00E84A37 /* Home */,
+				81D360E127774FAD009B518C /* Setting */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -515,6 +530,52 @@
 				81CB1169254EECB70084E991 /* IRChapterTipView.swift */,
 			);
 			path = IRChapterTipView;
+			sourceTree = "<group>";
+		};
+		81D360E127774FAD009B518C /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				81D360F127775802009B518C /* Model */,
+				81D360F027775540009B518C /* Cell */,
+				81D360EB2777545F009B518C /* About */,
+				81D360E227774FEC009B518C /* IRSettingViewController.swift */,
+				81D360E52777535D009B518C /* IRSettingDataSource.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		81D360E427775060009B518C /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				816DFBBE2404D3A00030E55B /* Info.plist */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		81D360EB2777545F009B518C /* About */ = {
+			isa = PBXGroup;
+			children = (
+				81D360E727775459009B518C /* IRAboutViewController.swift */,
+				81D360E827775459009B518C /* IRAboutViewController.xib */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		81D360F027775540009B518C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				81D360EC277754E4009B518C /* IRSettingArrowCell.swift */,
+				81D360ED277754E4009B518C /* IRSettingArrowCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		81D360F127775802009B518C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				81D360F22777581C009B518C /* IRSettingModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		81D4725125FE4114004C050D /* BSMenuView */ = {
@@ -645,7 +706,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				816DFBBD2404D3A00030E55B /* LaunchScreen.storyboard in Resources */,
+				81D360EA27775459009B518C /* IRAboutViewController.xib in Resources */,
 				816DFBBA2404D3A00030E55B /* Assets.xcassets in Resources */,
+				81D360EF277754E4009B518C /* IRSettingArrowCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,6 +778,7 @@
 				8164E8CD275CBD3E00044B89 /* AppDelegate+Debug.swift in Sources */,
 				8162E4D12566AF2F007BDDA2 /* IRBookmarkManager.swift in Sources */,
 				81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */,
+				81D360EE277754E4009B518C /* IRSettingArrowCell.swift in Sources */,
 				818F99C3253BEDB800C47427 /* IRBook.swift in Sources */,
 				81AEAEFB259442ED00AADC45 /* KYCircularProgress.swift in Sources */,
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
@@ -722,6 +786,7 @@
 				81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */,
 				8162E4D92566AF41007BDDA2 /* IRBookmarkModel.swift in Sources */,
 				81C13AF22538492300B78BC2 /* IRReadColorCell.swift in Sources */,
+				81D360E327774FEC009B518C /* IRSettingViewController.swift in Sources */,
 				8133228F254BB01400820AA5 /* IRReadBottomBar.swift in Sources */,
 				81D4726025FE4B5C004C050D /* BSMenuCell.swift in Sources */,
 				812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */,
@@ -747,7 +812,10 @@
 				8136A2D42536D1BA005C1646 /* IRSwitchSettingView.swift in Sources */,
 				81D4725B25FE4B44004C050D /* BSMenuModel.swift in Sources */,
 				81D4725325FE4158004C050D /* BSMenuView.swift in Sources */,
+				81D360E62777535D009B518C /* IRSettingDataSource.swift in Sources */,
+				81D360F32777581C009B518C /* IRSettingModel.swift in Sources */,
 				816DFBE52404D8010030E55B /* IRNavigationController.swift in Sources */,
+				81D360E927775459009B518C /* IRAboutViewController.swift in Sources */,
 				8164E8C7275C788300044B89 /* IRTodayReadCell.swift in Sources */,
 				81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */,
 				81A7C650257A31E6004CDA01 /* IREmptyView.swift in Sources */,
@@ -948,6 +1016,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = zzy.com.iRead;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -977,6 +1046,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = zzy.com.iRead;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

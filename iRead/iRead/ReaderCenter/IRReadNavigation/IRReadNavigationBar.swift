@@ -76,7 +76,7 @@ class IRReadNavigationBar: UIView {
         }
         
         readSetting = UIButton.init(type: .custom)
-        readSetting.setImage(UIImage.init(named: "bar_read_setting")?.template, for: .normal)
+        readSetting.setImage(UIImage.init(named: "setting")?.template, for: .normal)
         readSetting.addTarget(self, action: #selector(didClickReadSettingButton), for: .touchUpInside)
         self.addSubview(readSetting)
         readSetting.snp.makeConstraints { (make) -> Void in

@@ -84,9 +84,10 @@ class IRBookshelfManager: NSObject {
         let sql = "DELETE FROM \(kTableName) WHERE \(kBookName) = ? AND \(kBookPath) = ?"
         let success = IRDBManager.shared.executeUpdate(sql, values: [book.bookName, book.bookPath])
         if !success {
-            IRDebugLog("Delete failed")
+            IRDebugLog("\(book.bookName) Delete failed")
         } else {
-            IRDebugLog("Delete succeed")
+            IRDebugLog("\(book.bookName) Delete succeed")
+            bookCountAdd(-1)
         }
         IRDBManager.shared.close()
     }

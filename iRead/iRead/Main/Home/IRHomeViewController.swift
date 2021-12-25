@@ -15,6 +15,7 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     
     var collectionView: UICollectionView!
     var currentreadingBookPath: String?
+    var shouldUpdateCurrentReadBook = false
     
     let sectionEdgeInsetLR: CGFloat = 15
     
@@ -94,6 +95,7 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     @objc func bookCountDidChange(_ notification: Notification) {
         guard let bookCount: Int = notification.userInfo?[Notification.IRBookCountKey] as? Int else { return }
         bookshelfModel.bookCount = bookCount
+        shouldUpdateCurrentReadBook = true
         collectionView.reloadData()
     }
     
@@ -133,14 +135,21 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     }
     
     func updateCurrentReadingBookIfNeeded() {
+        if currentreadingBookPath == IRReaderConfig.currentreadingBookPath && !shouldUpdateCurrentReadBook {
+            return
+        }
+        shouldUpdateCurrentReadBook = false
         if currentreadingBookPath != IRReaderConfig.currentreadingBookPath {
             currentreadingBookPath = IRReaderConfig.currentreadingBookPath
         }
         guard let currentreadingBookPath = currentreadingBookPath else { return }
         DispatchQueue.global().async {
             IRBookshelfManager.loadBookWithPath(currentreadingBookPath) { (bookModel, error) in
-                guard let bookModel = bookModel else {return}
                 DispatchQueue.main.async {
+                    if bookModel == nil {
+                        IRReaderConfig.currentreadingBookPath = nil
+                        self.currentreadingBookPath = nil
+                    }
                     self.updateCurrentReadingBook(bookModel)
                 }
             }
@@ -154,10 +163,13 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
             readingModel.bookName = bookModel.bookName
             readingModel.author = bookModel.authorName
             readingModel.progress = bookModel.progress
-            collectionView.reloadData()
         } else {
             readingModel.isReading = false
+            readingModel.coverImage = nil
+            readingModel.bookName = nil
+            readingModel.author = nil
         }
+        collectionView.reloadData()
     }
     // MARK: - Action
     
@@ -176,7 +188,11 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     }
     
     func currentReadingCellDidClickFindBook() {
-        navigationController?.pushViewController(IRWifiUploadViewController(), animated: true)
+        if IRBookshelfManager.bookCount > 0 {
+            navigationController?.pushViewController(IRBookshelfViewController(), animated: true)
+        } else {
+            navigationController?.pushViewController(IRWifiUploadViewController(), animated: true)
+        }
     }
 }
 

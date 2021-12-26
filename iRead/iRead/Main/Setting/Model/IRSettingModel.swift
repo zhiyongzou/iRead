@@ -11,11 +11,18 @@ import UIKit
 class IRSettingModel: NSObject {
     
     typealias ViewControllerBlock = () -> UIViewController
+    
     typealias ClickActionBlock = () -> Void
     
+    /// 底部分割线
+    var hiddenSeparator = false
+    
+    /// 标题
     var title: String?
+    
     /// 优先 VC
     var viewController: ViewControllerBlock?
+    
     /// 其次 ClickAction
     var clickAction: ClickActionBlock?
 }

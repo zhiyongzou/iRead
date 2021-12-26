@@ -31,7 +31,7 @@
                             <constraint firstAttribute="height" constant="16" id="vtT-zm-ttZ"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLb-Gy-EKI">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLb-Gy-EKI" userLabel="bottomLine">
                         <rect key="frame" x="20" y="43" width="300" height="1"/>
                         <color key="backgroundColor" systemColor="systemGray5Color"/>
                         <constraints>
@@ -51,6 +51,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="bottomLine" destination="MLb-Gy-EKI" id="ikU-DH-0Sl"/>
                 <outlet property="titleLabel" destination="6s4-K2-iP5" id="rB9-fH-V57"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="90.401785714285708"/>

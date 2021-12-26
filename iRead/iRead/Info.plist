@@ -40,6 +40,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>用于解锁应用</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>用于保存图片或视频</string>
 	<key>UIFileSharingEnabled</key>

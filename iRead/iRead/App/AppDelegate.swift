@@ -24,7 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupDebugConfig()
 #endif
         IRNetworkManager.shared.startNotifier()
-        setupHomeViewController()
+        
+        window = UIWindow.init(frame: UIScreen.main.bounds)
+        window?.backgroundColor = .white
+        
+        if UserDefaults.standard.bool(forKey: kEnableFaceIdLock) {
+            handleFaceIdUnLock()
+        } else {
+            setupHomeViewController()
+        }
         
         return true
     }
@@ -60,9 +68,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: Private
 extension AppDelegate {
     
+    func handleFaceIdUnLock() {
+        let faceVc = IRFaceIdViewController()
+        faceVc.view.backgroundColor = .white
+        faceVc.successBlock = {
+            self.setupHomeViewController()
+        }
+        window?.rootViewController = faceVc
+        window?.makeKeyAndVisible()
+    }
+    
     func setupHomeViewController() {
-        window = UIWindow.init(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .black
         homeViewController.view.backgroundColor = .white
         rootViewController = IRNavigationController.init(rootViewController: homeViewController)
         window?.rootViewController = rootViewController

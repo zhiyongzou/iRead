@@ -10,11 +10,15 @@ import UIKit
 
 class IRSettingArrowCell: UITableViewCell {
 
+    @IBOutlet weak var bottomLine: UIView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    var cellModel: IRSettingModel? {
+    var cellModel: IRArrowSettingModel? {
         didSet {
             titleLabel.text = cellModel?.title
+            if let cellModel = cellModel {
+                bottomLine.isHidden = cellModel.hiddenSeparator
+            }
         }
     }
 }

@@ -48,9 +48,9 @@ class IRChapterCell: UICollectionViewCell {
         }
     }
     
-    override var isSelected: Bool {
+    var chapterSelect: Bool = false {
         didSet {
-            titleLabel.textColor = isSelected ? UIColor.rgba(255, 156, 0, 1) : IRReaderConfig.textColor
+            titleLabel.textColor = chapterSelect ? UIColor.rgba(255, 156, 0, 1) : IRReaderConfig.textColor
         }
     }
     

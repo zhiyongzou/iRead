@@ -48,6 +48,18 @@ class IRChapterListViewController: IRBaseViewcontroller{
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let currentChapterIdx = currentChapterIdx {
+            if segmentType == .chapter && currentChapterIdx < chapterList.count {
+                DispatchQueue.main.async {
+                    self.chapterListView?.scrollToItem(at: IndexPath.init(item: currentChapterIdx, section: 0), at: .centeredVertically, animated: false)
+                }
+            }
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         contentView.frame = self.view.bounds
@@ -147,7 +159,7 @@ extension IRChapterListViewController: UICollectionViewDelegateFlowLayout, UICol
         let chapterCell: IRChapterCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRChapterCell", for: indexPath) as! IRChapterCell
         chapterCell.tocReference = chapterList[indexPath.item]
         if let currentChapterIdx = currentChapterIdx {
-            chapterCell.isSelected = indexPath.item == currentChapterIdx
+            chapterCell.chapterSelect = indexPath.item == currentChapterIdx
         }
         return chapterCell
     }

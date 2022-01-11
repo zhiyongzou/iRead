@@ -114,8 +114,8 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         let wifiItem = UIBarButtonItem.init(customView: wifiBtn)
         navigationItem.rightBarButtonItem = wifiItem
         
-        let settingItem = UIBarButtonItem(image: UIImage(named: "setting"), target: self, action: #selector(didClickSettingButton))
-        settingItem?.tintColor = .init(white: 0.1, alpha: 1)
+        let settingItem = UIBarButtonItem(image: UIImage(named: "setting"), style: .plain, target: self, action: #selector(didClickSettingButton))
+        settingItem.tintColor = UIColor.init(white: 0.1, alpha: 1)
         navigationItem.leftBarButtonItem = settingItem
     }
     

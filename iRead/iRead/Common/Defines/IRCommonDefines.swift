@@ -6,7 +6,11 @@
 //  Copyright © 2021 iread.com. All rights reserved.
 //
 
-import Foundation
+#if DEBUG
+
+public let kEnableFlex       = "EnableFlex"
+
+#endif
 
 /// 面容 ID
 public let kEnableFaceIdLock = "EnableFaceIdLock"

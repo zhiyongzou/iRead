@@ -13,7 +13,7 @@ class IRSettingViewController: IRBaseViewcontroller, UITableViewDataSource, UITa
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .rgba(238, 238, 240)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 50
@@ -67,7 +67,7 @@ class IRSettingViewController: IRBaseViewcontroller, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "UITableViewHeaderFooterView")
-        headerView?.contentView.backgroundColor = .rgba(238, 238, 240)
+        headerView?.contentView.backgroundColor = .clear
         return headerView
     }
     

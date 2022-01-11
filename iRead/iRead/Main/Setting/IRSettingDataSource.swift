@@ -96,6 +96,17 @@ class IRSettingDataSource: NSObject {
         appGroup.append(about)
         settingList.append(appGroup)
         
+#if DEBUG
+        let flex = IRSwitchSettingModel()
+        flex.title = "FLEX Debug"
+        flex.hiddenSeparator = true
+        flex.switchValueKey = kEnableFlex
+        flex.valueChangeAction = { switchView in
+            flexWindow.isHidden = !switchView.isOn
+        }
+        settingList.append([flex])
+#endif
+        
         return settingList
     }
 }

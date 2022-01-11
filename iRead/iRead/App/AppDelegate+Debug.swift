@@ -11,7 +11,7 @@
 import FLEX
 import UIKit
 
-let flexWindow: UIWindow = UIWindow()
+public let flexWindow: UIWindow = UIWindow()
 
 extension AppDelegate {
     
@@ -39,6 +39,7 @@ extension AppDelegate {
         flexBtn.addTarget(self, action:#selector(AppDelegate.showFlexDebugView), for: UIControl.Event.touchUpInside)
         flexBtn.frame = flexWindow.bounds
         flexWindow.addSubview(flexBtn)
+        flexWindow.isHidden = !UserDefaults.standard.bool(forKey: kEnableFlex)
     }
     
     @objc func showFlexDebugView() {

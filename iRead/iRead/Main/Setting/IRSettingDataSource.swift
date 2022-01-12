@@ -12,7 +12,7 @@ import IRCommonLib
 
 class IRSettingDataSource: NSObject {
     
-    static let KAppID = "1"
+    static let KAppID = "1604599542"
     static let KAppUrlInAppStore = "itms-apps://itunes.apple.com/app/id\(KAppID)"
     static let FaceIdSetupFailureTip = "面容解锁设置失败"
     

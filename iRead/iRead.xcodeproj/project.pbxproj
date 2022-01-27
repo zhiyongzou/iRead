@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		810452C725EA974300C0230A /* IRNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810452C625EA974300C0230A /* IRNetworkManager.swift */; };
+		810947B4279BCE0E00BE019E /* IRHomeTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947B3279BCE0E00BE019E /* IRHomeTopBar.swift */; };
+		810947B6279BDE1D00BE019E /* IRHomeTopBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947B5279BDE1D00BE019E /* IRHomeTopBarDelegate.swift */; };
+		810947B8279BE05D00BE019E /* IRHomeViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947B7279BE05D00BE019E /* IRHomeViewController+CollectionView.swift */; };
+		810947BF279C577A00BE019E /* IRSearchWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947BE279C577A00BE019E /* IRSearchWebViewController.swift */; };
+		810947C4279D73C800BE019E /* IRSearchWebTabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947C3279D73C800BE019E /* IRSearchWebTabbar.swift */; };
+		810947C8279D98CF00BE019E /* IRSearchWebTabbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947C7279D98CE00BE019E /* IRSearchWebTabbarDelegate.swift */; };
+		810947CA279DA32F00BE019E /* IRSearchShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947C9279DA32F00BE019E /* IRSearchShortcutView.swift */; };
+		810947CC279DA49200BE019E /* IRSearchShortcutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947CB279DA49200BE019E /* IRSearchShortcutModel.swift */; };
+		810947CE279DA59200BE019E /* IRSearchShortcutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947CD279DA59200BE019E /* IRSearchShortcutCell.swift */; };
+		810947D0279DAE4700BE019E /* IRSearchShortcutLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947CF279DAE4700BE019E /* IRSearchShortcutLayout.swift */; };
+		810947D227A1952100BE019E /* IRSearchShortcutViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947D127A1952100BE019E /* IRSearchShortcutViewDelegate.swift */; };
+		810947D427A1984700BE019E /* IRSearchShortcutHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810947D327A1984700BE019E /* IRSearchShortcutHeaderView.swift */; };
 		811BEE7125CC4DF600F672B8 /* IRWifiUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811BEE7025CC4DF600F672B8 /* IRWifiUploadViewController.swift */; };
 		8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126CF6C2545888500C71415 /* IRChapterListViewController.swift */; };
 		8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */; };
@@ -110,6 +122,18 @@
 		3DA102CBABD9ED364C525C64 /* libPods-iRead.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iRead.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B7166AED0711D73236BE22 /* Pods-iRead.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iRead.debug.xcconfig"; path = "Target Support Files/Pods-iRead/Pods-iRead.debug.xcconfig"; sourceTree = "<group>"; };
 		810452C625EA974300C0230A /* IRNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRNetworkManager.swift; sourceTree = "<group>"; };
+		810947B3279BCE0E00BE019E /* IRHomeTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeTopBar.swift; sourceTree = "<group>"; };
+		810947B5279BDE1D00BE019E /* IRHomeTopBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRHomeTopBarDelegate.swift; sourceTree = "<group>"; };
+		810947B7279BE05D00BE019E /* IRHomeViewController+CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IRHomeViewController+CollectionView.swift"; sourceTree = "<group>"; };
+		810947BE279C577A00BE019E /* IRSearchWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchWebViewController.swift; sourceTree = "<group>"; };
+		810947C3279D73C800BE019E /* IRSearchWebTabbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchWebTabbar.swift; sourceTree = "<group>"; };
+		810947C7279D98CE00BE019E /* IRSearchWebTabbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchWebTabbarDelegate.swift; sourceTree = "<group>"; };
+		810947C9279DA32F00BE019E /* IRSearchShortcutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchShortcutView.swift; sourceTree = "<group>"; };
+		810947CB279DA49200BE019E /* IRSearchShortcutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchShortcutModel.swift; sourceTree = "<group>"; };
+		810947CD279DA59200BE019E /* IRSearchShortcutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchShortcutCell.swift; sourceTree = "<group>"; };
+		810947CF279DAE4700BE019E /* IRSearchShortcutLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchShortcutLayout.swift; sourceTree = "<group>"; };
+		810947D127A1952100BE019E /* IRSearchShortcutViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchShortcutViewDelegate.swift; sourceTree = "<group>"; };
+		810947D327A1984700BE019E /* IRSearchShortcutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRSearchShortcutHeaderView.swift; sourceTree = "<group>"; };
 		811BEE7025CC4DF600F672B8 /* IRWifiUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWifiUploadViewController.swift; sourceTree = "<group>"; };
 		8126CF6C2545888500C71415 /* IRChapterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRChapterListViewController.swift; sourceTree = "<group>"; };
 		8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +264,29 @@
 			path = IRNetworkManager;
 			sourceTree = "<group>";
 		};
+		810947BD279C573E00BE019E /* IRSearchWebView */ = {
+			isa = PBXGroup;
+			children = (
+				810947BE279C577A00BE019E /* IRSearchWebViewController.swift */,
+				810947C3279D73C800BE019E /* IRSearchWebTabbar.swift */,
+				810947C7279D98CE00BE019E /* IRSearchWebTabbarDelegate.swift */,
+			);
+			path = IRSearchWebView;
+			sourceTree = "<group>";
+		};
+		810947C0279D56C800BE019E /* IRSearchShortcut */ = {
+			isa = PBXGroup;
+			children = (
+				810947C9279DA32F00BE019E /* IRSearchShortcutView.swift */,
+				810947CB279DA49200BE019E /* IRSearchShortcutModel.swift */,
+				810947CD279DA59200BE019E /* IRSearchShortcutCell.swift */,
+				810947CF279DAE4700BE019E /* IRSearchShortcutLayout.swift */,
+				810947D127A1952100BE019E /* IRSearchShortcutViewDelegate.swift */,
+				810947D327A1984700BE019E /* IRSearchShortcutHeaderView.swift */,
+			);
+			path = IRSearchShortcut;
+			sourceTree = "<group>";
+		};
 		811BEE6F25CC4D8700F672B8 /* WifiUpload */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +393,8 @@
 			isa = PBXGroup;
 			children = (
 				8164E8CF275CCB8E00044B89 /* IRReadTimePickerView.swift */,
+				810947B3279BCE0E00BE019E /* IRHomeTopBar.swift */,
+				810947B5279BDE1D00BE019E /* IRHomeTopBarDelegate.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -456,6 +505,8 @@
 		8193A44525480A3300501F8F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				810947C0279D56C800BE019E /* IRSearchShortcut */,
+				810947BD279C573E00BE019E /* IRSearchWebView */,
 				81D418FD277858E800DA7C6A /* IRFaceIdViewController */,
 				81D418FA27782BD300DA7C6A /* IRDeviceAuthHelper */,
 				81D418F727781AB500DA7C6A /* Defines */,
@@ -514,6 +565,7 @@
 			isa = PBXGroup;
 			children = (
 				81B7E1E1251DE0C300E84A37 /* IRHomeViewController.swift */,
+				810947B7279BE05D00BE019E /* IRHomeViewController+CollectionView.swift */,
 				8164E8CA275C79CD00044B89 /* Cell */,
 				8164E8CE275CCB6800044B89 /* View */,
 				8164E8CB275C79D500044B89 /* Model */,
@@ -831,6 +883,7 @@
 				81D360EE277754E4009B518C /* IRSettingArrowCell.swift in Sources */,
 				818F99C3253BEDB800C47427 /* IRBook.swift in Sources */,
 				81AEAEFB259442ED00AADC45 /* KYCircularProgress.swift in Sources */,
+				810947CA279DA32F00BE019E /* IRSearchShortcutView.swift in Sources */,
 				819422FC253702B4002B5D62 /* IRArrowSettingView.swift in Sources */,
 				81A7C6242579CE92004CDA01 /* IRFileManager.swift in Sources */,
 				81A93BDB257F580C008C18A8 /* IRActivity.swift in Sources */,
@@ -842,20 +895,26 @@
 				812E49742531A4050082D902 /* IRReadPageViewController.swift in Sources */,
 				8193A3EC2546FB1200501F8F /* IRChapterCell.swift in Sources */,
 				8162E4B72565122E007BDDA2 /* IRReadingRecordManager.swift in Sources */,
+				810947D0279DAE4700BE019E /* IRSearchShortcutLayout.swift in Sources */,
+				810947B4279BCE0E00BE019E /* IRHomeTopBar.swift in Sources */,
 				81B78EA62541847100353157 /* IRReadNavigationContentView.swift in Sources */,
 				8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */,
 				811BEE7125CC4DF600F672B8 /* IRWifiUploadViewController.swift in Sources */,
 				8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */,
+				810947D427A1984700BE019E /* IRSearchShortcutHeaderView.swift in Sources */,
 				8164E8C9275C789B00044B89 /* IRTodayReadModel.swift in Sources */,
 				8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */,
 				81D4190427785A0200DA7C6A /* IRFaceIdViewController.swift in Sources */,
+				810947D227A1952100BE019E /* IRSearchShortcutViewDelegate.swift in Sources */,
 				818040A52521967800F31442 /* IRBookChapter.swift in Sources */,
 				8164E8C1275BC22900044B89 /* IRBookshelfModel.swift in Sources */,
+				810947C4279D73C800BE019E /* IRSearchWebTabbar.swift in Sources */,
 				81AEAF8F2595CD0D00AADC45 /* IRCurrentReadingModel.swift in Sources */,
 				81AEAF872595CCEC00AADC45 /* IRCurrentReadingCell.swift in Sources */,
 				810452C725EA974300C0230A /* IRNetworkManager.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */,
+				810947CE279DA59200BE019E /* IRSearchShortcutCell.swift in Sources */,
 				8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */,
 				81D418F127780E8300DA7C6A /* IRSettingSwitchCell.swift in Sources */,
 				81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */,
@@ -874,6 +933,8 @@
 				81B7E1E6251DE32600E84A37 /* IRBookCell.swift in Sources */,
 				81D418F4277812CD00DA7C6A /* IRSwitchSettingModel.swift in Sources */,
 				81A7C650257A31E6004CDA01 /* IREmptyView.swift in Sources */,
+				810947B6279BDE1D00BE019E /* IRHomeTopBarDelegate.swift in Sources */,
+				810947C8279D98CF00BE019E /* IRSearchWebTabbarDelegate.swift in Sources */,
 				81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */,
 				8164E8C5275C76AA00044B89 /* IRObjectiveModel.swift in Sources */,
 				8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */,
@@ -888,6 +949,9 @@
 				81C97760253DB83800E9CCCB /* IRFontSelectView.swift in Sources */,
 				813D3966258A2EC000A3CABE /* IRBookModel.swift in Sources */,
 				8164E8C3275C766500044B89 /* IRObjectiveCell.swift in Sources */,
+				810947BF279C577A00BE019E /* IRSearchWebViewController.swift in Sources */,
+				810947CC279DA49200BE019E /* IRSearchShortcutModel.swift in Sources */,
+				810947B8279BE05D00BE019E /* IRHomeViewController+CollectionView.swift in Sources */,
 				8164E8BF275BC18100044B89 /* IRBookshelfCell.swift in Sources */,
 				8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */,
 				81CB116A254EECB70084E991 /* IRChapterTipView.swift in Sources */,

@@ -11,18 +11,37 @@ import IRCommonLib
 
 class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     
-    static let readTimeOfDayKey = "ReadTimeOfDayKey"
+    let readTimeOfDayKey = "ReadTimeOfDayKey"
+    let sectionEdgeInsetLR: CGFloat = 15
     
     var collectionView: UICollectionView!
     var currentreadingBookPath: String?
     var shouldUpdateCurrentReadBook = false
     
-    let sectionEdgeInsetLR: CGFloat = 15
-    
     lazy var readingModel = IRCurrentReadingModel()
     lazy var todayReadModel = IRTodayReadModel()
     lazy var objectiveModel = IRObjectiveModel()
     lazy var bookshelfModel = IRBookshelfModel()
+    
+    lazy var topBarView: IRHomeTopBar = {
+        let topBar = IRHomeTopBar()
+        topBar.frame = CGRect(x: 0, y: 0, width: view.width, height: 40)
+        topBar.delegate = self
+        return topBar
+    }()
+    
+    var _webViewController: IRSearchWebViewController?
+    var webViewController: IRSearchWebViewController? {
+        get {
+            if _webViewController == nil {
+                _webViewController = IRSearchWebViewController()
+            }
+            return _webViewController
+        }
+        set {
+            _webViewController = nil
+        }
+    }
     
     lazy var homeList: NSArray = {
         if let path = IRReaderConfig.currentreadingBookPath {
@@ -42,10 +61,10 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         objectiveModel.title = "目标"
         objectiveModel.iconName = "objective-read"
         objectiveModel.iconBgColor = .systemRed
-        var readTime = UserDefaults.standard.integer(forKey: IRHomeViewController.readTimeOfDayKey)
+        var readTime = UserDefaults.standard.integer(forKey: readTimeOfDayKey)
         if readTime <= 0 {
             readTime = 60
-            UserDefaults.standard.set(readTime, forKey: IRHomeViewController.readTimeOfDayKey)
+            UserDefaults.standard.set(readTime, forKey: readTimeOfDayKey)
         }
         objectiveModel.time = readTime
         
@@ -86,6 +105,10 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         collectionView.frame = view.bounds
     }
     
+    @objc override func didReceiveMemoryWarning() {
+        webViewController = nil
+    }
+    
     // MARK: - Notification
     
     func addNotifications() {
@@ -102,21 +125,22 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     // MARK: - Privte
     
     func setupBarButtonItems() {
-        title = "阅读"
+
+        navigationItem.titleView = topBarView
         
-        let wifiBtn = UIButton(type: .custom)
-        wifiBtn.setTitle("WiFi-传书", for: .normal)
-        wifiBtn.setTitleColor(.black, for: .normal)
-        wifiBtn.setTitleColor(.init(white: 0, alpha: 0.5), for: .highlighted)
-        wifiBtn.addTarget(self, action: #selector(didClickWifiUploadButton), for: .touchUpInside)
-        wifiBtn.titleLabel?.font = .systemFont(ofSize: 14)
-        wifiBtn.sizeToFit()
-        let wifiItem = UIBarButtonItem.init(customView: wifiBtn)
-        navigationItem.rightBarButtonItem = wifiItem
-        
-        let settingItem = UIBarButtonItem(image: UIImage(named: "setting"), style: .plain, target: self, action: #selector(didClickSettingButton))
-        settingItem.tintColor = UIColor.init(white: 0.1, alpha: 1)
-        navigationItem.leftBarButtonItem = settingItem
+//        let wifiBtn = UIButton(type: .custom)
+//        wifiBtn.setTitle("WiFi-传书", for: .normal)
+//        wifiBtn.setTitleColor(.black, for: .normal)
+//        wifiBtn.setTitleColor(.init(white: 0, alpha: 0.5), for: .highlighted)
+//        wifiBtn.addTarget(self, action: #selector(didClickWifiUploadButton), for: .touchUpInside)
+//        wifiBtn.titleLabel?.font = .systemFont(ofSize: 14)
+//        wifiBtn.sizeToFit()
+//        let wifiItem = UIBarButtonItem.init(customView: wifiBtn)
+//        navigationItem.rightBarButtonItem = wifiItem
+//
+//        let settingItem = UIBarButtonItem(image: UIImage(named: "setting"), style: .plain, target: self, action: #selector(didClickSettingButton))
+//        settingItem.tintColor = UIColor.init(white: 0.1, alpha: 1)
+//        navigationItem.leftBarButtonItem = settingItem
     }
     
     private func setupCollectionView() {
@@ -204,93 +228,18 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     }
 }
 
-// MARK: - UICollectionView
-extension IRHomeViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+// MARK: - IRHomeTopBarDelegate
+extension IRHomeViewController: IRHomeTopBarDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return homeList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellModel = homeList.object(at: indexPath.item)
-        var cell: UICollectionViewCell
-        if cellModel is IRBookshelfModel
-        {
-            let bookshelfCell: IRBookshelfCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRBookshelfCell", for: indexPath) as! IRBookshelfCell
-            bookshelfCell.cellModel = cellModel as? IRBookshelfModel
-            cell = bookshelfCell
-        }
-        else if cellModel is IRCurrentReadingModel
-        {
-            let readingCell: IRCurrentReadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRCurrentReadingCell", for: indexPath) as! IRCurrentReadingCell
-            readingCell.readingModel = cellModel as? IRCurrentReadingModel
-            readingCell.delegate = self
-            cell = readingCell
-        }
-        else if cellModel is IRObjectiveModel
-        {
-            let objectiveCell: IRObjectiveCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRObjectiveCell", for: indexPath) as! IRObjectiveCell
-            objectiveCell.objectiveModel = cellModel as? IRObjectiveModel
-            cell = objectiveCell
-        }
-        else if cellModel is IRTodayReadModel
-        {
-            let todayCell: IRTodayReadCell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRTodayReadCell", for: indexPath) as! IRTodayReadCell
-            todayCell.todayReadModel = cellModel as? IRTodayReadModel
-            cell = todayCell
-        }
-        else
-        {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UICollectionViewCell", for: indexPath)
-        }
-        return cell
+    func homeTopBarDidClickScanButton(_ topBar: IRHomeTopBar) {
+        IRDebugLog("")
+        didClickSettingButton()
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellModel = homeList.object(at: indexPath.item)
-        let cellWidth = collectionView.width - sectionEdgeInsetLR * 2
-        var cellSize: CGSize
-        
-        if cellModel is IRBookshelfModel
-        {
-            cellSize = CGSize(width: cellWidth, height: 82)
-        }
-        else if cellModel is IRCurrentReadingModel
-        {
-            cellSize = CGSize(width: cellWidth, height: IRCurrentReadingCell.cellHeight)
-        }
-        else if cellModel is IRTodayReadModel ||
-                cellModel is IRObjectiveModel
-        {
-            cellSize = CGSize(width: (cellWidth - 16) / 2, height: 82)
-        }
-        else
-        {
-            cellSize = CGSize.zero
-        }
-        return cellSize
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 15, left: sectionEdgeInsetLR, bottom: 15, right: sectionEdgeInsetLR)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cellModel = homeList.object(at: indexPath.item)
-        if cellModel is IRBookshelfModel
-        {
-            navigationController?.pushViewController(IRBookshelfViewController(), animated: true)
-        }
-        else if cellModel is IRObjectiveModel
-        {
-            let timePicker = IRReadTimePickerView()
-            timePicker.frame = view.bounds
-            timePicker.selectDoneAction = { [weak self] (readTime) in
-                UserDefaults.standard.set(readTime, forKey: IRHomeViewController.readTimeOfDayKey)
-                self?.objectiveModel.time = readTime
-                self?.collectionView.reloadData()
-            }
-            timePicker.showIn(targetView: view, currentReadTime: UserDefaults.standard.integer(forKey: IRHomeViewController.readTimeOfDayKey))
-        }
+    func homeTopBarDidClickSearchButton(_ topBar: IRHomeTopBar) {
+        webViewController?.shouldBeginEditing = true
+        navigationController?.pushViewController(webViewController!, animated: true)
+        IRDebugLog("")
     }
 }
+

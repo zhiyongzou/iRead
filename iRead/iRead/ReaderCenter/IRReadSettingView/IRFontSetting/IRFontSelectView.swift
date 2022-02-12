@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import IRCommonLib
+import CommonLib
 
 protocol IRFontSelectViewDelegate: AnyObject {
     func fontSelectView(_ view: IRFontSelectView, didSelectFontName fontName: String)

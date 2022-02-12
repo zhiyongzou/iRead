@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 public extension Notification {
     static let IRBookCountChangeNotification = Notification.Name("IRBookCountChange")

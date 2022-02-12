@@ -96,7 +96,9 @@ extension IRHomeViewController: UICollectionViewDelegateFlowLayout, UICollection
                 self?.objectiveModel.time = readTime
                 self?.collectionView.reloadData()
             }
-            timePicker.showIn(targetView: view, currentReadTime: UserDefaults.standard.integer(forKey: readTimeOfDayKey))
+            if let keyWindow = UIApplication.shared.keyWindow {
+                timePicker.showIn(targetView: keyWindow, currentReadTime: UserDefaults.standard.integer(forKey: readTimeOfDayKey))
+            }
         }
     }
 }

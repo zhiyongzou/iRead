@@ -12,6 +12,6 @@ import Foundation
     
     @objc optional func searchShortcutViewWillBeginDragging(_ shortcutView:IRSearchShortcutView)
     
-    @objc optional func searchShortcutView(_ shortcutView:IRSearchShortcutView, didSearch text: String)
+    @objc optional func searchShortcutView(_ shortcutView:IRSearchShortcutView, didSearch shortcut: IRSearchShortcutModel?)
 
 }

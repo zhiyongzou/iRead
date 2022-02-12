@@ -8,7 +8,7 @@
 
 import UIKit
 import PKHUD
-import IRCommonLib
+import CommonLib
 
 class IRSettingDataSource: NSObject {
     
@@ -52,6 +52,15 @@ class IRSettingDataSource: NSObject {
     
     class func settingList() -> [[IRSettingModel]] {
         var settingList = [[IRSettingModel]]()
+        
+        let wifi = IRArrowSettingModel()
+        wifi.title = "Wi-Fi传书"
+        wifi.clickAction = {
+            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                navigationController.pushViewController(IRWifiUploadViewController(), animated: true)
+            }
+        }
+        settingList.append([wifi])
         
         if #available(iOS 11.0, *) {
             let faceId = IRSwitchSettingModel()
@@ -98,7 +107,7 @@ class IRSettingDataSource: NSObject {
         
 #if DEBUG
         let flex = IRSwitchSettingModel()
-        flex.title = "FLEX Debug"
+        flex.title = "FLEX"
         flex.hiddenSeparator = true
         flex.switchValueKey = kEnableFlex
         flex.valueChangeAction = { switchView in

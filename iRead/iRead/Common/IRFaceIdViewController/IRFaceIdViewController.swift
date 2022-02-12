@@ -8,7 +8,7 @@
 
 import UIKit
 import PKHUD
-import IRCommonLib
+import CommonLib
 import LocalAuthentication
 
 class IRFaceIdViewController: IRBaseViewcontroller {

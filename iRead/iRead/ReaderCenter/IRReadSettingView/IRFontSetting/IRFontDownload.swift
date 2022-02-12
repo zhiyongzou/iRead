@@ -8,7 +8,7 @@
 // https://developer.apple.com/videos/play/wwdc2019/227/
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 protocol IRFontDownloadDelegate: AnyObject {
     

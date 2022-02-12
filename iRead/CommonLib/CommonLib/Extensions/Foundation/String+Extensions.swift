@@ -1,6 +1,6 @@
 //
 //  String+Extensions.swift
-//  IRCommonLib
+//  CommonLib
 //
 //  Created by zzyong on 2020/11/24.
 //  Copyright © 2020 zzyong. All rights reserved.

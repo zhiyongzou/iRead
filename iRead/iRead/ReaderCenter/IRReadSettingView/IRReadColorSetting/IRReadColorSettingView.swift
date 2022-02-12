@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 protocol IRReadColorSettingViewDelegate: AnyObject {
     

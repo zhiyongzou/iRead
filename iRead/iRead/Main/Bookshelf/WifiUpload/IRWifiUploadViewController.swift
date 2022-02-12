@@ -8,7 +8,7 @@
 
 import PKHUD
 import SnapKit
-import IRCommonLib
+import CommonLib
 import GCDWebServer
 
 class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {

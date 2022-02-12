@@ -1,5 +1,9 @@
 # cocoapods update
 # sudo gem install cocoapods -version
+# https://guides.cocoapods.org/syntax/podfile.html
+
+install! 'cocoapods',
+         :warn_for_unused_master_specs_repo => false
 
 platform :ios, '10.0'
 
@@ -22,12 +26,10 @@ def common_pods
 end
 
 # local_pods
-# " ./ " 表示当前文件所在目录下
-# " ../ " 表示当前文件所在目录下的上一级目录
 def local_pods
-  pod 'DTCoreText', :path => './DTCoreText', :modular_headers => true
-  pod 'DTFoundation', :path => './DTFoundation', :modular_headers => true
-  pod "GCDWebServer/WebUploader", :path => './GCDWebServer', :modular_headers => true
+  pod 'DTCoreText', :path => './ThirdPartyLibs/DTCoreText', :modular_headers => true
+  pod 'DTFoundation', :path => './ThirdPartyLibs/DTFoundation', :modular_headers => true
+  pod "GCDWebServer/WebUploader", :path => './ThirdPartyLibs/GCDWebServer', :modular_headers => true
 end
 
 # common_pods
@@ -47,11 +49,6 @@ target 'iRead' do
   pod 'PKHUD', '~> 5.3.0'
   pod 'ReachabilitySwift', '~> 5.0.0'
   pod 'Charts', '~> 3.6.0'
-
-end
-
-target 'IRCommonLib' do
-  project 'IRCommonLib/IRCommonLib.xcodeproj'
 
 end
 

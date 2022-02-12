@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 protocol IRChapterListViewControllerDelagate: AnyObject {
     func chapterListViewController(_ vc: IRChapterListViewController, didSelectTocReference tocReference: FRTocReference)

@@ -14,17 +14,40 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
     
     var delegate: IRSearchShortcutViewDelegate?
     
-    var shortcutList: [IRSearchShortcutModel]  = {
-        let common = IRSearchShortcutModel()
+    var commonSearch: IRSearchSectionModel = {
+        let common = IRSearchSectionModel()
         common.title = "常用搜索"
-        common.items = ["必应 bing.com", "百度 baidu.com", "搜狗 sogou.com"]
-
-        let history = IRSearchShortcutModel()
-        history.title = "历史搜索"
-        history.type = .history
-        history.items = ["哈哈哈", "百度", "变形金刚"]
-        return [common, history]
+        common.items = [IRSearchShortcutModel.modelWithContent("必应 bing.com", type: .bing),
+                        IRSearchShortcutModel.modelWithContent("百度 baidu.com", type: .baidu),
+                        IRSearchShortcutModel.modelWithContent("搜狗 sogou.com", type: .sogou)]
+        return common
     }()
+    
+    var historySearch: IRSearchSectionModel? {
+        get {
+            if IRSearchShortcutManager.serachHistory.count <= 0 {
+                return nil
+            }
+            let history = IRSearchSectionModel()
+            history.title = "历史搜索"
+            history.type = .history
+            var items: [IRSearchShortcutModel] = []
+            for history in IRSearchShortcutManager.serachHistory {
+                items.append(IRSearchShortcutModel.modelWithContent(history))
+            }
+            history.items = items
+            return history
+        }
+    }
+    
+    var shortcutList: [IRSearchSectionModel] {
+        get {
+            guard let historySearch = self.historySearch else {
+                return []
+            }
+            return [historySearch]
+        }
+    }
     
     lazy var collectionView: UICollectionView = {
         
@@ -47,6 +70,7 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addNotifications()
         addSubview(collectionView)
     }
     
@@ -58,6 +82,17 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
         super.layoutSubviews()
         collectionView.frame = bounds
     }
+    
+    // MARK: - Notifications
+    func addNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(searchHistoryChangeNotification(_:)), name: Notification.IRSearchHistoryChangeNotification, object: nil)
+    }
+    
+    @objc func searchHistoryChangeNotification(_ notification: Notification) {
+        collectionView.reloadData()
+    }
+    
+    // MARK: - UICollectionView
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return shortcutList.count
@@ -71,15 +106,16 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let shortcut = shortcutList[indexPath.section]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRSearchShortcutCell", for: indexPath) as! IRSearchShortcutCell
-        cell.title = shortcut.items![indexPath.item]
+        cell.title = shortcut.items![indexPath.item].content
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let shortcut = shortcutList[indexPath.section]
-        let text: NSString = shortcut.items![indexPath.item] as NSString
-        let textW = ceil(text.size(withAttributes: [.font: IRSearchShortcutCell.titleFont]).width) + 20.0
-        return CGSize(width: textW, height: IRSearchShortcutCell.cellHeight)
+        let text: NSString = shortcut.items![indexPath.item].content! as NSString
+        let textW = ceil(text.size(withAttributes: [.font: IRSearchShortcutCell.titleFont]).width) + IRSearchShortcutCell.cellHeight
+        let maxW = collectionView.width - sectionInset.left - sectionInset.right
+        return CGSize(width: min(textW, maxW), height: IRSearchShortcutCell.cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -91,6 +127,11 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
         let shortcut = shortcutList[indexPath.section]
         headerView.update(shortcut.title, margin: sectionInset.left)
         return headerView
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let shortcut = shortcutList[indexPath.section]
+        delegate?.searchShortcutView?(self, didSearch: shortcut.items?[indexPath.item])
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

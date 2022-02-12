@@ -72,7 +72,7 @@ class IRSearchWebTabbar: UIView {
         let height = self.height - safeBottom
         
         backButton.frame = CGRect(x: margin, y: 0, width: height, height: height)
-        forwardButton.frame = CGRect(x: margin + backButton.frame.maxX, y: 0, width: height, height: height)
+        forwardButton.frame = CGRect(x: margin * 3 + backButton.frame.maxX, y: 0, width: height, height: height)
         reloadButton.frame = CGRect(x: self.width - margin - height, y: 0, width: height, height: height)
     }
     

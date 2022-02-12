@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 protocol IRFontSettingViewDelegate: AnyObject {
     

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 protocol IRReadSettingViewDelegate: AnyObject {
     func readSettingView(_ view: IRReadSettingView, transitionStyleDidChange newValue: IRTransitionStyle)

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 import CMPopTipView
 
 class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, BSMenuViewDelegate {

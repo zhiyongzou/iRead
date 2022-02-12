@@ -6,13 +6,14 @@
 //  Copyright (c) 2015 Folio Reader. All rights reserved.
 //
 
-import UIKit
-import AEXML
 #if COCOAPODS
 import SSZipArchive
 #else
 import ZipArchive
 #endif
+import UIKit
+import AEXML
+import CommonLib
 
 open class FREpubParser: NSObject, SSZipArchiveDelegate {
 

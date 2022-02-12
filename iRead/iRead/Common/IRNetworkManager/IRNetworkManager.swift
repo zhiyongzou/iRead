@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import IRCommonLib
+import CommonLib
 import Reachability
 
 public extension Notification.Name {

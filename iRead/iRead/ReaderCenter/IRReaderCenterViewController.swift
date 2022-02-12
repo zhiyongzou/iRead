@@ -9,8 +9,9 @@
 
 import PKHUD
 import SnapKit
-import IRCommonLib
+import CommonLib
 import CMPopTipView
+import UIKit
 
 protocol IRReaderCenterDelegate: NSObjectProtocol {
     func readerCenter(didUpdateReadingProgress progress: Int, bookPath: String) -> Void
@@ -237,7 +238,7 @@ class IRReaderCenterViewController: IRBaseViewcontroller, UIGestureRecognizerDel
             pageViewController.willMove(toParent: nil)
             pageViewController.removeFromParent()
             // pageViewController.view 必须从父视图中移除，否则会出现下面的崩溃
-            // "child view controller:<iRead.IRReadPageViewController: 0x10351a420> should have parent view controller:<iRead.IRReaderCenterViewController: 0x106e080e0> but requested parent is:<IRCommonLib.IRPageViewController: 0x108010600>"
+            // "child view controller:<iRead.IRReadPageViewController: 0x10351a420> should have parent view controller:<iRead.IRReaderCenterViewController: 0x106e080e0> but requested parent is:<CommonLib.IRPageViewController: 0x108010600>"
             pageViewController.view.removeFromSuperview()
         }
         
@@ -495,7 +496,7 @@ extension IRReaderCenterViewController: IRReadNavigationBarDelegate, IRReadBotto
             popTipView?.has3DStyle = false
             popTipView?.animation = .slide
             popTipView?.backgroundColor = readSettingView.backgroundColor
-            popTipView?.borderColor = IRSeparatorColor
+            popTipView?.borderColor = .separatorColor
             popTipView?.sidePadding = 15
             popTipView?.bubblePaddingX = -10
             popTipView?.bubblePaddingY = -10

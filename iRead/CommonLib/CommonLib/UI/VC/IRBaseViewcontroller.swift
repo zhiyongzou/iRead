@@ -1,6 +1,6 @@
 //
 //  IRBaseViewcontroller.swift
-//  IRCommonLib
+//  CommonLib
 //
 //  Created by zzyong on 2020/9/24.
 //  Copyright © 2020 zzyong. All rights reserved.

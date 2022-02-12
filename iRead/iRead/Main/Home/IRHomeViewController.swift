@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     
@@ -82,7 +82,7 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         super.viewDidLoad()
         
         addNotifications()
-        setupBarButtonItems()
+        navigationItem.titleView = topBarView
         setupCollectionView()
     }
     
@@ -123,25 +123,6 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
     }
     
     // MARK: - Privte
-    
-    func setupBarButtonItems() {
-
-        navigationItem.titleView = topBarView
-        
-//        let wifiBtn = UIButton(type: .custom)
-//        wifiBtn.setTitle("WiFi-传书", for: .normal)
-//        wifiBtn.setTitleColor(.black, for: .normal)
-//        wifiBtn.setTitleColor(.init(white: 0, alpha: 0.5), for: .highlighted)
-//        wifiBtn.addTarget(self, action: #selector(didClickWifiUploadButton), for: .touchUpInside)
-//        wifiBtn.titleLabel?.font = .systemFont(ofSize: 14)
-//        wifiBtn.sizeToFit()
-//        let wifiItem = UIBarButtonItem.init(customView: wifiBtn)
-//        navigationItem.rightBarButtonItem = wifiItem
-//
-//        let settingItem = UIBarButtonItem(image: UIImage(named: "setting"), style: .plain, target: self, action: #selector(didClickSettingButton))
-//        settingItem.tintColor = UIColor.init(white: 0.1, alpha: 1)
-//        navigationItem.leftBarButtonItem = settingItem
-    }
     
     private func setupCollectionView() {
         let flowLayout = UICollectionViewFlowLayout()
@@ -199,15 +180,6 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
         }
         collectionView.reloadData()
     }
-    // MARK: - Action
-    
-    @objc func didClickWifiUploadButton() {
-        navigationController?.pushViewController(IRWifiUploadViewController(), animated: true)
-    }
-    
-    @objc func didClickSettingButton() {
-        navigationController?.pushViewController(IRSettingViewController(), animated: true)
-    }
     
     // MARK: - IRHomeCurrentReadingDelegate
     
@@ -233,12 +205,16 @@ extension IRHomeViewController: IRHomeTopBarDelegate {
     
     func homeTopBarDidClickScanButton(_ topBar: IRHomeTopBar) {
         IRDebugLog("")
-        didClickSettingButton()
     }
 
     func homeTopBarDidClickSearchButton(_ topBar: IRHomeTopBar) {
         webViewController?.shouldBeginEditing = true
         navigationController?.pushViewController(webViewController!, animated: true)
+        IRDebugLog("")
+    }
+    
+    func homeTopBarDidClickSettingButton(_ topBar: IRHomeTopBar) {
+        navigationController?.pushViewController(IRSettingViewController(), animated: true)
         IRDebugLog("")
     }
 }

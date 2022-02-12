@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import IRCommonLib
+import CommonLib
 
 protocol IRReadNavigationBarDelegate: AnyObject {
     

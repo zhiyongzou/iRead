@@ -1,6 +1,6 @@
 //
 //  IRDBManager.swift
-//  IRCommonLib
+//  CommonLib
 //
 //  Created by zzyong on 2020/10/26.
 //  Copyright © 2020 zzyong. All rights reserved.
@@ -24,7 +24,7 @@ SQLite 命令
 */
 
 import FMDB
-import IRCommonLib
+import CommonLib
 
 /**
  SQLite 存储类型

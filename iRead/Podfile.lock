@@ -45,13 +45,13 @@ PODS:
 
 DEPENDENCIES:
   - AEXML (~> 4.5.0)
-  - Charts
+  - Charts (~> 3.6.0)
   - CMPopTipView (~> 2.3.2)
-  - DTCoreText (from `./DTCoreText`)
-  - DTFoundation (from `./DTFoundation`)
+  - DTCoreText (from `./ThirdPartyLibs/DTCoreText`)
+  - DTFoundation (from `./ThirdPartyLibs/DTFoundation`)
   - FLEX (~> 4.1.1)
   - FMDB (~> 2.7.5)
-  - GCDWebServer/WebUploader (from `./GCDWebServer`)
+  - GCDWebServer/WebUploader (from `./ThirdPartyLibs/GCDWebServer`)
   - IRHexColor (~> 0.0.4)
   - PKHUD (~> 5.3.0)
   - ReachabilitySwift (~> 5.0.0)
@@ -73,11 +73,11 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   DTCoreText:
-    :path: "./DTCoreText"
+    :path: "./ThirdPartyLibs/DTCoreText"
   DTFoundation:
-    :path: "./DTFoundation"
+    :path: "./ThirdPartyLibs/DTFoundation"
   GCDWebServer:
-    :path: "./GCDWebServer"
+    :path: "./ThirdPartyLibs/GCDWebServer"
 
 SPEC CHECKSUMS:
   AEXML: 0e8f1d874fa033ca6b3909452a8bc362faad46e6
@@ -94,6 +94,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
 
-PODFILE CHECKSUM: 9569be708899a70cd1bb5c9382761752d4d5124c
+PODFILE CHECKSUM: 05a9aa2a36e3df5f0476ce09af3012be644dcfd0
 
 COCOAPODS: 1.11.2

@@ -8,7 +8,7 @@
 
 import UIKit
 import PKHUD
-import IRCommonLib
+import CommonLib
 
 let IRAppDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 

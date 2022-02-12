@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 class IRBookmarkCell: UITableViewCell {
     

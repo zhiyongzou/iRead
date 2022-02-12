@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 class IRHomeTopBar: UIView {
 
@@ -18,6 +18,7 @@ class IRHomeTopBar: UIView {
     var searchBarView: UIView?
     var searchBtn: UIButton?
     var scanBtn: UIButton?
+    var settingBtn: UIButton?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,17 +34,24 @@ class IRHomeTopBar: UIView {
         super.layoutSubviews()
         
         let margin = 5.0
-        let scanW = 24.0
-        let scanX = self.width - scanW - margin
-        scanBtn?.frame = CGRect(x: scanX, y: 0, width: scanW, height: self.height)
+        let settingW = 20.0
+        let settingX = self.width - settingW - margin
+        settingBtn?.frame = CGRect(x: settingX, y: 0, width: settingW, height: self.height)
         
-        let searchBarW = scanX - margin * 3
+        let searchBarW = settingX - margin * 3
         let searchBarY = (self.height - searchBarHeight) * 0.5
         searchBarView?.frame = CGRect(x: margin, y: searchBarY, width: searchBarW, height: searchBarHeight)
         searchBtn?.frame = searchBarView!.bounds
+        
+        let scanW = 22.0
+        scanBtn?.frame = CGRect(x: searchBarView!.width - scanW - 10, y: 0, width: scanW, height: searchBarHeight)
     }
     
     //MARK: Actions
+    
+    @objc func didClickSettingButton() {
+        delegate?.homeTopBarDidClickSettingButton?(self)
+    }
 
     @objc func didClickScanButton() {
         delegate?.homeTopBarDidClickScanButton?(self)
@@ -67,9 +75,9 @@ class IRHomeTopBar: UIView {
         searchBarView?.layer.borderColor = UIColor.init(white: 0.9, alpha: 1).cgColor
         addSubview(searchBarView!)
         
-        scanBtn = buttonWithImageName("scan_icon", title: nil, sel: #selector(didClickScanButton))
-        scanBtn?.touchPointOffset = 10
-        addSubview(scanBtn!)
+        settingBtn = buttonWithImageName("setting", title: nil, sel: #selector(didClickSettingButton))
+        settingBtn?.touchPointOffset = 10
+        addSubview(settingBtn!)
         
         searchBtn = buttonWithImageName("search_icon", title: "搜索", sel: #selector(didClickSearchButton))
         searchBtn?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
@@ -78,6 +86,10 @@ class IRHomeTopBar: UIView {
         searchBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
         searchBtn?.titleEdgeInsets = UIEdgeInsets(top: 0, left: 22, bottom: 0, right: 0)
         searchBarView?.addSubview(searchBtn!)
+        
+        scanBtn = buttonWithImageName("scan_icon", title: nil, sel: #selector(didClickScanButton))
+        scanBtn?.touchPointOffset = 10
+        searchBarView?.addSubview(scanBtn!)
     }
     
     func buttonWithImageName(_ imageName: String, title:String?, sel: Selector) -> UIButton {

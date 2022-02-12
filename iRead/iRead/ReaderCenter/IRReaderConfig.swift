@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IRCommonLib
+import CommonLib
 
 public enum IRReadConfigKey: String {
     case TransitionStyle    = "TransitionStyle"

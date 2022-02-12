@@ -6,7 +6,7 @@
 //  Copyright © 2020 zzyong. All rights reserved.
 //
 
-import IRCommonLib
+import CommonLib
 import IRHexColor
 
 /// 书封面比例(width/height)

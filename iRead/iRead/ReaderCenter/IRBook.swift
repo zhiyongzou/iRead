@@ -9,7 +9,7 @@
 
 import UIKit
 import Foundation
-import IRCommonLib
+import CommonLib
 
 protocol IRBookParseDelegate: AnyObject {
     

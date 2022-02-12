@@ -13,4 +13,6 @@ import Foundation
     @objc optional func homeTopBarDidClickSearchButton(_ topBar:IRHomeTopBar)
     
     @objc optional func homeTopBarDidClickScanButton(_ topBar:IRHomeTopBar)
+    
+    @objc optional func homeTopBarDidClickSettingButton(_ topBar:IRHomeTopBar)
 }

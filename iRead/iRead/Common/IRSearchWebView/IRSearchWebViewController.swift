@@ -7,15 +7,13 @@
 //
 
 import WebKit
-import IRCommonLib
+import SnapKit
+import CommonLib
 
 open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate, UISearchBarDelegate, WKNavigationDelegate, WKUIDelegate, IRSearchWebTabbarDelegate, IRSearchShortcutViewDelegate {
     
     let kEstimatedProgress = "estimatedProgress"
-    
-    let bingSearchKey = "search?q="
-    let bingUrl       = "https://cn.bing.com/"
-    lazy var bingSearchUrl = bingUrl + bingSearchKey
+    let searchTextMaxCount = 30
     
     var isLoading = false
     var shouldBeginEditing = false
@@ -37,7 +35,6 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
         let searchBarView = UISearchBar()
         searchBarView.placeholder = "搜索"
         searchBarView.delegate = self
-        searchBarView.backgroundColor = .white
         return searchBarView
     }()
     
@@ -51,10 +48,13 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
         let progressView = UIProgressView()
         progressView.isHidden = true
         progressView.progressTintColor = .systemBlue
-        let progressH = 1.0
-        let navigationBarH = navigationController?.navigationBar.frame.height ?? 1.0
-        progressView.frame = CGRect(x: 0, y: navigationBarH - progressH, width: self.view.width, height: progressH)
-        navigationController?.navigationBar.addSubview(progressView)
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.addSubview(progressView)
+            progressView.snp.makeConstraints { make in
+                make.height.equalTo(2)
+                make.width.bottom.equalTo(navigationBar)
+            }
+        }
         return progressView
     }()
     
@@ -133,7 +133,7 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
             firstParamIndex = searchUrl.firstIndex(of: "&")
         }
         if firstParamIndex == nil {
-            return
+            firstParamIndex = searchUrl.endIndex
         }
         let targetUrl = searchUrl.prefix(upTo: firstParamIndex!)
         IRDebugLog(targetUrl)
@@ -169,12 +169,33 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
     
     @objc func didClickCloseButton() {
         navigationController?.popViewController(animated: true)
+        webView.loadHTMLString("", baseURL: nil)
     }
     
     //MARK: IRSearchShortcutViewDelegate
     
     func searchShortcutViewWillBeginDragging(_ shortcutView: IRSearchShortcutView) {
         searchBarView.endEditing(true)
+    }
+    
+    func searchShortcutView(_ shortcutView: IRSearchShortcutView, didSearch shortcut: IRSearchShortcutModel?) {
+        guard let shortcut = shortcut else { return }
+        guard let content = shortcut.content else { return }
+        IRDebugLog(shortcut.content)
+        var queryUrlString = bingSearchUrl
+        if shortcut.type == .baidu {
+            queryUrlString = baiduUrl
+        } else if shortcut.type == .sogou {
+            queryUrlString = sogouUrl
+        } else {
+            if let content = content.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                queryUrlString += content
+            }
+        }
+        let request = URLRequest(url: URL.init(string: queryUrlString)!)
+        webView.load(request)
+        searchBarView.endEditing(true)
+        searchShortcutView.isHidden = true
     }
     
     //MARK: UIScrollViewDelegate
@@ -187,10 +208,34 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
-        guard let searchText = searchBar.text?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
-        let queryUrlString = bingSearchUrl + searchText
+        guard let searchText = searchBar.text, let queryText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return
+        }
+        IRSearchShortcutManager.saveSearchText(searchText)
+        searchShortcutView.isHidden = true
+        let queryUrlString = bingSearchUrl + queryText
         let request = URLRequest(url: URL.init(string: queryUrlString)!)
         webView.load(request)
+        
+    }
+    
+    public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchShortcutView.isHidden = false
+        progressView.isHidden = true
+        webView.loadHTMLString("", baseURL: nil)
+    }
+    
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count <= searchTextMaxCount {
+            return
+        }
+        let searchString = (searchText as NSString)
+        let composedRange = searchString.rangeOfComposedCharacterSequence(at: searchTextMaxCount)
+        if composedRange.length == 1 {
+            searchBar.text = searchString.substring(to: searchTextMaxCount)
+        } else {
+            let range = searchString.rangeOfComposedCharacterSequences(for: NSRange(location: 0, length: searchTextMaxCount))
+            searchBar.text = searchString.substring(with: range)
+        }
     }
     
     //MARK: IRSearchWebTabbarDelegate
@@ -216,7 +261,7 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
         progressView.isHidden = false
         isLoading = true
         updateSearchBarText(webView.url)
-        IRDebugLog("")
+        IRDebugLog(webView.url?.absoluteString)
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -227,6 +272,14 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         handleWebViewLoadSuccess(false, error: error)
         IRDebugLog("")
+    }
+    
+    // https://stackoverflow.com/questions/30603671/open-a-wkwebview-target-blank-link-in-safari
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        DispatchQueue.main.async {
+            webView .load(navigationAction.request)
+        }
+        return nil
     }
 }
 

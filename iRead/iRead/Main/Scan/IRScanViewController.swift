@@ -9,6 +9,7 @@
 import PKHUD
 import SGQRCode
 import CommonLib
+import UIKit
 
 class IRScanViewController: IRBaseViewcontroller {
 
@@ -42,8 +43,8 @@ class IRScanViewController: IRBaseViewcontroller {
         }
         view.addSubview(scanView)
         
-        let photo = UIBarButtonItem.init(image: UIImage(named: "scan_photo"), target: self, action: #selector(didClickPhotoItem))
-        photo?.tintColor = .white
+        let photo = UIBarButtonItem.init(image: UIImage(named: "scan_photo"), style: .plain, target: self, action: #selector(didClickPhotoItem))
+        photo.tintColor = UIColor.white
         navigationItem.rightBarButtonItem = photo
     }
     

@@ -1,8 +1,6 @@
 PODS:
   - AEXML (4.5.0)
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
+  - Alamofire (5.5.0)
   - CMPopTipView (2.3.2)
   - DTCoreText (1.0.0):
     - DTCoreText/Accessibility (= 1.0.0)
@@ -37,31 +35,35 @@ PODS:
   - GCDWebServer/Core (3.5.4)
   - GCDWebServer/WebUploader (3.5.4):
     - GCDWebServer/Core
-  - IRHexColor (0.0.4)
+  - IRHexColor (0.0.5)
   - PKHUD (5.3.0)
   - ReachabilitySwift (5.0.0)
+  - SGQRCode (3.5.1)
   - SnapKit (5.0.1)
   - SSZipArchive (2.2.3)
+  - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
   - AEXML (~> 4.5.0)
-  - Charts (~> 3.6.0)
+  - Alamofire (~> 5.5)
   - CMPopTipView (~> 2.3.2)
   - DTCoreText (from `./ThirdPartyLibs/DTCoreText`)
   - DTFoundation (from `./ThirdPartyLibs/DTFoundation`)
   - FLEX (~> 4.1.1)
   - FMDB (~> 2.7.5)
   - GCDWebServer/WebUploader (from `./ThirdPartyLibs/GCDWebServer`)
-  - IRHexColor (~> 0.0.4)
+  - IRHexColor (~> 0.0.5)
   - PKHUD (~> 5.3.0)
   - ReachabilitySwift (~> 5.0.0)
+  - SGQRCode (from `./ThirdPartyLibs/SGQRCode`)
   - SnapKit (~> 5.0.1)
   - SSZipArchive (~> 2.2.2)
+  - SVProgressHUD (~> 2.2.5)
 
 SPEC REPOS:
   trunk:
     - AEXML
-    - Charts
+    - Alamofire
     - CMPopTipView
     - FLEX
     - FMDB
@@ -70,6 +72,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - SnapKit
     - SSZipArchive
+    - SVProgressHUD
 
 EXTERNAL SOURCES:
   DTCoreText:
@@ -78,22 +81,26 @@ EXTERNAL SOURCES:
     :path: "./ThirdPartyLibs/DTFoundation"
   GCDWebServer:
     :path: "./ThirdPartyLibs/GCDWebServer"
+  SGQRCode:
+    :path: "./ThirdPartyLibs/SGQRCode"
 
 SPEC CHECKSUMS:
   AEXML: 0e8f1d874fa033ca6b3909452a8bc362faad46e6
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   CMPopTipView: 2d56ef53e8e739c4e63ad97a5a88b97712b46c7b
   DTCoreText: 614f7426823989c3dabe9127fc674123f0049c01
   DTFoundation: 2cd4cbe869518fc73b6d6a5d4a8e0daaa7392931
   FLEX: 81096107977a09836eb440173010ceeef01105d6
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GCDWebServer: f5590602d75d912fb63660e57c4939d57b8fe85b
-  IRHexColor: 9bee3c935b1654246589933274a55e590ec24700
+  IRHexColor: f699a6202cd38f40754d0bc2bfc1146ccd40cdac
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  SGQRCode: 65d6170ddcf3feecc6e2f3601aac78ad93e56589
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 05a9aa2a36e3df5f0476ce09af3012be644dcfd0
+PODFILE CHECKSUM: 0ebe2e1603621f773bdab86f7bd91c44608b4fba
 
 COCOAPODS: 1.11.2

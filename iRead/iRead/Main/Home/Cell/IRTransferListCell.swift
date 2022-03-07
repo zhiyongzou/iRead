@@ -1,20 +1,15 @@
 //
-//  IRCurrentReadingCell.swift
+//  IRTransferListCell.swift
 //  iRead
 //
-//  Created by zzyong on 2020/12/25.
-//  Copyright © 2020 zzyong. All rights reserved.
+//  Created by zzyong on 2022/3/5.
+//  Copyright © 2022 iread.com. All rights reserved.
 //
 
 import UIKit
 import SnapKit
 
-protocol IRCurrentReadingDelegate: NSObjectProtocol {
-    func currentReadingCellDidClickKeepReading()
-    func currentReadingCellDidClickFindBook()
-}
-
-class IRCurrentReadingCell: UICollectionViewCell {
+class IRTransferListCell: UICollectionViewCell {
     
     static let bookCoverH: CGFloat = 70
     static let bookContentH: CGFloat = bookCoverH / bookCoverScale
@@ -192,7 +187,7 @@ class IRCurrentReadingCell: UICollectionViewCell {
         layer.cornerRadius = 10
         
         titleLabel.textColor = .black
-        titleLabel.text = "当前阅读"
+        titleLabel.text = "传输列表"
         titleLabel.font = .boldSystemFont(ofSize: 20)
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in

@@ -31,7 +31,7 @@ class IRWifiUploadViewController: IRBaseViewcontroller, GCDWebUploaderDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()
-        setupLeftBackBarButton()
+        setupLeftBackBarItem()
         if IRNetworkManager.shared.networkState == .wifi {
             setupWebUploader()
         } else {

@@ -93,6 +93,10 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         progressView.isHidden = !isLoading
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if shouldBeginEditing {
             shouldBeginEditing = false
             searchBarView.becomeFirstResponder()
@@ -183,12 +187,10 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
         guard let content = shortcut.content else { return }
         IRDebugLog(shortcut.content)
         var queryUrlString = bingSearchUrl
-        if shortcut.type == .baidu {
-            queryUrlString = baiduUrl
-        } else if shortcut.type == .sogou {
-            queryUrlString = sogouUrl
-        } else {
-            if let content = content.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+        if let content = content.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            if content.hasPrefix("http") {
+                queryUrlString = content
+            } else {
                 queryUrlString += content
             }
         }
@@ -261,6 +263,11 @@ open class IRSearchWebViewController: IRBaseViewcontroller, UIScrollViewDelegate
         progressView.isHidden = false
         isLoading = true
         updateSearchBarText(webView.url)
+        
+        if IRDownloadManager.shouldDownloadFileWithUrl(webView.url?.absoluteString) {
+            progressView.isHidden = true
+        }
+        
         IRDebugLog(webView.url?.absoluteString)
     }
     

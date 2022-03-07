@@ -10,19 +10,12 @@ import UIKit
 
 class IRSearchShortcutModel: NSObject {
     
-    enum SearchTextType {
-        case text
-        case bing
-        case sogou
-        case baidu
-    }
-    
-    var type: SearchTextType = .text
+    var title: String?
     var content: String?
 
-    class func modelWithContent(_ content: String?, type: SearchTextType = .text) -> IRSearchShortcutModel {
+    class func modelWithTitle(_ title: String?, content: String?) -> IRSearchShortcutModel {
         let model = IRSearchShortcutModel()
-        model.type = type
+        model.title = title
         model.content = content
         return model
     }

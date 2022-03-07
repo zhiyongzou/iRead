@@ -33,7 +33,7 @@ class IRBookshelfViewController: IRBaseViewcontroller, IRReaderCenterDelegate, B
         super.viewDidLoad()
         title = "书库"
         setupBarButtonItems()
-        setupLeftBackBarButton()
+        setupLeftBackBarItem()
         setupCollectionView()
         addNotifications()
         loadBookList()

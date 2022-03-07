@@ -204,7 +204,7 @@ class IRHomeViewController: IRBaseViewcontroller, IRCurrentReadingDelegate {
 extension IRHomeViewController: IRHomeTopBarDelegate {
     
     func homeTopBarDidClickScanButton(_ topBar: IRHomeTopBar) {
-        IRDebugLog("")
+        navigationController?.pushViewController(IRScanViewController(), animated: true)
     }
 
     func homeTopBarDidClickSearchButton(_ topBar: IRHomeTopBar) {

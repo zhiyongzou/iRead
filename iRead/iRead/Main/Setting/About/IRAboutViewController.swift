@@ -16,7 +16,7 @@ class IRAboutViewController: IRBaseViewcontroller {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "关于"
-        setupLeftBackBarButton()
+        setupLeftBackBarItem()
         
         let infoDic = Bundle.main.infoDictionary
         let appName = infoDic?["CFBundleName"] ?? ""

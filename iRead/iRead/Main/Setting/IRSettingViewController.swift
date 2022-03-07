@@ -33,7 +33,7 @@ class IRSettingViewController: IRBaseViewcontroller, UITableViewDataSource, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "设置"
-        setupLeftBackBarButton()
+        setupLeftBackBarItem()
         view.addSubview(tableView)
     }
     

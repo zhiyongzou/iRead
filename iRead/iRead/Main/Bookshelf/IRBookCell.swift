@@ -6,6 +6,7 @@
 //  Copyright © 2020 zzyong. All rights reserved.
 //
 
+import SnapKit
 import CommonLib
 import IRHexColor
 
@@ -37,6 +38,15 @@ class IRBookCell: UICollectionViewCell {
     var authorLabel: UILabel?
     var bookNameLabel: UILabel?
     var bottomLine: UIView?
+    
+    lazy var textCover: IRTextCoverView = {
+        let bg = IRTextCoverView()
+        bookCoverView.addSubview(bg)
+        bg.snp.makeConstraints { make in
+            make.edges.equalTo(bookCoverView)
+        }
+        return bg
+    }()
     
     // MARK: - Override
     
@@ -133,6 +143,14 @@ class IRBookCell: UICollectionViewCell {
     public var bookModel: IRBookModel? {
         didSet {
             bookCoverView.image = bookModel?.coverImage
+            textCover.isHidden = bookModel?.coverImage != nil
+            if !textCover.isHidden {
+                textCover.setBookName(bookModel?.bookName, authorName: bookModel?.authorName)
+                textCover.fontScale = style == .Square ? 1 : 0.8
+            } else {
+                textCover.setBookName(nil, authorName: nil)
+            }
+            
             self.updateProgressLabelText()
             let isRowStyle = style == .Row
             if isRowStyle {
@@ -188,8 +206,9 @@ extension IRBookCell {
     func updateRowCellLayout() {
 
         let spacing: CGFloat = 15
+        let topSpacing: CGFloat = 5
         let contentW = contentView.width - spacing
-        bookCoverView.frame = CGRect(x: spacing, y: 0, width: 50, height: contentView.height)
+        bookCoverView.frame = CGRect(x: spacing, y: topSpacing, width: 60, height: contentView.height - topSpacing * 2)
         
         let authorX = bookCoverView.frame.maxX + 10
         let authorH: CGFloat = 18

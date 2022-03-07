@@ -32,6 +32,16 @@
 		8136A2D92536D1D8005C1646 /* IRFontSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */; };
 		8136A2DE2536D20F005C1646 /* IRReadColorSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */; };
 		8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */; };
+		8138273427B8090700FD87C1 /* IRScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138273327B8090700FD87C1 /* IRScanViewController.swift */; };
+		8138273727B94CA800FD87C1 /* IRWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138273627B94CA800FD87C1 /* IRWebViewViewController.swift */; };
+		8138273A27B95A6000FD87C1 /* IRDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138273927B95A6000FD87C1 /* IRDownloadManager.swift */; };
+		8138273C27C10C9000FD87C1 /* IRScanTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138273B27C10C9000FD87C1 /* IRScanTextViewController.swift */; };
+		8138273F27D30FDD00FD87C1 /* IRTextCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138273E27D30FDD00FD87C1 /* IRTextCoverView.swift */; };
+		8138274127D347A000FD87C1 /* IRTransferListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138274027D347A000FD87C1 /* IRTransferListCell.swift */; };
+		8138274327D4D4E300FD87C1 /* IRFileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138274227D4D4E300FD87C1 /* IRFileListViewController.swift */; };
+		8138274527D4D88700FD87C1 /* IRFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138274427D4D88700FD87C1 /* IRFileCell.swift */; };
+		8138274727D4D9AC00FD87C1 /* IRFileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138274627D4D9AC00FD87C1 /* IRFileModel.swift */; };
+		8138274A27D4E9B900FD87C1 /* IRPasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138274927D4E9B900FD87C1 /* IRPasteboardManager.swift */; };
 		813D395E258A2DC800A3CABE /* IRBookshelfManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */; };
 		813D3966258A2EC000A3CABE /* IRBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D3965258A2EC000A3CABE /* IRBookModel.swift */; };
 		8162E4B72565122E007BDDA2 /* IRReadingRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8162E4B62565122E007BDDA2 /* IRReadingRecordManager.swift */; };
@@ -161,6 +171,16 @@
 		8136A2D82536D1D8005C1646 /* IRFontSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFontSettingView.swift; sourceTree = "<group>"; };
 		8136A2DD2536D20F005C1646 /* IRReadColorSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRReadColorSettingView.swift; sourceTree = "<group>"; };
 		8136A2E22536D260005C1646 /* IRBrightnessSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBrightnessSettingView.swift; sourceTree = "<group>"; };
+		8138273327B8090700FD87C1 /* IRScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRScanViewController.swift; sourceTree = "<group>"; };
+		8138273627B94CA800FD87C1 /* IRWebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRWebViewViewController.swift; sourceTree = "<group>"; };
+		8138273927B95A6000FD87C1 /* IRDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRDownloadManager.swift; sourceTree = "<group>"; };
+		8138273B27C10C9000FD87C1 /* IRScanTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRScanTextViewController.swift; sourceTree = "<group>"; };
+		8138273E27D30FDD00FD87C1 /* IRTextCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRTextCoverView.swift; sourceTree = "<group>"; };
+		8138274027D347A000FD87C1 /* IRTransferListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRTransferListCell.swift; sourceTree = "<group>"; };
+		8138274227D4D4E300FD87C1 /* IRFileListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFileListViewController.swift; sourceTree = "<group>"; };
+		8138274427D4D88700FD87C1 /* IRFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFileCell.swift; sourceTree = "<group>"; };
+		8138274627D4D9AC00FD87C1 /* IRFileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRFileModel.swift; sourceTree = "<group>"; };
+		8138274927D4E9B900FD87C1 /* IRPasteboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRPasteboardManager.swift; sourceTree = "<group>"; };
 		813C380B2464134E002578FD /* iRead-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iRead-Bridging-Header.h"; sourceTree = "<group>"; };
 		813D395D258A2DC800A3CABE /* IRBookshelfManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookshelfManager.swift; sourceTree = "<group>"; };
 		813D3965258A2EC000A3CABE /* IRBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRBookModel.swift; sourceTree = "<group>"; };
@@ -343,6 +363,7 @@
 		8126CF742545ABAA00C71415 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
+				8138273E27D30FDD00FD87C1 /* IRTextCoverView.swift */,
 				81B7E1E5251DE32600E84A37 /* IRBookCell.swift */,
 				813D3965258A2EC000A3CABE /* IRBookModel.swift */,
 				8126CF752545AC2C00C71415 /* IRBookshelfViewController.swift */,
@@ -374,6 +395,42 @@
 				819422FB253702B4002B5D62 /* IRArrowSettingView.swift */,
 			);
 			path = IRReadSettingView;
+			sourceTree = "<group>";
+		};
+		8138273227B808F700FD87C1 /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				8138273327B8090700FD87C1 /* IRScanViewController.swift */,
+				8138273B27C10C9000FD87C1 /* IRScanTextViewController.swift */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
+		8138273527B94C9100FD87C1 /* IRWebView */ = {
+			isa = PBXGroup;
+			children = (
+				8138273627B94CA800FD87C1 /* IRWebViewViewController.swift */,
+			);
+			path = IRWebView;
+			sourceTree = "<group>";
+		};
+		8138273827B95A3F00FD87C1 /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				8138273927B95A6000FD87C1 /* IRDownloadManager.swift */,
+				8138274227D4D4E300FD87C1 /* IRFileListViewController.swift */,
+				8138274427D4D88700FD87C1 /* IRFileCell.swift */,
+				8138274627D4D9AC00FD87C1 /* IRFileModel.swift */,
+			);
+			path = Download;
+			sourceTree = "<group>";
+		};
+		8138274827D4E97700FD87C1 /* Pasteboard */ = {
+			isa = PBXGroup;
+			children = (
+				8138274927D4E9B900FD87C1 /* IRPasteboardManager.swift */,
+			);
+			path = Pasteboard;
 			sourceTree = "<group>";
 		};
 		813D395C258A2D9100A3CABE /* IRBookshelfManager */ = {
@@ -409,6 +466,7 @@
 				81AEAF862595CCEB00AADC45 /* IRCurrentReadingCell.swift */,
 				8164E8C2275C766500044B89 /* IRObjectiveCell.swift */,
 				8164E8C6275C788300044B89 /* IRTodayReadCell.swift */,
+				8138274027D347A000FD87C1 /* IRTransferListCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -509,6 +567,7 @@
 		816DFBE32404D7A10030E55B /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				8138273227B808F700FD87C1 /* Scan */,
 				8126CF742545ABAA00C71415 /* Bookshelf */,
 				81B7E1DF251DE09E00E84A37 /* Home */,
 				81D360E127774FAD009B518C /* Setting */,
@@ -539,6 +598,9 @@
 		8193A44525480A3300501F8F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				8138274827D4E97700FD87C1 /* Pasteboard */,
+				8138273827B95A3F00FD87C1 /* Download */,
+				8138273527B94C9100FD87C1 /* IRWebView */,
 				81D418F727781AB500DA7C6A /* Defines */,
 				81D3ECFC27AECEDB00F4370D /* FREpubCore */,
 				81A93BD9257F57F3008C18A8 /* IRActivity */,
@@ -940,8 +1002,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8138273427B8090700FD87C1 /* IRScanViewController.swift in Sources */,
 				81C0947027B3F9E400AE9F44 /* IRSearchShortcutManager.swift in Sources */,
 				8164E8CD275CBD3E00044B89 /* AppDelegate+Debug.swift in Sources */,
+				8138273727B94CA800FD87C1 /* IRWebViewViewController.swift in Sources */,
 				8162E4D12566AF2F007BDDA2 /* IRBookmarkManager.swift in Sources */,
 				81C13AF82538497B00B78BC2 /* IRReadColorModel.swift in Sources */,
 				81D360EE277754E4009B518C /* IRSettingArrowCell.swift in Sources */,
@@ -967,6 +1031,7 @@
 				8126CF6D2545888500C71415 /* IRChapterListViewController.swift in Sources */,
 				811BEE7125CC4DF600F672B8 /* IRWifiUploadViewController.swift in Sources */,
 				8162E4C225654520007BDDA2 /* IRReadingRecordModel.swift in Sources */,
+				8138273C27C10C9000FD87C1 /* IRScanTextViewController.swift in Sources */,
 				810947D427A1984700BE019E /* IRSearchShortcutHeaderView.swift in Sources */,
 				8164E8C9275C789B00044B89 /* IRTodayReadModel.swift in Sources */,
 				8126CF762545AC2C00C71415 /* IRBookshelfViewController.swift in Sources */,
@@ -978,21 +1043,27 @@
 				810947C4279D73C800BE019E /* IRSearchWebTabbar.swift in Sources */,
 				81AEAF8F2595CD0D00AADC45 /* IRCurrentReadingModel.swift in Sources */,
 				81AEAF872595CCEC00AADC45 /* IRCurrentReadingCell.swift in Sources */,
+				8138274127D347A000FD87C1 /* IRTransferListCell.swift in Sources */,
 				810452C725EA974300C0230A /* IRNetworkManager.swift in Sources */,
 				818040A72521969000F31442 /* IRBookPage.swift in Sources */,
 				81C97757253DB7DB00E9CCCB /* IRFontDownload.swift in Sources */,
 				810947CE279DA59200BE019E /* IRSearchShortcutCell.swift in Sources */,
+				8138274527D4D88700FD87C1 /* IRFileCell.swift in Sources */,
 				8136A2E32536D260005C1646 /* IRBrightnessSettingView.swift in Sources */,
 				81D3ED1327AECEDB00F4370D /* FRSmilElement.swift in Sources */,
 				81D3ED0A27AECEDB00F4370D /* FRParseError.swift in Sources */,
 				81D418F127780E8300DA7C6A /* IRSettingSwitchCell.swift in Sources */,
+				8138274A27D4E9B900FD87C1 /* IRPasteboardManager.swift in Sources */,
 				81B7E1E2251DE0C300E84A37 /* IRHomeViewController.swift in Sources */,
+				8138274327D4D4E300FD87C1 /* IRFileListViewController.swift in Sources */,
 				8136A28A25369C33005C1646 /* IRReadSettingView.swift in Sources */,
+				8138273A27B95A6000FD87C1 /* IRDownloadManager.swift in Sources */,
 				81C97765253DB86300E9CCCB /* IRFontSelectCell.swift in Sources */,
 				8136A2D42536D1BA005C1646 /* IRSwitchSettingView.swift in Sources */,
 				81D4725B25FE4B44004C050D /* BSMenuModel.swift in Sources */,
 				81D4725325FE4158004C050D /* BSMenuView.swift in Sources */,
 				81D360E62777535D009B518C /* IRSettingDataSource.swift in Sources */,
+				8138273F27D30FDD00FD87C1 /* IRTextCoverView.swift in Sources */,
 				81D360F32777581C009B518C /* IRSettingModel.swift in Sources */,
 				81D418FC27782C2A00DA7C6A /* IRDeviceAuthHelper.swift in Sources */,
 				816DFBE52404D8010030E55B /* IRNavigationController.swift in Sources */,
@@ -1009,6 +1080,7 @@
 				810947B6279BDE1D00BE019E /* IRHomeTopBarDelegate.swift in Sources */,
 				810947C8279D98CF00BE019E /* IRSearchWebTabbarDelegate.swift in Sources */,
 				81D3ED1027AECEDB00F4370D /* FRResources.swift in Sources */,
+				8138274727D4D9AC00FD87C1 /* IRFileModel.swift in Sources */,
 				81B78BD7253E969B00353157 /* IRFontModel.swift in Sources */,
 				8164E8C5275C76AA00044B89 /* IRObjectiveModel.swift in Sources */,
 				8136A0D6253589C0005C1646 /* IRReadNavigationBar.swift in Sources */,

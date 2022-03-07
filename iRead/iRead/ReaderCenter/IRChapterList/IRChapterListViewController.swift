@@ -39,7 +39,7 @@ class IRChapterListViewController: IRBaseViewcontroller{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(contentView)
-        self.setupLeftBackBarButton()
+        self.setupLeftBackBarItem()
         self.setupNavigationBar()
         if segmentType == .chapter {
             self.addChapterListViewIfNeeded()

@@ -24,11 +24,20 @@ enum IRDirectoryType: String {
     /// AirDrop
     case Inbox = "Inbox"
     case Share = "Share"
+    case Download = "Download"
 }
 
 class IRFileManager: NSObject {
     
     static let shared: IRFileManager = IRFileManager()
+    
+    static let fileDownloadPath: String = {
+        let path = IRDocumentDirectoryPath + "/" + IRDirectoryType.Download.rawValue
+        if !FileManager.default.fileExists(atPath: path) {
+            try? FileManager.default.createDirectory(at: URL.init(fileURLWithPath: path), withIntermediateDirectories: true, attributes: nil)
+        }
+        return path
+    }()
     
     /// epub books path
     static let bookUnzipPath: String = {

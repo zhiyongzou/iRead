@@ -16,10 +16,9 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
     
     var commonSearch: IRSearchSectionModel = {
         let common = IRSearchSectionModel()
-        common.title = "常用搜索"
-        common.items = [IRSearchShortcutModel.modelWithContent("必应 bing.com", type: .bing),
-                        IRSearchShortcutModel.modelWithContent("百度 baidu.com", type: .baidu),
-                        IRSearchShortcutModel.modelWithContent("搜狗 sogou.com", type: .sogou)]
+        common.title = "推荐搜索"
+        common.items = [IRSearchShortcutModel.modelWithTitle("好读 haodoo", content: "http://www.haodoo.net/"),
+                        IRSearchShortcutModel.modelWithTitle("古登堡 gutenberg", content: "https://www.gutenberg.org/")]
         return common
     }()
     
@@ -33,7 +32,7 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
             history.type = .history
             var items: [IRSearchShortcutModel] = []
             for history in IRSearchShortcutManager.serachHistory {
-                items.append(IRSearchShortcutModel.modelWithContent(history))
+                items.append(IRSearchShortcutModel.modelWithTitle(history, content: history))
             }
             history.items = items
             return history
@@ -43,9 +42,9 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
     var shortcutList: [IRSearchSectionModel] {
         get {
             guard let historySearch = self.historySearch else {
-                return []
+                return [commonSearch]
             }
-            return [historySearch]
+            return [commonSearch, historySearch]
         }
     }
     
@@ -106,13 +105,13 @@ class IRSearchShortcutView: UIView, UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let shortcut = shortcutList[indexPath.section]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "IRSearchShortcutCell", for: indexPath) as! IRSearchShortcutCell
-        cell.title = shortcut.items![indexPath.item].content
+        cell.title = shortcut.items![indexPath.item].title
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let shortcut = shortcutList[indexPath.section]
-        let text: NSString = shortcut.items![indexPath.item].content! as NSString
+        let text: NSString = shortcut.items![indexPath.item].title! as NSString
         let textW = ceil(text.size(withAttributes: [.font: IRSearchShortcutCell.titleFont]).width) + IRSearchShortcutCell.cellHeight
         let maxW = collectionView.width - sectionInset.left - sectionInset.right
         return CGSize(width: min(textW, maxW), height: IRSearchShortcutCell.cellHeight)

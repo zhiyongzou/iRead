@@ -11,7 +11,6 @@ inhibit_all_warnings!
 
 workspace 'iRead.xcworkspace'
 
-
 # debug_pods
 def debug_pods
   pod 'FLEX', '~> 4.1.1', :configurations => ['Debug'], :modular_headers => true
@@ -19,7 +18,7 @@ end
 
 # common_pods
 def common_pods
-  pod 'IRHexColor', '~> 0.0.4'
+  pod 'IRHexColor', '~> 0.0.5'
   pod 'AEXML', '~> 4.5.0'
   pod 'SSZipArchive', '~> 2.2.2'
   pod 'FMDB', '~> 2.7.5', :modular_headers => true
@@ -27,6 +26,7 @@ end
 
 # local_pods
 def local_pods
+  pod 'SGQRCode', :path => './ThirdPartyLibs/SGQRCode', :modular_headers => true
   pod 'DTCoreText', :path => './ThirdPartyLibs/DTCoreText', :modular_headers => true
   pod 'DTFoundation', :path => './ThirdPartyLibs/DTFoundation', :modular_headers => true
   pod "GCDWebServer/WebUploader", :path => './ThirdPartyLibs/GCDWebServer', :modular_headers => true
@@ -48,7 +48,8 @@ target 'iRead' do
   pod 'CMPopTipView', '~> 2.3.2', :modular_headers => true
   pod 'PKHUD', '~> 5.3.0'
   pod 'ReachabilitySwift', '~> 5.0.0'
-  pod 'Charts', '~> 3.6.0'
+  pod 'Alamofire', '~> 5.5'
+  pod 'SVProgressHUD', '~> 2.2.5', :modular_headers => true
 
 end
 

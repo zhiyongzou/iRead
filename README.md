@@ -31,6 +31,6 @@ iRead is an EPUB reader for iOS written in Swift.
 ## Version
 |Version|Feature|
 |---|---|
+|1.0.1| - book search <br> - book download <br> - bug fix|
 |1.0.0| - iRead init|
-|1.0.0| - book search <br> - book download <br> - bug fix|
 
